@@ -5,6 +5,9 @@ class World {
     new JellyFish(),
     new Endboss()
   ];
+  sunlights = [
+    new Sunlight()
+  ];
   canvas;
   ctx;
 
@@ -20,6 +23,10 @@ class World {
     this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
     this.enemies.forEach(enemy => {
       this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+    });
+
+    this.sunlights.forEach(sunlight => {
+      this.ctx.drawImage(sunlight.img, sunlight.x, sunlight.y, sunlight.width, sunlight.height);
     });
 
     // draw() is called again and again, FPS ( requestAnimationFrame(() => this.draw());)
