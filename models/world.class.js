@@ -9,8 +9,10 @@ class World {
     new Sunlight()
   ];
   backgroundObjects = [
-    new BackgroundObject('./img/3_Background/Layers/2_Floor/D1.png', 0),
-    new BackgroundObject('./img/3_Background/Layers/3_Fondo/D1.png', 0)
+    new BackgroundObject('./img/3_Background/Layers/5_Water/D1.png', 0),
+    new BackgroundObject('./img/3_Background/Layers/4_Fondo 2/D1.png', 0),
+    new BackgroundObject('./img/3_Background/Layers/3_Fondo 1/D1.png', 0),
+    new BackgroundObject('./img/3_Background/Layers/2_Floor/D1.png', 0)
   ];
   canvas;
   ctx;
