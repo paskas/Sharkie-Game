@@ -1,4 +1,4 @@
-class Sunlight extends MovableObject{
+class Sunlight extends MovableObject {
   y = 0;
   x = 230;
   height = 400;
@@ -6,5 +6,13 @@ class Sunlight extends MovableObject{
 
   constructor() {
     super().loadImage('./img/3_Background/Layers/1_Light/1.png');
+    this.animte();
+  }
+
+  animte() {
+    setInterval(() => {
+      this.x -= 0.15;
+    }, 1000 / 60);
   }
 }
+
