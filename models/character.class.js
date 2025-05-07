@@ -20,6 +20,7 @@ class Character extends MovableObject {
     './img/1_Sharkie/1_IDLE/17.png',
     './img/1_Sharkie/1_IDLE/18.png'
   ];
+  world;
 
   constructor() {
     super().loadImage('./img/1_Sharkie/1_IDLE/1.png');
@@ -29,10 +30,17 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_STAND.length; // 
-      let path = this.IMAGES_STAND[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
+      if (this.world.keyboard.RIGHT) {
+        this.moveRight();
+      }
+      if (this.world.keyboard.LEFT) {
+        this.moveLeft();
+      }
+
+        let i = this.currentImage % this.IMAGES_STAND.length; // 
+        let path = this.IMAGES_STAND[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
     }, 200);
   }
 

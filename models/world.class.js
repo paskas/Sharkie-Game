@@ -16,11 +16,18 @@ class World {
   ];
   canvas;
   ctx;
+  keyboard;
 
-  constructor(canvas) {
+  constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
+    this.keyboard = keyboard;
     this.draw();
+    this.setWorld();
+  }
+
+  setWorld(){
+    this.character.world = this;
   }
 
   draw() {
@@ -31,10 +38,11 @@ class World {
     this.addObjectsToMap(this.enemies);
 
     // draw() is called again and again, FPS ( requestAnimationFrame(() => this.draw());)
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
+    // let self = this;
+    // requestAnimationFrame(function () {
+    //   self.draw();
+    // });
+    requestAnimationFrame(() => this.draw());
   }
 
   addObjectsToMap(objects) {
