@@ -10,9 +10,7 @@ class Sunlight extends MovableObject {
   }
 
   animte() {
-    setInterval(() => {
-      this.x -= 0.15;
-    }, 1000 / 60);
+    this.moveLeft();
   }
 }
 

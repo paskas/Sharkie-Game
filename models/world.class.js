@@ -3,7 +3,7 @@ class World {
   enemies = [
     new PufferFish(),
     new JellyFish(),
-    new Endboss()
+    // new Endboss()
   ];
   sunlights = [
     new Sunlight()
