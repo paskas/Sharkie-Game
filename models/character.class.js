@@ -71,6 +71,9 @@ class Character extends MovableObject {
   }
 
   isMoving() {
+    if (this.world.keyboard.LEFT) {
+      this.otherDirection = true;
+    }
     return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN;
   }
 
