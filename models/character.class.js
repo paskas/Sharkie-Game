@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+  speed = 7;
 
   IMAGES_STAND = [
     './img/1_Sharkie/1_IDLE/1.png',
@@ -20,28 +21,57 @@ class Character extends MovableObject {
     './img/1_Sharkie/1_IDLE/17.png',
     './img/1_Sharkie/1_IDLE/18.png'
   ];
+  IMAGES_SWIM = [
+    './img/1_Sharkie/3_Swim/1.png',
+    './img/1_Sharkie/3_Swim/2.png',
+    './img/1_Sharkie/3_Swim/3.png',
+    './img/1_Sharkie/3_Swim/4.png',
+    './img/1_Sharkie/3_Swim/5.png',
+    './img/1_Sharkie/3_Swim/6.png'
+  ];
+
   world;
 
   constructor() {
     super().loadImage('./img/1_Sharkie/1_IDLE/1.png');
     this.loadImages(this.IMAGES_STAND);
+    this.loadImages(this.IMAGES_SWIM);
     this.animate();
   }
 
   animate() {
+
     setInterval(() => {
       if (this.world.keyboard.RIGHT) {
-        this.moveRight();
+        this.x += this.speed;
       }
       if (this.world.keyboard.LEFT) {
-        this.moveLeft();
+        this.x -= this.speed;
       }
+      if (this.world.keyboard.UP) {
+        this.y -= this.speed;
+      }
+      if (this.world.keyboard.DOWN) {
+        this.y += this.speed;
+      }
+    }, 1000 / 60);
 
-        let i = this.currentImage % this.IMAGES_STAND.length; // 
-        let path = this.IMAGES_STAND[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-    }, 200);
+    setInterval(() => {
+      let images;
+      if (this.isMoving()) {
+        images = this.IMAGES_SWIM;
+      } else {
+        images = this.IMAGES_STAND;
+      }
+      let i = this.currentImage % images.length;
+      let path = images[i];
+      this.img = this.imageCache[path];
+      this.currentImage++;
+    }, 100);
+  }
+
+  isMoving() {
+    return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN;
   }
 
   jump() {

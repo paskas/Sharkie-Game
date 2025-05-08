@@ -27,10 +27,9 @@ class MovableObject {
 
   moveRight() {
     this.x += this.speed;
-    console.log('Moving right');
   }
 
-  moveLeft(){
+  moveLeft() {
     this.x -= this.speed;
   }
 }
