@@ -1,22 +1,10 @@
 class World {
   character = new Character();
-  enemies = [
-    new PufferFish(),
-    new JellyFish(),
-    // new Endboss()
-  ];
-  sunlights = [
-    new Sunlight()
-  ];
-  backgroundObjects = [
-    new BackgroundObject('./img/3_Background/Layers/5_Water/D1.png', 0),
-    new BackgroundObject('./img/3_Background/Layers/4_Fondo 2/D1.png', 0),
-    new BackgroundObject('./img/3_Background/Layers/3_Fondo 1/D1.png', 0),
-    new BackgroundObject('./img/3_Background/Layers/2_Floor/D1.png', 0)
-  ];
+  level = level1;
   canvas;
   ctx;
   keyboard;
+  camera_x = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -32,10 +20,15 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    this.addObjectsToMap(this.backgroundObjects);
-    this.addObjectsToMap(this.sunlights);
+
+    this.ctx.translate(this.camera_x, 0)
+
+    this.addObjectsToMap(this.level.backgroundObjects);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
+    this.addObjectsToMap(this.level.sunlights);
+    this.addObjectsToMap(this.level.enemies);
+
+    this.ctx.translate(-this.camera_x, 0)
 
     // draw() is called again and again, FPS ( requestAnimationFrame(() => this.draw());)
     // let self = this;
@@ -53,13 +46,23 @@ class World {
 
   addToMap(mo) {
     if (mo.otherDirection) {
-      this.ctx.save();
-      // this.ctx.translate(mo.img.width - 100, 0);
-      this.ctx.scale(-1, 1);
+      this.flipImage(mo);
     }
+
     this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+
     if (mo.otherDirection) {
-      this.ctx.restore();
+      this.restoreImgae(mo);
     }
+  }
+  flipImage(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.width, 0);
+    this.ctx.scale(-1, 1);
+    mo.x = mo.x * -1;
+  }
+  restoreImgae(mo) {
+    mo.x = mo.x * -1;
+    this.ctx.restore();
   }
 }

@@ -1,6 +1,6 @@
 class MovableObject {
   x = 0;
-  y = 200;
+  y = 240;
   img;
   height = 200;
   width = 220;
@@ -26,11 +26,20 @@ class MovableObject {
     });
   }
 
+  playAnimation(images){
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+
   moveRight() {
     this.x += this.speed;
   }
 
   moveLeft() {
-    this.x -= this.speed;
+    setInterval(() => {
+      this.x -= this.speed;
+    }, 1000 / 60);
   }
 }

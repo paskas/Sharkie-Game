@@ -1,4 +1,5 @@
 class Character extends MovableObject {
+  y = 200;
   speed = 7;
 
   IMAGES_STAND = [
@@ -42,27 +43,15 @@ class Character extends MovableObject {
   animate() {
 
     setInterval(() => {
-      if (this.world.keyboard.RIGHT) {
-        this.x += this.speed;
-      }
-      if (this.world.keyboard.LEFT) {
-        this.x -= this.speed;
-      }
-      if (this.world.keyboard.UP) {
-        this.y -= this.speed;
-      }
-      if (this.world.keyboard.DOWN) {
-        this.y += this.speed;
-      }
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
+      if (this.world.keyboard.LEFT && this.x > 0) this.x -= this.speed;
+      if (this.world.keyboard.UP) this.y -= this.speed;
+      if (this.world.keyboard.DOWN && this.y > 0) this.y += this.speed;
+      this.world.camera_x = -this.x + 50;
     }, 1000 / 60);
 
     setInterval(() => {
-      let images;
-      if (this.isMoving()) {
-        images = this.IMAGES_SWIM;
-      } else {
-        images = this.IMAGES_STAND;
-      }
+      let images = this.isMoving() ? this.IMAGES_SWIM : this.IMAGES_STAND;
       let i = this.currentImage % images.length;
       let path = images[i];
       this.img = this.imageCache[path];
@@ -71,13 +60,9 @@ class Character extends MovableObject {
   }
 
   isMoving() {
-    if (this.world.keyboard.LEFT) {
-      this.otherDirection = true;
-    }
-    return this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.UP || this.world.keyboard.DOWN;
-  }
-
-  jump() {
-
+    const kb = this.world.keyboard;
+    if (kb.LEFT) this.otherDirection = true;
+    if (kb.RIGHT) this.otherDirection = false;
+    return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
   }
 }
