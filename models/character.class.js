@@ -1,6 +1,6 @@
 class Character extends MovableObject {
   y = 200;
-  speed = 7;
+  speed = 6;
 
   IMAGES_STAND = [
     './img/1_Sharkie/1_IDLE/1.png',
@@ -38,6 +38,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_STAND);
     this.loadImages(this.IMAGES_SWIM);
     this.animate();
+    this.applyGravity();
   }
 
   animate() {
@@ -46,7 +47,7 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
       if (this.world.keyboard.LEFT && this.x > 0) this.x -= this.speed;
       if (this.world.keyboard.UP) this.y -= this.speed;
-      if (this.world.keyboard.DOWN && this.y > 0) this.y += this.speed;
+      if (this.world.keyboard.DOWN) this.y += this.speed;
       this.world.camera_x = -this.x + 50;
     }, 1000 / 60);
 
