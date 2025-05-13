@@ -49,18 +49,29 @@ class World {
       this.flipImage(mo);
     }
 
-    this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    if (mo instanceof Character && mo.rotationAngle !== 0) {
+      this.ctx.save();
+      this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+      this.ctx.rotate(mo.rotationAngle * Math.PI / 180);
+      this.ctx.drawImage(mo.img, -mo.width / 2, -mo.height / 2, mo.width, mo.height);
+      this.ctx.restore();
+    } else {
+      this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
 
     if (mo.otherDirection) {
       this.restoreImgae(mo);
     }
   }
+
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
   }
+
   restoreImgae(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
