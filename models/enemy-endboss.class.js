@@ -25,7 +25,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_FLOATING);
     this.x = 720 + Math.random() * 500;
     this.animate();
-  }s
+  }
   animate() {
     setInterval(() => {
       this.playAnimation(this.IMAGES_FLOATING)

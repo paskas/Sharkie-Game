@@ -2,7 +2,7 @@ class Level {
   enemies;
   sunlights;
   backgroundObjects;
-  level_end_x = 700;
+  level_end_x = 2200;
   level_end_y = 400;
 
   constructor(enemies, sunlights, backgroundObjects) {

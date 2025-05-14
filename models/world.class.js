@@ -20,7 +20,6 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
     this.ctx.translate(this.camera_x, 0)
 
     this.addObjectsToMap(this.level.backgroundObjects);
@@ -48,18 +47,11 @@ class World {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-
     if (mo instanceof Character && mo.rotationAngle !== 0) {
-      this.ctx.save();
-      this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
-      this.ctx.rotate(mo.rotationAngle * Math.PI / 180);
-      this.ctx.drawImage(mo.img, -mo.width / 2, -mo.height / 2, mo.width, mo.height);
-      this.ctx.restore();
+      this.drawImageAtAngle(mo);
     } else {
       this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
     }
-
-
     if (mo.otherDirection) {
       this.restoreImgae(mo);
     }
@@ -74,6 +66,14 @@ class World {
 
   restoreImgae(mo) {
     mo.x = mo.x * -1;
+    this.ctx.restore();
+  }
+
+  drawImageAtAngle(mo) {
+    this.ctx.save();
+    this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+    this.ctx.rotate(mo.rotationAngle * Math.PI / 180);
+    this.ctx.drawImage(mo.img, -mo.width / 2, -mo.height / 2, mo.width, mo.height);
     this.ctx.restore();
   }
 }

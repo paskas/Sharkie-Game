@@ -14,11 +14,13 @@ class JellyFish extends MovableObject {
     this.width = 110;
     this.loadImages(this.IMAGES_STAND);
     this.animate();
-    this.speed = 0.15 + Math.random()*0.30;
-    this.moveLeft();
+    this.speed = 0.15 + Math.random() * 0.30;
   }
 
   animate() {
+    setInterval(() => {
+      this.moveLeft();
+    }, 1000 / 60);
     setInterval(() => {
       this.playAnimation(this.IMAGES_STAND)
     }, 300);

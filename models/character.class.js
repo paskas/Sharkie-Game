@@ -1,6 +1,6 @@
 class Character extends MovableObject {
   y = 200;
-  speed = 6;
+  speed = 10;
   rotationAngle = 0;
 
   IMAGES_STAND = [
@@ -54,7 +54,7 @@ class Character extends MovableObject {
         this.y += this.speed
         this.rotationAngle = 15;
       } else { this.rotationAngle = 0; }
-      this.world.camera_x = -this.x + 50;
+      this.world.camera_x = -this.x + 40;
     }, 1000 / 60);
 
     setInterval(() => {
