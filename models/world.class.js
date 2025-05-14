@@ -50,7 +50,8 @@ class World {
     if (mo instanceof Character && mo.rotationAngle !== 0) {
       this.drawImageAtAngle(mo);
     } else {
-      this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+      mo.draw(this.ctx);
+      mo.drawFrame(this.ctx);
     }
     if (mo.otherDirection) {
       this.restoreImgae(mo);

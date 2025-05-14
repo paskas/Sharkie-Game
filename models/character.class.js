@@ -31,7 +31,6 @@ class Character extends MovableObject {
     './img/1_Sharkie/3_Swim/5.png',
     './img/1_Sharkie/3_Swim/6.png'
   ];
-
   world;
 
   constructor() {
