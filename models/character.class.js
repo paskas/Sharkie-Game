@@ -47,10 +47,10 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
       if (this.world.keyboard.LEFT && this.x > 0) this.x -= this.speed;
-      if (this.world.keyboard.UP) {
+      if (this.world.keyboard.UP && this.y > this.world.level.level_top_y) {
         this.y -= this.speed
         this.rotationAngle = -15;
-      } else if (this.world.keyboard.DOWN) {
+      } else if (this.world.keyboard.DOWN && this.y < this.world.level.level_bottom_y) {
         this.y += this.speed
         this.rotationAngle = 15;
       } else { this.rotationAngle = 0; }

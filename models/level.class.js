@@ -3,7 +3,8 @@ class Level {
   sunlights;
   backgroundObjects;
   level_end_x = 2200;
-  level_end_y = 400;
+  level_top_y = -85;
+  level_bottom_y = 320;
 
   constructor(enemies, sunlights, backgroundObjects) {
     this.enemies = enemies;
