@@ -44,8 +44,6 @@ class DrawableObject {
     };
   }
 
-
-
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
@@ -76,7 +74,7 @@ class DrawableObject {
       ctx.stroke();
     }
   }
-  
+
   drawHitbox(ctx) {
     let hitbox = this.getObjectHitbox();
     if (!hitbox) return;

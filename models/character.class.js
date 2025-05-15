@@ -67,10 +67,10 @@ class Character extends MovableObject {
     }, 100);
   }
 
-  // isMoving() {
-  //   const kb = this.world.keyboard;
-  //   if (kb.LEFT) this.otherDirection = true;
-  //   if (kb.RIGHT) this.otherDirection = false;
-  //   return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
-  // }
+  isMoving() {
+    const kb = this.world.keyboard;
+    if (kb.LEFT) this.otherDirection = true;
+    if (kb.RIGHT) this.otherDirection = false;
+    return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
+  }
 }
