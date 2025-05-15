@@ -2,8 +2,6 @@ class MovableObject {
   x = 0;
   y = 240;
   img;
-  height = 200;
-  width = 220;
   imageCache = {};
   currentImage = 0;
   speed = 0.15;
@@ -39,12 +37,15 @@ class MovableObject {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+
   drawFrame(ctx) {
-    ctx.beginPath();
-    ctx.lineWidth = '2';
-    ctx.strokeStyle = 'red';
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
+    if (this instanceof Character || this instanceof JellyFish || this instanceof PufferFish || this instanceof Endboss) {
+      ctx.beginPath();
+      ctx.lineWidth = '2';
+      ctx.strokeStyle = 'red';
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
   }
 
   moveRight() {

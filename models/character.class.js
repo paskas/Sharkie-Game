@@ -1,7 +1,10 @@
 class Character extends MovableObject {
   y = 200;
+  height = 260;
+  width = 240;
   speed = 10;
   rotationAngle = 0;
+  world;
 
   IMAGES_STAND = [
     './img/1_Sharkie/1_IDLE/1.png',
@@ -31,7 +34,6 @@ class Character extends MovableObject {
     './img/1_Sharkie/3_Swim/5.png',
     './img/1_Sharkie/3_Swim/6.png'
   ];
-  world;
 
   constructor() {
     super().loadImage('./img/1_Sharkie/1_IDLE/1.png');
@@ -42,7 +44,6 @@ class Character extends MovableObject {
   }
 
   animate() {
-
     setInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
       if (this.world.keyboard.LEFT && this.x > 0) this.x -= this.speed;

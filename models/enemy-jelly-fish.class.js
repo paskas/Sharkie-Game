@@ -1,5 +1,8 @@
 class JellyFish extends MovableObject {
   x = 400;
+  height = 110;
+  width = 80;
+
   IMAGES_STAND = [
     './img/2_Enemy/2_JellyFish/RegularDamage/Lila 1.png',
     './img/2_Enemy/2_JellyFish/RegularDamage/Lila 2.png',
@@ -10,8 +13,6 @@ class JellyFish extends MovableObject {
   constructor() {
     super().loadImage('./img/2_Enemy/2_JellyFish/RegularDamage/Lila 1.png');
     // this.x = 200 + Math.random()*500;
-    this.height = 90;
-    this.width = 110;
     this.loadImages(this.IMAGES_STAND);
     this.animate();
     this.speed = 0.15 + Math.random() * 0.30;
