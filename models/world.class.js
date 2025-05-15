@@ -12,6 +12,15 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    this.checkCollisions();
+  }
+
+  checkCollisions() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) console.log('collision width character', enemy);
+      });
+    }, 1000);
   }
 
   setWorld() {
@@ -49,9 +58,12 @@ class World {
     }
     if (mo instanceof Character && mo.rotationAngle !== 0) {
       this.drawImageAtAngle(mo);
+      mo.drawFrame(this.ctx);
+      mo.drawHitbox(this.ctx);
     } else {
       mo.draw(this.ctx);
       mo.drawFrame(this.ctx);
+      mo.drawHitbox(this.ctx);
     }
     if (mo.otherDirection) {
       this.restoreImgae(mo);
