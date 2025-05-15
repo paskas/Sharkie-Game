@@ -1,5 +1,6 @@
 class JellyFish extends MovableObject {
   x = 400;
+  y = 240;
   height = 110;
   width = 80;
 
