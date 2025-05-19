@@ -33,32 +33,14 @@ class MovableObject extends DrawableObject {
   }
 
   isColliding(mo) {
-    let a = this.getObjectHitbox();
-    let b = mo.getObjectHitbox();
-
-    if (!a || !b) {
-      return false;
-    }
-
+    let char = this.getObjectHitbox();
+    let enemy = mo.getObjectHitbox();
+    if (!char || !enemy) return false;
     return (
-      a.x < b.x + b.width &&
-      a.x + a.width > b.x &&
-      a.y < b.y + b.height &&
-      a.y + a.height > b.y
+      char.x < enemy.x + enemy.width &&
+      char.x + char.width > enemy.x &&
+      char.y < enemy.y + enemy.height &&
+      char.y + char.height > enemy.y
     );
   }
-
-  isColliding(mo) {
-    return this.x + this.width > mo.x &&
-      this.y + this.height > mo.y &&
-      this.x < mo.x &&
-      this.y < mo.y + mo.height;
-  }
-
-  // isColliding(mo) {
-  //   return this.x + this.width - this.offsets.right > mo.x + mo.offsets.left &&
-  //     this.y + this.height - this.offsets.bottom > mo.y + mo.offsets.top &&
-  //     this.x + this.offsets.left < mo.x + mo.width - mo.offsets.tight &&
-  //     this.y + this.offsets.top < mo.y + mo.height - mo.offsets.bottom;
-  // }
 }

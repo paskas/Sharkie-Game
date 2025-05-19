@@ -20,7 +20,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) console.log('collision width character', enemy);
       });
-    }, 1000);
+    }, 100);
   }
 
   setWorld() {
@@ -38,11 +38,6 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0)
 
-    // draw() is called again and again, FPS ( requestAnimationFrame(() => this.draw());)
-    // let self = this;
-    // requestAnimationFrame(function () {
-    //   self.draw();
-    // });
     requestAnimationFrame(() => this.draw());
   }
 

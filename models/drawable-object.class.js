@@ -5,27 +5,27 @@ class DrawableObject {
 
   static offsets = {
     Character: {
-      top: 125,
-      bottom: 60,
-      left: 48,
-      right: 48
+      top: 130,
+      bottom: 65,
+      left: 50,
+      right: 50
     },
     JellyFish: {
-      top: 5,
-      bottom: 5,
-      left: 5,
-      right: 5
+      top: 20,
+      bottom: 20,
+      left: 12,
+      right: 12
     },
     PufferFish: {
-      top: 4,
-      bottom: 4,
-      left: 4,
-      right: 4
+      top: 10,
+      bottom: 30,
+      left: 8,
+      right: 18
     },
     Endboss: {
-      top: 95,
-      bottom: 15,
-      left: 40,
+      top: 210,
+      bottom: 80,
+      left: 30,
       right: 40
     }
   };
@@ -33,9 +33,7 @@ class DrawableObject {
   getObjectHitbox() {
     let className = this.constructor.name;
     let offset = DrawableObject.offsets[className];
-    if (!offset) {
-      return undefined;
-    }
+    if (!offset) return undefined;
     return {
       x: this.x + offset.left,
       y: this.y + offset.top,
