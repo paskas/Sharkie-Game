@@ -3,6 +3,8 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   speedY = 0;
   acceleratiion = 1.5;
+  energy = 100;
+  lastHit = 0;
 
   playAnimation(images) {
     let i = this.currentImage % images.length;
@@ -42,5 +44,21 @@ class MovableObject extends DrawableObject {
       char.y < enemy.y + enemy.height &&
       char.y + char.height > enemy.y
     );
+  }
+
+  hit() {
+    if (!this.isInDamagePhase()) {
+      this.lastHit = new Date().getTime();
+      Character.life--;
+    }
+  }
+
+  isInDamagePhase() {
+    let timeSinceLastHit = new Date().getTime() - this.lastHit;
+    return timeSinceLastHit < 2000;
+  }
+
+  isDead() {
+    return Character.life <= 0;
   }
 }

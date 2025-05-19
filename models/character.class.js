@@ -6,6 +6,7 @@ class Character extends MovableObject {
   speed = 10;
   rotationAngle = 0;
   world;
+  static life = 5;
 
   IMAGES_STAND = [
     './img/1_Sharkie/1_IDLE/1.png',
@@ -35,37 +36,82 @@ class Character extends MovableObject {
     './img/1_Sharkie/3_Swim/5.png',
     './img/1_Sharkie/3_Swim/6.png'
   ];
+  IMAGES_DEAD = [
+    './img/1_Sharkie/6_dead/1_Poisoned/1.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/2.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/3.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/4.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/5.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/6.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/7.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/8.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/9.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/10.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/11.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/12.png',
+  ];
 
   constructor() {
-    super().loadImage('./img/1_Sharkie/1_IDLE/1.png');
+    super();
+    this.hasDied = false;
+    this.loadImage('./img/1_Sharkie/1_IDLE/1.png');
     this.loadImages(this.IMAGES_STAND);
     this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_DEAD);
     this.animate();
     // this.applyGravity();
   }
 
   animate() {
+    this.runMovement();
+    this.runAnimation();
+  }
+
+  runMovement() {
     setInterval(() => {
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
-      if (this.world.keyboard.LEFT && this.x > 0) this.x -= this.speed;
-      if (this.world.keyboard.UP && this.y > this.world.level.level_top_y) {
-        this.y -= this.speed
+      const kb = this.world.keyboard;
+      if (kb.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
+      if (kb.LEFT && this.x > 0) this.x -= this.speed;
+      if (kb.UP && this.y > this.world.level.level_top_y) {
+        this.y -= this.speed;
         this.rotationAngle = -15;
-      } else if (this.world.keyboard.DOWN && this.y < this.world.level.level_bottom_y) {
-        this.y += this.speed
+      } else if (kb.DOWN && this.y < this.world.level.level_bottom_y) {
+        this.y += this.speed;
         this.rotationAngle = 15;
-      } else { this.rotationAngle = 0; }
+      } else {
+        this.rotationAngle = 0;
+      }
       this.world.camera_x = -this.x + 40;
     }, 1000 / 60);
+  }
 
+  runAnimation() {
     setInterval(() => {
-      let images = this.isMoving() ? this.IMAGES_SWIM : this.IMAGES_STAND;
-      let i = this.currentImage % images.length;
-      let path = images[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
+      if (this.isDead && !this.hasDied) {
+        this.deadAnimation();
+        this.hasDied = true;
+      } else if (!this.isDead() && this.isMoving()) {
+        this.swimAnimation();
+      } else if (!this.isDead()) {
+        this.idleAnimation();
+      }
     }, 100);
   }
+
+  idleAnimation() {
+    this.playAnimation(this.IMAGES_STAND);
+  }
+
+
+  swimAnimation() {
+    this.playAnimation(this.IMAGES_SWIM);
+  }
+
+
+  deadAnimation() {
+    this.playAnimation(this.IMAGES_DEAD);
+  }
+
 
   isMoving() {
     const kb = this.world.keyboard;
