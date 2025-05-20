@@ -53,7 +53,6 @@ class Character extends MovableObject {
 
   constructor() {
     super();
-    this.hasDied = false;
     this.loadImage('./img/1_Sharkie/1_IDLE/1.png');
     this.loadImages(this.IMAGES_STAND);
     this.loadImages(this.IMAGES_SWIM);
@@ -87,12 +86,13 @@ class Character extends MovableObject {
 
   runAnimation() {
     setInterval(() => {
-      if (this.isDead && !this.hasDied) {
+      if (this.isDead()) {
         this.deadAnimation();
-        this.hasDied = true;
-      } else if (!this.isDead() && this.isMoving()) {
+      }
+      if (!this.isDead() && this.isMoving()) {
         this.swimAnimation();
-      } else if (!this.isDead()) {
+      }
+      if (!this.isDead() && !this.isMoving()) {
         this.idleAnimation();
       }
     }, 100);
