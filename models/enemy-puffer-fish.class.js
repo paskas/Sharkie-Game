@@ -3,6 +3,7 @@ class PufferFish extends MovableObject {
   y = 240;
   height = 110;
   width = 140;
+  poisend = true;
 
   IMAGES_STAND = [
     './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim1.png',

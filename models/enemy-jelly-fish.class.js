@@ -3,6 +3,7 @@ class JellyFish extends MovableObject {
   y = 240;
   height = 140;
   width = 100;
+  shock = true;
 
   IMAGES_STAND = [
     './img/2_Enemy/2_JellyFish/RegularDamage/Lila 1.png',

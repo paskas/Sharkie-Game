@@ -48,7 +48,18 @@ class Character extends MovableObject {
     './img/1_Sharkie/6_dead/1_Poisoned/9.png',
     './img/1_Sharkie/6_dead/1_Poisoned/10.png',
     './img/1_Sharkie/6_dead/1_Poisoned/11.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/12.png',
+    './img/1_Sharkie/6_dead/1_Poisoned/12.png'
+  ];
+  IMAGES_POISEND = [
+    './img/1_Sharkie/5_Hurt/1_Poisoned/1.png',
+    './img/1_Sharkie/5_Hurt/1_Poisoned/2.png',
+    './img/1_Sharkie/5_Hurt/1_Poisoned/3.png',
+    './img/1_Sharkie/5_Hurt/1_Poisoned/4.png',
+    './img/1_Sharkie/5_Hurt/1_Poisoned/5.png',
+  ];
+  IMAGES_SHOCK = [
+    './img/1_Sharkie/5_Hurt/2_ElectricShock/01.png',
+    './img/1_Sharkie/5_Hurt/2_ElectricShock/02.png'
   ];
 
   constructor() {
@@ -57,6 +68,8 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_STAND);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_POISEND);
+    this.loadImages(this.IMAGES_SHOCK);
     this.animate();
     // this.applyGravity();
   }
@@ -88,11 +101,13 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.isDead()) {
         this.deadAnimation();
-      }
-      if (!this.isDead() && this.isMoving()) {
+      } else if (this.isInDamagePhase() && this.poisend) {
+        this.poisendAnimation();
+      } else if (this.isInDamagePhase() && this.shock) {
+        this.shockAnimation();
+      } else if (this.isMoving()) {
         this.swimAnimation();
-      }
-      if (!this.isDead() && !this.isMoving()) {
+      } else {
         this.idleAnimation();
       }
     }, 100);
@@ -102,11 +117,17 @@ class Character extends MovableObject {
     this.playAnimation(this.IMAGES_STAND);
   }
 
-
   swimAnimation() {
     this.playAnimation(this.IMAGES_SWIM);
   }
 
+  poisendAnimation() {
+    this.playAnimation(this.IMAGES_POISEND);
+  }
+
+  shockAnimation() {
+    this.playAnimation(this.IMAGES_SHOCK);
+  }
 
   deadAnimation() {
     this.playAnimation(this.IMAGES_DEAD);

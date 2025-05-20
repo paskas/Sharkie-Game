@@ -46,19 +46,42 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit() {
+  hit(enemy) {
     if (!this.isInDamagePhase()) {
       this.lastHit = new Date().getTime();
       Character.life--;
+      if (enemy.poisend) {
+        this.poisenHit(enemy);
+      } else if (enemy.shock) {
+        this.shockHit(enemy);
+      }
+      setTimeout(() => {
+        this.poisend = false;
+        this.shock = false;
+      }, 1500);
     }
   }
 
   isInDamagePhase() {
     let timeSinceLastHit = new Date().getTime() - this.lastHit;
-    return timeSinceLastHit < 2000;
+    return timeSinceLastHit < 1500;
+  }
+
+  poisenHit(enemy) {
+    if (enemy.poisend) {
+      this.poisend = true;
+      this.shock = false;
+    }
+  }
+
+  shockHit(enemy) {
+    if (enemy.shock) {
+      this.poisend = false;
+      this.shock = true;
+    }
   }
 
   isDead() {
-    return Character.life <= 0;
+    return Character.life == 0;
   }
 }
