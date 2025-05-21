@@ -1,7 +1,7 @@
 class MovableObject extends DrawableObject {
+  // speedY = 0;
   speed = 0.15;
   otherDirection = false;
-  speedY = 0;
   acceleratiion = 1.5;
   energy = 100;
   lastHit = 0;
@@ -19,19 +19,6 @@ class MovableObject extends DrawableObject {
 
   moveLeft() {
     this.x -= this.speed;
-  }
-
-  applyGravity() {
-    setInterval(() => {
-      if (this.isAboveGround()) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleratiion;
-      }
-    }, 1000 / 25);
-  }
-
-  isAboveGround() {
-    return this.y < 140;
   }
 
   isColliding(mo) {
@@ -84,4 +71,21 @@ class MovableObject extends DrawableObject {
   isDead() {
     return Character.life == 0;
   }
+
+  // applyGravity() {
+  //   setInterval(() => {
+  //     if (this.isAboveGround()) {
+  //       this.y -= this.speedY;
+  //       this.speedY -= this.acceleratiion;
+  //     }
+  //   }, 1000 / 25);
+  // }
+
+  // isAboveGround() {
+  //   if (this instanceof ShootingObject) {
+  //     return true;
+  //   } else {
+  //     return this.y < 140;
+  //   }
+  // }
 }

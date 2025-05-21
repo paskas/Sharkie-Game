@@ -3,7 +3,7 @@ class Character extends MovableObject {
   y = 200;
   height = 260;
   width = 240;
-  speed = 10;
+  speed = 6;
   rotationAngle = 0;
   world;
   static life = 5;

@@ -5,7 +5,9 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  HealthBarCharacter = new HealthBarCharacter();
+  healthBarCharacter = new HealthBarCharacter();
+  shootingObject = [];
+  lastBubbleTime = Date.now();
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -13,18 +15,51 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.startWorldLoop();
+  }
+
+  startWorldLoop() {
+    setInterval(() => {
+      this.checkCollisions();
+      this.checkShootingObject();
+      this.removeOffScreenBubbles();
+    }, 1000 / 60);
+  }
+
+  checkShootingObject() {
+    let now = Date.now();
+    if (!this.otherDirection && this.keyboard.SHOOT && now - this.lastBubbleTime > 1500) {
+      let directionX;
+      if (this.character.otherDirection) {
+        directionX = this.character.x;
+      } else {
+        directionX = this.character.x + this.character.width - 50;
+      }
+      let bubble = new ShootingObject(
+        this.character,
+        directionX,
+        this.character.y + this.character.height / 2,
+        this.character.otherDirection
+      );
+      this.shootingObject.push(bubble);
+      this.lastBubbleTime = now;
+    }
+  }
+
+  removeOffScreenBubbles() {
+    this.level.enemies = this.level.enemies.filter(enemy => enemy.y <= 1000);
   }
 
   checkCollisions() {
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit(enemy);
-          this.HealthBarCharacter.updatingHealthBar();
-        }
-      });
-    }, 100);
+    this.checkCharacterEnemyCollisions();
+  }
+
+  checkCharacterEnemyCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit(enemy);
+      }
+    });
   }
 
   setWorld() {
@@ -39,10 +74,11 @@ class World {
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.sunlights);
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.shootingObject);
 
     this.ctx.translate(-this.camera_x, 0)
 
-    this.addToMap(this.HealthBarCharacter);
+    this.addToMap(this.healthBarCharacter);
 
     requestAnimationFrame(() => this.draw());
   }

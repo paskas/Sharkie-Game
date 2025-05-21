@@ -12,10 +12,10 @@ class HealthBarCharacter extends DrawableObject {
   constructor() {
     super();
     this.loadImages(this.IMAGES_HEALTH);
-    this.x = -40;
-    this.y = -25;
-    this.width = 380;
-    this.height = 100;
+    this.x = 0;
+    this.y = -15;
+    this.width = 290;
+    this.height = 70;
     this.img = this.imageCache[this.IMAGES_HEALTH[Character.life]];
     this.updatingHealthBar();
   }
