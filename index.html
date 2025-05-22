@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sharkie</title>
   <link rel="stylesheet" href="./style/global.css">
-  <title>GAME</title>
+  <link rel="stylesheet" href="./style/typography.css">
+  <link rel="stylesheet" href="./style/menu.css">
   <script src="./js/base/drawable-object.class.js"></script>
   <script src="./js/base/movable-object.class.js"></script>
   <script src="./js/character/character.class.js"></script>
@@ -25,7 +27,8 @@
 
 <body onload="init()">
 
-  <h1>🦈Sharkie🐡</h1>
+  <button id="toggleFullScreen">Vollbild an/aus</button>
+  <h1 id="title">🦈Sharkie🐡</h1>
   <canvas id="canvas" width="960" height="540"></canvas>
 
 </body>
