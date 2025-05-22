@@ -9,62 +9,57 @@ class Character extends MovableObject {
   static life = 5;
 
   IMAGES_STAND = [
-    './img/1_Sharkie/1_IDLE/1.png',
-    './img/1_Sharkie/1_IDLE/2.png',
-    './img/1_Sharkie/1_IDLE/3.png',
-    './img/1_Sharkie/1_IDLE/4.png',
-    './img/1_Sharkie/1_IDLE/5.png',
-    './img/1_Sharkie/1_IDLE/6.png',
-    './img/1_Sharkie/1_IDLE/7.png',
-    './img/1_Sharkie/1_IDLE/8.png',
-    './img/1_Sharkie/1_IDLE/9.png',
-    './img/1_Sharkie/1_IDLE/10.png',
-    './img/1_Sharkie/1_IDLE/11.png',
-    './img/1_Sharkie/1_IDLE/12.png',
-    './img/1_Sharkie/1_IDLE/13.png',
-    './img/1_Sharkie/1_IDLE/14.png',
-    './img/1_Sharkie/1_IDLE/15.png',
-    './img/1_Sharkie/1_IDLE/16.png',
-    './img/1_Sharkie/1_IDLE/17.png',
-    './img/1_Sharkie/1_IDLE/18.png'
+    './img/character/idle/1.png',
+    './img/character/idle/2.png',
+    './img/character/idle/3.png',
+    './img/character/idle/4.png',
+    './img/character/idle/5.png',
+    './img/character/idle/6.png',
+    './img/character/idle/7.png',
+    './img/character/idle/8.png',
+    './img/character/idle/9.png',
+    './img/character/idle/10.png',
+    './img/character/idle/11.png',
+    './img/character/idle/12.png',
+    './img/character/idle/13.png',
+    './img/character/idle/14.png',
+    './img/character/idle/15.png',
+    './img/character/idle/16.png',
+    './img/character/idle/17.png',
+    './img/character/idle/18.png'
+
   ];
   IMAGES_SWIM = [
-    './img/1_Sharkie/3_Swim/1.png',
-    './img/1_Sharkie/3_Swim/2.png',
-    './img/1_Sharkie/3_Swim/3.png',
-    './img/1_Sharkie/3_Swim/4.png',
-    './img/1_Sharkie/3_Swim/5.png',
-    './img/1_Sharkie/3_Swim/6.png'
+    './img/character/swim/1.png',
+    './img/character/swim/2.png',
+    './img/character/swim/3.png',
+    './img/character/swim/4.png',
+    './img/character/swim/5.png',
+    './img/character/swim/6.png'
   ];
   IMAGES_DEAD = [
-    './img/1_Sharkie/6_dead/1_Poisoned/1.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/2.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/3.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/4.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/5.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/6.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/7.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/8.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/9.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/10.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/11.png',
-    './img/1_Sharkie/6_dead/1_Poisoned/12.png'
+    './img/character/dead/default_options/animated_horizontal/1.png',
+    './img/character/dead/default_options/animated_horizontal/2.png',
+    './img/character/dead/default_options/animated_horizontal/3.png',
+    './img/character/dead/default_options/animated_horizontal/4.png',
+    './img/character/dead/default_options/animated_horizontal/5.png',
+    './img/character/dead/default_options/animated_horizontal/6.png'
   ];
   IMAGES_POISEND = [
-    './img/1_Sharkie/5_Hurt/1_Poisoned/1.png',
-    './img/1_Sharkie/5_Hurt/1_Poisoned/2.png',
-    './img/1_Sharkie/5_Hurt/1_Poisoned/3.png',
-    './img/1_Sharkie/5_Hurt/1_Poisoned/4.png',
-    './img/1_Sharkie/5_Hurt/1_Poisoned/5.png',
+    './img/character/hurt/poisoned/1.png',
+    './img/character/hurt/poisoned/2.png',
+    './img/character/hurt/poisoned/3.png',
+    './img/character/hurt/poisoned/4.png',
+    './img/character/hurt/poisoned/5.png'
   ];
   IMAGES_SHOCK = [
-    './img/1_Sharkie/5_Hurt/2_ElectricShock/01.png',
-    './img/1_Sharkie/5_Hurt/2_ElectricShock/02.png'
+    './img/character/hurt/electric_shock/01.png',
+    './img/character/hurt/electric_shock/02.png'
   ];
 
   constructor() {
     super();
-    this.loadImage('./img/1_Sharkie/1_IDLE/1.png');
+    this.loadImage('./img/character/idle/1.png');
     this.loadImages(this.IMAGES_STAND);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_DEAD);

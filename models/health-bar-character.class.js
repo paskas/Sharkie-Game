@@ -1,12 +1,12 @@
 class HealthBarCharacter extends DrawableObject {
 
   IMAGES_HEALTH = [
-    './img/4_UI/healthbar/healthbar_0.png',
-    './img/4_UI/healthbar/healthbar_20.png',
-    './img/4_UI/healthbar/healthbar_40.png',
-    './img/4_UI/healthbar/healthbar_60.png',
-    './img/4_UI/healthbar/healthbar_80.png',
-    './img/4_UI/healthbar/healthbar_100.png'
+    './img/UI/healthbar/healthbar_0.png',
+    './img/UI/healthbar/healthbar_20.png',
+    './img/UI/healthbar/healthbar_40.png',
+    './img/UI/healthbar/healthbar_60.png',
+    './img/UI/healthbar/healthbar_80.png',
+    './img/UI/healthbar/healthbar_100.png'
   ];
 
   constructor() {

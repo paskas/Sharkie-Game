@@ -2,7 +2,7 @@ class ShootingObject extends MovableObject {
 
   constructor(character, x, y, otherDirection) {
     super();
-    this.loadImage('./img/1_Sharkie/4_Attack/BubbleTrap/Bubble.png');
+    this.loadImage('./img/character/attack/bubble_trap/bubble_default.png');
     this.character = character;
     this.x = x;
     this.y = y;

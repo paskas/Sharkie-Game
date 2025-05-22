@@ -6,14 +6,14 @@ class JellyFish extends MovableObject {
   shock = true;
 
   IMAGES_STAND = [
-    './img/2_Enemy/2_JellyFish/RegularDamage/Lila 1.png',
-    './img/2_Enemy/2_JellyFish/RegularDamage/Lila 2.png',
-    './img/2_Enemy/2_JellyFish/RegularDamage/Lila 3.png',
-    './img/2_Enemy/2_JellyFish/RegularDamage/Lila 4.png'
+    './img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/1.png',
+    './img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/2.png',
+    './img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/3.png',
+    './img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/4.png',
   ];
 
   constructor() {
-    super().loadImage('./img/2_Enemy/2_JellyFish/RegularDamage/Lila 1.png');
+    super().loadImage('./img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/1.png');
     this.x = 200 + Math.random()*500;
     this.loadImages(this.IMAGES_STAND);
     this.animate();

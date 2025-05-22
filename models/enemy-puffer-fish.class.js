@@ -6,15 +6,15 @@ class PufferFish extends MovableObject {
   poisend = true;
 
   IMAGES_STAND = [
-    './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim1.png',
-    './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim2.png',
-    './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim3.png',
-    './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim4.png',
-    './img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim5.png'
+    './img/enemies/puffer_fish(3_options)/swim/swim_green1.png',
+    './img/enemies/puffer_fish(3_options)/swim/swim_green2.png',
+    './img/enemies/puffer_fish(3_options)/swim/swim_green3.png',
+    './img/enemies/puffer_fish(3_options)/swim/swim_green4.png',
+    './img/enemies/puffer_fish(3_options)/swim/swim_green5.png'
   ];
 
   constructor() {
-    super().loadImage('./img/2_Enemy/1_PufferFish_(3_options)/1_Swim/1.swim1.png');
+    super().loadImage('./img/enemies/puffer_fish(3_options)/swim/swim_green1.png');
     this.x = 250 + Math.random() * 500;
     this.loadImages(this.IMAGES_STAND);
     this.animate();
