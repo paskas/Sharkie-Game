@@ -10,12 +10,8 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
-  background-image: url('../img/UI/background/dark_complete.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   font-family: 'luckiest-guy-regular', Arial, sans-serif;
   z-index: 0;
 }
@@ -24,8 +20,10 @@ body::before {
   content: '';
   position: absolute;
   top: 0;
+  bottom: 0;
+  right: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   background-image: url('../img/UI/background/dark_complete.png');
   background-position: center;
@@ -36,8 +34,8 @@ body::before {
 }
 
 canvas {
+  display: block;
   background-color: black;
-  border-radius: 20px;
 }
 
 h1 {
@@ -60,4 +58,16 @@ button#toggleFullScreen {
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;
+}
+
+@media screen and (max-width:960px){
+  canvas, body{
+    width: 100%;
+  }
+}
+
+@media screen and (max-height:540px){
+  canvas, body{
+    height: 100vh;
+  }
 }
