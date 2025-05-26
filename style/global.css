@@ -23,8 +23,6 @@ body::before {
   bottom: 0;
   right: 0;
   left: 0;
-  height: 100vh;
-  width: 100%;
   background-image: url('../img/UI/background/dark_complete.png');
   background-position: center;
   background-repeat: no-repeat;
@@ -61,13 +59,13 @@ button#toggleFullScreen {
 }
 
 @media screen and (max-width:960px){
-  canvas, body{
+  canvas{
     width: 100%;
   }
 }
 
 @media screen and (max-height:540px){
-  canvas, body{
+  canvas{
     height: 100vh;
   }
 }

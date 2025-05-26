@@ -35,23 +35,26 @@ class MovableObject extends DrawableObject {
 
   hit(enemy) {
     if (!this.isInDamagePhase()) {
-      this.lastHit = new Date().getTime();
-      Character.life--;
       if (enemy.poisend) {
         this.poisenHit(enemy);
       } else if (enemy.shock) {
         this.shockHit(enemy);
       }
+
+      this.lastHit = new Date().getTime();
+      Character.life--;
+      this.currentImage = 0;
+
       setTimeout(() => {
         this.poisend = false;
         this.shock = false;
-      }, 1500);
+      }, 1000);
     }
   }
 
   isInDamagePhase() {
     let timeSinceLastHit = new Date().getTime() - this.lastHit;
-    return timeSinceLastHit < 1500;
+    return timeSinceLastHit < 1000;
   }
 
   poisenHit(enemy) {
