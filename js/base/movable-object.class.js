@@ -40,15 +40,8 @@ class MovableObject extends DrawableObject {
       } else if (enemy.shock) {
         this.shockHit(enemy);
       }
-
       this.lastHit = new Date().getTime();
       Character.life--;
-      this.currentImage = 0;
-
-      setTimeout(() => {
-        this.poisend = false;
-        this.shock = false;
-      }, 1000);
     }
   }
 
