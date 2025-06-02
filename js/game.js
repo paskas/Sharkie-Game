@@ -8,25 +8,30 @@ function init() {
   world = new World(canvas, keyboard);
 }
 
-function fullscreen(){
+function fullscreen() {
   let fullscreen = document.getElementById('gameContainer');
-  enterFullscreen(fullscreen);
+  let canvas = document.getElementById('canvas');
+  enterFullscreen(fullscreen, canvas);
 }
 
-function enterFullscreen(container) {
-  if(container.requestFullscreen) {
+function enterFullscreen(container, canvas) {
+  if (container.requestFullscreen) {
     container.requestFullscreen();
-  } else if(container.msRequestFullscreen) {
-    container.msRequestFullscreen();
-  } else if(container.webkitRequestFullscreen) {
-    container.webkitRequestFullscreen();
+    canvas.classList.add('fullscreen-canvas');
   }
 }
 
 function exitFullscreen() {
-  if(document.exitFullscreen) {
+  if (document.exitFullscreen) {
     document.exitFullscreen();
-  } else if(document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
   }
 }
+
+document.addEventListener('fullscreenchange', () => {
+  let canvas = document.getElementById('canvas');
+  if (!document.fullscreenElement) {
+    canvas.classList.remove('fullscreen-canvas');
+  }
+});
+
+
