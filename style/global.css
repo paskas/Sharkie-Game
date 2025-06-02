@@ -23,7 +23,7 @@ body::before {
   bottom: 0;
   right: 0;
   left: 0;
-  background-image: url('../img/UI/background/dark_complete.png');
+  background-image: url('../img/UI/background/riff_complete.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -34,28 +34,25 @@ body::before {
 canvas {
   display: block;
   background-color: black;
+  border-radius: 16px;
 }
 
 h1 {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
+  color: #65e8ef;
   z-index: 10;
   font-size: 64px;
-  letter-spacing: 3px;
-  text-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+  letter-spacing: 4px;
+  text-shadow: 4px 4px 6px rgba(0,0,0,0.5);
 }
 
-button#toggleFullScreen {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
+span{
+  color: #65e8ef;
+  font-size: 16px;
+  text-shadow: 4px 4px 6px rgba(0,0,0,0.5);
+}
+
+button{
+  font-family: inherit;
 }
 
 @media screen and (max-width:960px){
