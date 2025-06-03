@@ -28,13 +28,21 @@
 <body onload="init()">
 
   </div>
-    <button id="toggleFullScreen" class="f-screen-button" onclick="fullscreen()">
-      <span>Fullscreen</span>
-    </button>
   <div class="game-container" id="gameContainer">
     <div id="iface" class="iface-overlay">
-      <div id="titleContainer" class="title-container">
+      <div class="titleSign">
         <h1 id="title">Sharkie</h1>
+      </div>
+      <button id="toggleFullScreen" class="iface-btn f-screen-btn" onclick="fullscreen()">
+      </button>
+      <div id="menuContainer" class="menu-container">
+        <div class="play-container">
+          <button class="iface-btn play-btn" onclick="playGame()"></button>
+        </div>
+        <div class="info-container">
+          <button class="iface-btn control-btn"></button>
+          <button class="iface-btn info-btn"></button>
+        </div>
       </div>
     </div>
     <canvas id="canvas" width="960" height="540"></canvas>

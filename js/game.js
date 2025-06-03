@@ -8,6 +8,18 @@ function init() {
   world = new World(canvas, keyboard);
 }
 
+function playGame() {
+  world.gameStarted = true;
+  removeOverlay();
+}
+
+function removeOverlay() {
+  const ifaceContainer = document.getElementById('iface');
+  if (ifaceContainer) {
+    ifaceContainer.classList.add('d-none');
+  }
+}
+
 function fullscreen() {
   let fullscreen = document.getElementById('gameContainer');
   let canvas = document.getElementById('canvas');

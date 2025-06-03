@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  gameStarted = false;
   level = level1;
   canvas;
   ctx;

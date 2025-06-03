@@ -6,15 +6,30 @@
   flex-direction: column;
 }
 
-.title-container {
-  position: absolute;
-  top: 16px;
-  left: 16px;
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   z-index: 20;
+  height: 423px;
+}
+
+.play-container {
+  margin: 70px 0px 0px 70px;
+
+}
+
+.info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 8px;
+  gap: 16px;
 }
 
 .iface-overlay {
-  position: absolute;
   max-width: 960px;
   width: 100%;
   max-height: 540px;
@@ -34,34 +49,57 @@
   height: 100vh;
 }
 
-.f-screen-button {
-  position: absolute;
+.titleSign {
+  background-image: url('../img/interface/overlay/titleSign.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 274px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+}
+
+.iface-btn {
   background-image: url('../img/interface/overlay/fullscreen_btn.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 80px;
-  height: 80px;
-  top: 25px;
-  right: 25px;
   z-index: 20;
   cursor: pointer;
   border: none;
   background-color: transparent;
 }
 
-.f-screen-button span {
-  position: absolute;
-  right: 0;
-  left: 0;
-  bottom: -24px;
-}
-
-.f-screen-button:hover {
+.iface-btn:hover {
   transform: scale(1.1);
 }
 
-.f-screen-button:focus {
-  outline: 2px solid #65e8ef;
-  border-radius: 16px;
+.f-screen-btn {
+  position: absolute;
+  background-image: url('../img/interface/overlay/fullscreen_btn.png');
+  width: 60px;
+  height: 60px;
+  top: 8px;
+  right: 8px;
+}
+
+.play-btn {
+  background-image: url('../img/interface/overlay/play_btn.png');
+  width: 120px;
+  height: 140px;
+}
+
+.control-btn {
+  background-image: url('../img/interface/overlay/control_btn.png');
+  width: 60px;
+  height: 60px;
+}
+
+.info-btn {
+  background-image: url('../img/interface/overlay/info_btn.png');
+  width: 60px;
+  height: 60px;
 }
