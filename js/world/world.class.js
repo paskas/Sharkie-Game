@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = level1;
+  level = new Level(1, 1, 1, new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -44,7 +44,7 @@ class World {
       );
       this.shootingObject.push(bubble);
       this.lastBubbleTime = now;
-    }
+    } 
   }
 
   removeOffScreenBubbles() {
@@ -78,6 +78,10 @@ class World {
     this.addObjectsToMap(this.shootingObject);
 
     this.ctx.translate(-this.camera_x, 0)
+
+    this.level.sunlights.forEach(sun => {
+  sun.x = this.canvas.width / 2 - sun.width / 2;
+});
 
     this.addToMap(this.healthBarCharacter);
 

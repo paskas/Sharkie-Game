@@ -1,16 +1,19 @@
 class Sunlight extends MovableObject {
   y = 0;
-  x = 230;
-  height = 400;
-  width = 500
+  x = 200;
+  height = 280;
+  width = 960;
+
+  IMAGE_LIGHT = [
+    './img/backgrounds/light/complete.png',
+  ];
 
   constructor() {
-    super().loadImage('./img/backgrounds/light/1.png');
-    this.animte();
+    super();
+    this.loadImage(this.IMAGE_LIGHT);
+ 
   }
 
-  animte() {
-    this.moveLeft();
-  }
+
 }
 
