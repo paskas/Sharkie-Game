@@ -24,8 +24,10 @@ class World {
       this.checkCollisions();
       this.checkShootingObject();
       this.removeOffScreenBubbles();
+      this.level.sunlights.forEach(s => s.animate());
     }, 1000 / 60);
   }
+
 
   checkShootingObject() {
     let now = Date.now();
@@ -72,9 +74,9 @@ class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.backgroundObjects);
-    this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.shootingObject);
+    this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -94,13 +96,12 @@ class World {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-    if (mo instanceof Character && mo.rotationAngle !== 0) {
-      this.drawImageAtAngle(mo);
-      mo.drawFrame(this.ctx);
-      mo.drawHitbox(this.ctx);
+    if (mo instanceof Sunlight) {
+      this.flickerSunlight(this.ctx, mo)
+    } else if (mo instanceof Character && mo.rotationAngle !== 0) {
+      this.rotatedCharacter(this.ctx, mo)
     } else {
       mo.draw(this.ctx);
-      mo.drawFrame(this.ctx);
       mo.drawHitbox(this.ctx);
     }
     if (mo.otherDirection) {
@@ -120,11 +121,24 @@ class World {
     this.ctx.restore();
   }
 
-  drawImageAtAngle(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
-    this.ctx.rotate(mo.rotationAngle * Math.PI / 180);
-    this.ctx.drawImage(mo.img, -mo.width / 2, -mo.height / 2, mo.width, mo.height);
-    this.ctx.restore();
+  drawImageAtAngle(ctx, mo) {
+    ctx.save();
+    ctx.translate(mo.x + mo.width / 2, mo.y + mo.height / 2);
+    ctx.rotate(mo.rotationAngle * Math.PI / 180);
+    ctx.drawImage(mo.img, -mo.width / 2, -mo.height / 2, mo.width, mo.height);
+    ctx.restore();
   }
+
+  rotatedCharacter(ctx, character) {
+    this.drawImageAtAngle(ctx, character);
+    character.drawHitbox(ctx);
+  }
+
+  flickerSunlight(ctx, sunlight) {
+    ctx.save();
+    ctx.globalAlpha = sunlight.currentOpacity;
+    sunlight.draw(ctx);
+    ctx.restore();
+  }
+
 }
