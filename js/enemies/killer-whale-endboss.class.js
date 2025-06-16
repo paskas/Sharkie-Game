@@ -48,7 +48,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SPAWNING);
     this.img = new Image();
-    this.x = 2200 + Math.random() * 500;
+    this.x = 3840 + Math.random() * 500;
     this.animate();
   }
 
@@ -58,7 +58,7 @@ class Endboss extends MovableObject {
 
   triggerEndboss() {
     let triggerAnimation = setInterval(() => {
-      if (world.character.x > 2000 && !this.hadFirstContact) {
+      if (world.character.x > 3640 && !this.hadFirstContact) {
         this.hadFirstContact = true;
         clearInterval(triggerAnimation);
         this.bossSpawnAnimation();

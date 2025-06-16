@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level(1, 1, 1, new Endboss());
+  level = new Level(8, 0, 1, new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -27,7 +27,6 @@ class World {
       this.level.sunlights.forEach(s => s.animate());
     }, 1000 / 60);
   }
-
 
   checkShootingObject() {
     let now = Date.now();
