@@ -44,7 +44,7 @@ class World {
       );
       this.shootingObject.push(bubble);
       this.lastBubbleTime = now;
-    } 
+    }
   }
 
   removeOffScreenBubbles() {
@@ -73,16 +73,12 @@ class World {
 
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.sunlights);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.shootingObject);
 
-    this.ctx.translate(-this.camera_x, 0)
+    this.ctx.translate(-this.camera_x, 0);
 
-    this.level.sunlights.forEach(sun => {
-  sun.x = this.canvas.width / 2 - sun.width / 2;
-});
-
+    this.addObjectsToMap(this.level.sunlights);
     this.addToMap(this.healthBarCharacter);
 
     requestAnimationFrame(() => this.draw());

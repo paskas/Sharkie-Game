@@ -1,4 +1,4 @@
-class Level {
+class Level extends DrawableObject {
   enemies = [];
   sunlights = [];
   level_end_x = 3840;
@@ -36,6 +36,7 @@ class Level {
   ];
 
   constructor(pufferFish, jellyFish, sunlights, endboss) {
+    super();
     this.addEnemies(pufferFish, jellyFish, endboss);
     this.addSunlights(sunlights);
   }
