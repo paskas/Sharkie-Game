@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level(8, 0, 1, new Endboss());
+  level = new Level(5, 0, 1, new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -73,13 +73,12 @@ class World {
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.sunlights);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.shootingObject);
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
-
-    this.addObjectsToMap(this.level.sunlights);
     this.addToMap(this.healthBarCharacter);
 
     requestAnimationFrame(() => this.draw());
