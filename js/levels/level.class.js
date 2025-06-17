@@ -37,6 +37,7 @@ class Level extends DrawableObject {
 
   constructor(pufferFish, jellyFish, sunlights, endboss) {
     super();
+    EnemyPositionManager.reset();
     this.addEnemies(pufferFish, jellyFish, endboss);
     this.addSunlights(sunlights);
   }

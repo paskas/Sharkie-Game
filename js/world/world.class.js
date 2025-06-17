@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level(5, 0, 1, new Endboss());
+  level = new Level(6, 0, 1, new Endboss());
   canvas;
   ctx;
   keyboard;

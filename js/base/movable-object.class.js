@@ -67,6 +67,33 @@ class MovableObject extends DrawableObject {
     return Character.life == 0;
   }
 
+  /**
+ * Finds a free coordinate along a given axis (x or y), ensuring a minimum distance to existing values.
+ * Falls back to a random value if no suitable position is found.
+ *
+ * @param {number} minDistance - Minimum distance required from other coordinates.
+ * @param {number} min - Minimum allowed coordinate value.
+ * @param {number} max - Maximum allowed coordinate value.
+ * @param {number} interval - Step size between tested coordinate values.
+ * @param {function(number, number): boolean} isAvailableFn - Function that checks if a value is available.
+ * @param {function(number): void} registerFn - Function to register the chosen coordinate value.
+ * @returns {number} A valid coordinate that does not violate the minimum distance rule.
+ */
+  findFreeCoordinate(minDistance, min, max, interval, isAvailableFn, registerFn) {
+    const candidates = [];
+    for (let v = min; v <= max; v += interval) {
+      if (isAvailableFn.call(EnemyPositionManager, v, minDistance)) {
+        candidates.push(v);
+      }
+    }
+    const value = candidates.length > 0
+      ? candidates[Math.floor(Math.random() * candidates.length)]
+      : min + Math.floor(Math.random() * (max - min));
+
+    registerFn.call(EnemyPositionManager, value);
+    return value;
+  }
+
   // applyGravity() {
   //   setInterval(() => {
   //     if (this.isAboveGround()) {
