@@ -52,7 +52,7 @@ class PufferFishRed extends MovableObject {
       EnemyPositionManager.isYAvailable,
       EnemyPositionManager.registerY
     );
-    this.speed = 0.15 + Math.random() * 0.3;
+    this.speed = 0.30 + Math.random() * 0.5;
 
     this.loadImage('./img/enemies/puffer_fish(3_options)/swim/swim_green1.png');
     this.loadImages(this.IMAGES_SWIM);
