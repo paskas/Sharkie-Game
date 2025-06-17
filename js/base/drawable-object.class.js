@@ -8,30 +8,12 @@ class DrawableObject {
   currentImage = 0;
 
   static offsets = {
-    Character: {
-      top: 130,
-      bottom: 65,
-      left: 50,
-      right: 50
-    },
-    JellyFish: {
-      top: 20,
-      bottom: 20,
-      left: 12,
-      right: 12
-    },
-    PufferFish: {
-      top: 10,
-      bottom: 30,
-      left: 8,
-      right: 18
-    },
-    Endboss: {
-      top: 210,
-      bottom: 80,
-      left: 30,
-      right: 40
-    }
+    Character: { top: 130, bottom: 65, left: 50, right: 50 },
+    JellyFish: { top: 20, bottom: 20, left: 12, right: 12 },
+    PufferFishGreen: { top: 10, bottom: 30, left: 8, right: 18 },
+    PufferFishRed: { top: 10, bottom: 30, left: 8, right: 18 },
+    PufferFishOrange: { top: 10, bottom: 30, left: 8, right: 18 },
+    Endboss: { top: 210, bottom: 80, left: 30, right: 40 }
   };
 
   getObjectHitbox() {
@@ -68,7 +50,7 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof JellyFish || this instanceof PufferFish || this instanceof Endboss) {
+    if (this instanceof Character || this instanceof JellyFish || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishOrange || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = '2';
       ctx.strokeStyle = 'red';

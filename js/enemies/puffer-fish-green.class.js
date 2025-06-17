@@ -1,4 +1,4 @@
-class PufferFish extends MovableObject {
+class PufferFishGreen extends MovableObject {
   height = 110;
   width = 140;
   poisend = true;
@@ -45,10 +45,10 @@ class PufferFish extends MovableObject {
     );
 
     this.y = this.findFreeCoordinate(
-      this.height + 20,
-      80,
-      320,
-      50,
+      this.height + 10,
+      40,
+      380,
+      30,
       EnemyPositionManager.isYAvailable,
       EnemyPositionManager.registerY
     );

@@ -4,7 +4,7 @@ class Level extends DrawableObject {
   level_end_x = 3840;
   level_top_y = -80;
   level_bottom_y = 320;
-  
+
   backgroundObjects = [
     new BackgroundObject('./img/backgrounds/water/2.png', -960),
     new BackgroundObject('./img/backgrounds/background_layer_2/2.png', -960),
@@ -35,22 +35,33 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(pufferFish, jellyFish, sunlights, endboss) {
+  constructor(counts, jellyFish, sunlights, endboss) {
     super();
     EnemyPositionManager.reset();
-    this.addEnemies(pufferFish, jellyFish, endboss);
+    this.addEnemies(counts, jellyFish, endboss);
     this.addSunlights(sunlights);
   }
 
-  addEnemies(pufferFish, jellyFish, endboss) {
-    for (let i = 0; i < pufferFish; i++) {
-      this.enemies.push(new PufferFish());
-    }
+
+  addEnemies(counts, jellyFish, endboss) {
+    ['green', 'red', 'orange'].forEach(type => {
+      for (let i = 0; i < counts[type]; i++) {
+        this.enemies.push(this.createPufferFish(type));
+      }
+    });
     for (let i = 0; i < jellyFish; i++) {
       this.enemies.push(new JellyFish());
     }
     if (endboss) {
       this.enemies.push(endboss);
+    }
+  }
+
+  createPufferFish(type) {
+    switch (type) {
+      case 'green': return new PufferFishGreen();
+      case 'red': return new PufferFishRed();
+      case 'orange': return new PufferFishOrange();
     }
   }
 
