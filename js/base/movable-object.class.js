@@ -1,5 +1,8 @@
 class MovableObject extends DrawableObject {
   speed = 0;
+  minY = 30;
+  maxY = 400;
+  upwards = true;
   otherDirection = false;
   acceleratiion = 1.5;
   energy = 100;
@@ -18,6 +21,30 @@ class MovableObject extends DrawableObject {
 
   moveLeft() {
     this.x -= this.speed;
+  }
+
+  moveUp() {
+    this.y -= this.speed
+  }
+
+  moveDown() {
+    this.y += this.speed
+  }
+
+  moveJelly() {
+    setInterval(() => {
+      if (this.upwards) {
+        this.moveUp();
+        if (this.y <= this.minY) {
+          this.upwards = false;
+        }
+      } else {
+        this.moveDown();
+        if (this.y >= this.maxY) {
+          this.upwards = true;
+        }
+      }
+    }, 1000 / 60);
   }
 
   isColliding(mo) {
@@ -89,7 +116,6 @@ class MovableObject extends DrawableObject {
     const value = candidates.length > 0
       ? candidates[Math.floor(Math.random() * candidates.length)]
       : min + Math.floor(Math.random() * (max - min));
-
     registerFn.call(EnemyPositionManager, value);
     return value;
   }

@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level({ green: 5, red: 3, orange: 2 }, 0, 1, new Endboss());
+  level = new Level({ green: 5, red: 3, orange: 2 }, { purple: 1, yellow: 1}, 1, new Endboss());
   canvas;
   ctx;
   keyboard;

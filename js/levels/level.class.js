@@ -35,26 +35,36 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(counts, jellyFish, sunlights, endboss) {
+  constructor(countsPuff, countsJelly, sunlights, endboss) {
     super();
     EnemyPositionManager.reset();
-    this.addEnemies(counts, jellyFish, endboss);
+    this.addEnemies(countsPuff, countsJelly, endboss);
     this.addSunlights(sunlights);
   }
 
 
-  addEnemies(counts, jellyFish, endboss) {
+  addEnemies(countsPuff, countsJelly, endboss) {
+    this.addPuffer(countsPuff);
+    this.addjelly(countsJelly);
+    if (endboss) {
+      this.enemies.push(endboss);
+    }
+  }
+
+  addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {
         this.enemies.push(this.createPufferFish(type));
       }
     });
-    for (let i = 0; i < jellyFish; i++) {
-      this.enemies.push(new JellyFish());
-    }
-    if (endboss) {
-      this.enemies.push(endboss);
-    }
+  }
+
+  addjelly(counts) {
+    ['purple', 'yellow'].forEach(type => {
+      for (let i = 0; i < counts[type]; i++) {
+        this.enemies.push(this.createJellyFish(type));
+      }
+    });
   }
 
   createPufferFish(type) {
@@ -62,6 +72,13 @@ class Level extends DrawableObject {
       case 'green': return new PufferFishGreen();
       case 'red': return new PufferFishRed();
       case 'orange': return new PufferFishOrange();
+    }
+  }
+
+  createJellyFish(type) {
+    switch (type) {
+      case 'purple': return new JellyFishPurple();
+      case 'yellow': return new JellyFishYellow();
     }
   }
 
