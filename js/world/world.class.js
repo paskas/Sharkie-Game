@@ -50,7 +50,7 @@ class World {
     const y = this.character.y + this.character.height / 2;
     return new ShootingObject(this.character, x, y, this.character.otherDirection);
   }
-  
+
   removeOffScreenBubbles() {
     this.level.enemies = this.level.enemies.filter(enemy => enemy.y <= 1000);
   }

@@ -1,0 +1,1 @@
+feat: dynamically follow character with camera until end of level

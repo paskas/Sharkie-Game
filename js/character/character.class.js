@@ -81,7 +81,7 @@ class Character extends MovableObject {
       const { targetX, targetY } = this.updateNextPosition(kb);
       this.handleCollisionAndMove(targetX, targetY);
       this.updateRotationAngle(kb);
-      this.updateCamera();
+      this.moveCamera();
     }, 1000 / 60);
   }
 
@@ -89,7 +89,7 @@ class Character extends MovableObject {
     const w = this.world;
     let targetX = this.x;
     let targetY = this.y;
-    if (kb.RIGHT && this.x < w.level.level_end_x) targetX += this.speed;
+    if (kb.RIGHT && this.x + this.width < w.level.level_end_x) targetX += this.speed;
     if (kb.LEFT && this.x > 0) targetX -= this.speed;
     if (kb.UP && this.y > w.level.level_top_y) targetY -= this.speed;
     if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += this.speed;
@@ -119,8 +119,33 @@ class Character extends MovableObject {
     }
   }
 
-  updateCamera() {
-    this.world.camera_x = -this.x + 40;
+  moveCamera() {
+    let cameraTargetX = this.calcCameraX();
+    let distance = cameraTargetX - this.world.camera_x;
+    let step = this.calcCameraSteps(distance);
+    this.updateCameraPosition(distance, step);
+  }
+
+  calcCameraX() {
+    let cameraTargetX = -this.x + 100;
+    let minCameraX = -this.world.level.level_end_x + this.world.canvas.width;
+    cameraTargetX = Math.max(minCameraX, Math.min(cameraTargetX, 0));
+    return cameraTargetX;
+  }
+
+  calcCameraSteps(distance) {
+    let maxStep = 15;
+    let absDistance = Math.abs(distance);
+    let t = Math.min(absDistance / 100, 1);
+    t = t * t * (3 - 2 * t);
+    return maxStep * t;
+  }
+
+  updateCameraPosition(distance, step) {
+    let minCameraX = -this.world.level.level_end_x + this.world.canvas.width;
+    this.world.camera_x += Math.sign(distance) * step;
+    this.world.camera_x = Math.round(this.world.camera_x);
+    this.world.camera_x = Math.max(minCameraX, Math.min(this.world.camera_x, 0));
   }
 
   runAnimation() {

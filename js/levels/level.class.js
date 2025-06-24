@@ -2,7 +2,7 @@ class Level extends DrawableObject {
   enemies = [];
   sunlights = [];
   barrier = [];
-  level_end_x = 3840;
+  level_end_x = 4800;
   level_top_y = -80;
   level_bottom_y = 320;
 
