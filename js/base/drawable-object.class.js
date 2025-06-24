@@ -9,7 +9,8 @@ class DrawableObject {
 
   static offsets = {
     Character: { top: 130, bottom: 65, left: 50, right: 50 },
-    JellyFish: { top: 20, bottom: 20, left: 12, right: 12 },
+    JellyFishPurple: { top: 20, bottom: 20, left: 12, right: 12 },
+    JellyFishYellow: { top: 20, bottom: 20, left: 12, right: 12 },
     PufferFishGreen: { top: 10, bottom: 30, left: 8, right: 18 },
     PufferFishRed: { top: 10, bottom: 30, left: 8, right: 18 },
     PufferFishOrange: { top: 10, bottom: 30, left: 8, right: 18 },
@@ -50,7 +51,7 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof JellyFish || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishOrange || this instanceof Endboss) {
+    if (this instanceof Character || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishOrange || this instanceof JellyFishYellow || this instanceof JellyFishPurple || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = '2';
       ctx.strokeStyle = 'red';
