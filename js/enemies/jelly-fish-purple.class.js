@@ -10,9 +10,9 @@ class JellyFishPurple extends MovableObject {
     './img/enemies/jelly_fish_(2_options)/jelly_fish_purple/default_damage/4.png',
   ];
 
-  constructor() {
+  constructor(x = 600 + Math.random() * 200) {
     super();
-    this.x = 600 + Math.random() * 200;
+    this.x = x;
     this.y = this.findFreeCoordinate(
       this.height + 10,
       40,
