@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
   acceleratiion = 1.5;
   energy = 100;
   lastHit = 0;
+  blocking_objects = [];
 
   playAnimation(images) {
     let i = this.currentImage % images.length;

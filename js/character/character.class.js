@@ -76,20 +76,51 @@ class Character extends MovableObject {
 
   runMovement() {
     setInterval(() => {
+      if (!this.world) return;
       const kb = this.world.keyboard;
-      if (kb.RIGHT && this.x < this.world.level.level_end_x) this.x += this.speed;
-      if (kb.LEFT && this.x > 0) this.x -= this.speed;
-      if (kb.UP && this.y > this.world.level.level_top_y) {
-        this.y -= this.speed;
-        this.rotationAngle = -15;
-      } else if (kb.DOWN && this.y < this.world.level.level_bottom_y) {
-        this.y += this.speed;
-        this.rotationAngle = 15;
-      } else {
-        this.rotationAngle = 0;
-      }
-      this.world.camera_x = -this.x + 40;
+      const { targetX, targetY } = this.updateNextPosition(kb);
+      this.handleCollisionAndMove(targetX, targetY);
+      this.updateRotationAngle(kb);
+      this.updateCamera();
     }, 1000 / 60);
+  }
+
+  updateNextPosition(kb) {
+    const w = this.world;
+    let targetX = this.x;
+    let targetY = this.y;
+    if (kb.RIGHT && this.x < w.level.level_end_x) targetX += this.speed;
+    if (kb.LEFT && this.x > 0) targetX -= this.speed;
+    if (kb.UP && this.y > w.level.level_top_y) targetY -= this.speed;
+    if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += this.speed;
+    return { targetX, targetY };
+  }
+
+  handleCollisionAndMove(targetX, targetY) {
+    const blockingObjects = this.getBlockingObjects();
+    if (!this.world.isCollidingWithObject(targetX, targetY, blockingObjects)) {
+      this.x = targetX;
+      this.y = targetY;
+    }
+  }
+
+  getBlockingObjects() {
+    if (!this.world || !this.world.level) return [];
+    return [
+      ...this.world.level.barrier,
+    ];
+  }
+
+  updateRotationAngle(kb) {
+    if (kb.UP || kb.DOWN) {
+      this.rotationAngle = kb.UP ? -15 : 15;
+    } else {
+      this.rotationAngle = 0;
+    }
+  }
+
+  updateCamera() {
+    this.world.camera_x = -this.x + 40;
   }
 
   runAnimation() {
@@ -127,7 +158,6 @@ class Character extends MovableObject {
   deadAnimation() {
     this.playAnimation(this.IMAGES_DEAD);
   }
-
 
   isMoving() {
     const kb = this.world.keyboard;

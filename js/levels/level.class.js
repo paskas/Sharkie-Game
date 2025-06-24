@@ -1,6 +1,7 @@
 class Level extends DrawableObject {
   enemies = [];
   sunlights = [];
+  barrier = [];
   level_end_x = 3840;
   level_top_y = -80;
   level_bottom_y = 320;
@@ -35,11 +36,12 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(countsPuff, countsJelly, sunlights, endboss) {
+  constructor(countsPuff, countsJelly, sunlights, barrier, endboss) {
     super();
     EnemyPositionManager.reset();
     this.addEnemies(countsPuff, countsJelly, endboss);
     this.addSunlights(sunlights);
+    this.addBarrierReef(barrier);
   }
 
   addEnemies(countsPuff, countsJelly, endboss) {
@@ -97,6 +99,12 @@ class Level extends DrawableObject {
   addSunlights(sunlights) {
     if (sunlights) {
       this.sunlights.push(new Sunlight());
+    }
+  }
+
+  addBarrierReef(barrier) {
+    if (barrier) {
+      this.barrier.push(new BarrierReef());
     }
   }
 }

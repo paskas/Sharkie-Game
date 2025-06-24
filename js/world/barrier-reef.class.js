@@ -1,16 +1,17 @@
-class Sunlight extends DrawableObject {
+class BarrierReef extends DrawableObject {
 
-  IMAGE_LIGHT = [
-    './img/backgrounds/light/complete.png',
+
+  IMAGE_BARRIER = [
+    './img/backgrounds/barrier_reef/1.png',
   ];
 
   constructor() {
     super();
-    this.loadImage(this.IMAGE_LIGHT);
-    this.x = 960;
+    this.loadImage(this.IMAGE_BARRIER);
+    this.x = 1440;
     this.y = 0;
-    this.width = 1920;
-    this.height = 360;
+    this.width = 960;
+    this.height = 540;
 
     this.baseOpacity = 0.7;
     this.opacityFluctuation = 0.3;

@@ -1,7 +1,7 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level({ green: 5, red: 3, orange: 2 }, { purple: 3, yellow: 3}, 1, new Endboss());
+  level = new Level({ green: 5, red: 3, orange: 2 }, { purple: 3, yellow: 3 }, 1, 1, new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -21,7 +21,7 @@ class World {
 
   startWorldLoop() {
     setInterval(() => {
-      this.checkCollisions();
+      this.checkCharacterEnemyCollisions();
       this.checkShootingObject();
       this.removeOffScreenBubbles();
       this.level.sunlights.forEach(s => s.animate());
@@ -29,31 +29,30 @@ class World {
   }
 
   checkShootingObject() {
-    let now = Date.now();
-    if (!this.otherDirection && this.keyboard.SHOOT && now - this.lastBubbleTime > 1500) {
-      let directionX;
-      if (this.character.otherDirection) {
-        directionX = this.character.x;
-      } else {
-        directionX = this.character.x + this.character.width - 50;
-      }
-      let bubble = new ShootingObject(
-        this.character,
-        directionX,
-        this.character.y + this.character.height / 2,
-        this.character.otherDirection
-      );
+    if (this.canShootBubble()) {
+      const bubble = this.createBubble();
       this.shootingObject.push(bubble);
-      this.lastBubbleTime = now;
+      this.lastBubbleTime = Date.now();
     }
   }
 
-  removeOffScreenBubbles() {
-    this.level.enemies = this.level.enemies.filter(enemy => enemy.y <= 1000);
+  canShootBubble() {
+    const now = Date.now();
+    const shootPressed = this.keyboard.SHOOT;
+    const enoughTimePassed = now - this.lastBubbleTime > 1500;
+    return shootPressed && !this.otherDirection && enoughTimePassed;
   }
 
-  checkCollisions() {
-    this.checkCharacterEnemyCollisions();
+  createBubble() {
+    const x = this.character.otherDirection
+      ? this.character.x
+      : this.character.x + this.character.width - 50;
+    const y = this.character.y + this.character.height / 2;
+    return new ShootingObject(this.character, x, y, this.character.otherDirection);
+  }
+  
+  removeOffScreenBubbles() {
+    this.level.enemies = this.level.enemies.filter(enemy => enemy.y <= 1000);
   }
 
   checkCharacterEnemyCollisions() {
@@ -62,6 +61,44 @@ class World {
         this.character.hit(enemy);
       }
     });
+  }
+
+  isCollidingWithObject(targetX, targetY, objectsToCheck) {
+    const charHitbox = this.calculateCharacterHitbox(targetX, targetY);
+    for (let obj of objectsToCheck) {
+      const hitboxes = this.getHitboxes(obj);
+      if (this.hitboxCollidesWithAny(charHitbox, hitboxes)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  calculateCharacterHitbox(targetX, targetY) {
+    const offset = DrawableObject.offsets.Character;
+    return {
+      x: targetX + offset.left,
+      y: targetY + offset.top,
+      width: this.character.width - offset.left - offset.right,
+      height: this.character.height - offset.top - offset.bottom
+    };
+  }
+
+  getHitboxes(obj) {
+    return obj.getObjectHitboxes?.() || [obj.getObjectHitbox()];
+  }
+
+  hitboxCollidesWithAny(playerBox, targetBoxes) {
+    return targetBoxes.some(targetBox => this.areHitboxesColliding(playerBox, targetBox));
+  }
+
+  areHitboxesColliding(a, b) {
+    return (
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
+    );
   }
 
   setWorld() {
@@ -74,6 +111,7 @@ class World {
 
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.sunlights);
+    this.addObjectsToMap(this.level.barrier);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.shootingObject);
     this.addToMap(this.character);

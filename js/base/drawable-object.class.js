@@ -14,19 +14,35 @@ class DrawableObject {
     PufferFishGreen: { top: 10, bottom: 30, left: 8, right: 18 },
     PufferFishRed: { top: 10, bottom: 30, left: 8, right: 18 },
     PufferFishOrange: { top: 10, bottom: 30, left: 8, right: 18 },
-    Endboss: { top: 210, bottom: 80, left: 30, right: 40 }
+    Endboss: { top: 210, bottom: 80, left: 30, right: 40 },
+    BarrierReef: [
+      { top: 0, bottom: 405, left: 5, right: 5 },
+      { top: 450, bottom: 0, left: 0, right: 15 }
+    ]
   };
 
   getObjectHitbox() {
     let className = this.constructor.name;
     let offset = DrawableObject.offsets[className];
-    if (!offset) return undefined;
+    if (!offset || Array.isArray(offset)) return undefined;
     return {
       x: this.x + offset.left,
       y: this.y + offset.top,
       width: this.width - offset.left - offset.right,
       height: this.height - offset.top - offset.bottom
     };
+  }
+
+  getObjectHitboxes() {
+    let className = this.constructor.name;
+    let offsets = DrawableObject.offsets[className];
+    if (!Array.isArray(offsets)) return undefined;
+    return offsets.map((o) => ({
+      x: this.x + o.left,
+      y: this.y + o.top,
+      width: this.width - o.left - o.right,
+      height: this.height - o.top - o.bottom
+    }));
   }
 
   loadImage(path) {
@@ -51,7 +67,16 @@ class DrawableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof PufferFishGreen || this instanceof PufferFishRed || this instanceof PufferFishOrange || this instanceof JellyFishYellow || this instanceof JellyFishPurple || this instanceof Endboss) {
+    if (
+      this instanceof Character ||
+      this instanceof PufferFishGreen ||
+      this instanceof PufferFishRed ||
+      this instanceof PufferFishOrange ||
+      this instanceof JellyFishYellow ||
+      this instanceof JellyFishPurple ||
+      this instanceof Endboss ||
+      this instanceof BarrierReef
+    ) {
       ctx.beginPath();
       ctx.lineWidth = '2';
       ctx.strokeStyle = 'red';
@@ -61,6 +86,15 @@ class DrawableObject {
   }
 
   drawHitbox(ctx) {
+    let hitboxes = this.getObjectHitboxes();
+    if (hitboxes) {
+      this.drawMultipleHitboxes(ctx);
+    } else {
+      this.drawSingleHitbox(ctx);
+    }
+  }
+
+  drawSingleHitbox(ctx) {
     let hitbox = this.getObjectHitbox();
     if (!hitbox) return;
     ctx.beginPath();
@@ -69,4 +103,17 @@ class DrawableObject {
     ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
     ctx.stroke();
   }
+
+  drawMultipleHitboxes(ctx) {
+    let hitboxes = this.getObjectHitboxes();
+    if (!hitboxes) return;
+    hitboxes.forEach((hitbox) => {
+      ctx.beginPath();
+      ctx.lineWidth = '2';
+      ctx.strokeStyle = 'red';
+      ctx.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+      ctx.stroke();
+    });
+  }
+
 }
