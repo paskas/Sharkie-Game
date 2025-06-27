@@ -29,37 +29,8 @@ class World {
   startWorldLoop() {
     setInterval(() => {
       this.checkCharacterEnemyCollisions();
-      this.checkShootingObject();
-      this.removeOffScreenBubbles();
       this.level.sunlights.forEach(s => s.animate());
     }, 1000 / 60);
-  }
-
-  checkShootingObject() {
-    if (this.canShootBubble()) {
-      const bubble = this.createBubble();
-      this.shootingObject.push(bubble);
-      this.lastBubbleTime = Date.now();
-    }
-  }
-
-  canShootBubble() {
-    const now = Date.now();
-    const shootPressed = this.keyboard.SHOOT;
-    const enoughTimePassed = now - this.lastBubbleTime > 1500;
-    return shootPressed && !this.otherDirection && enoughTimePassed;
-  }
-
-  createBubble() {
-    const x = this.character.otherDirection
-      ? this.character.x
-      : this.character.x + this.character.width - 50;
-    const y = this.character.y + this.character.height / 2;
-    return new ShootingObject(this.character, x, y, this.character.otherDirection);
-  }
-
-  removeOffScreenBubbles() {
-    this.level.enemies = this.level.enemies.filter(enemy => enemy.y <= 1000);
   }
 
   checkCharacterEnemyCollisions() {

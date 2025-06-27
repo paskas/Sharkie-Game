@@ -6,6 +6,9 @@ class Character extends MovableObject {
   speed = 6;
   rotationAngle = 0;
   world;
+  isShooting = false;
+  lastShootTime = Date.now();
+  canShootAgain = true;
   static life = 5;
 
   IMAGES_STAND = [
@@ -37,6 +40,29 @@ class Character extends MovableObject {
     './img/character/swim/5.png',
     './img/character/swim/6.png'
   ];
+
+  IMAGES_SHOOT = [
+    './img/character/attack/bubble_trap/attack_bubbles/1.png',
+    './img/character/attack/bubble_trap/attack_bubbles/2.png',
+    './img/character/attack/bubble_trap/attack_bubbles/3.png',
+    './img/character/attack/bubble_trap/attack_bubbles/4.png',
+    './img/character/attack/bubble_trap/attack_bubbles/5.png',
+    './img/character/attack/bubble_trap/attack_bubbles/6.png',
+    './img/character/attack/bubble_trap/attack_bubbles/7.png',
+    './img/character/attack/bubble_trap/attack_bubbles/8.png',
+  ];
+
+  IMAGES_SHOOTPOISEN = [
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/1.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/2.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/3.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/4.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/5.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/6.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/7.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/8.png',
+  ];
+
   IMAGES_DEAD = [
     './img/character/dead/default_options/animated_horizontal/1.png',
     './img/character/dead/default_options/animated_horizontal/2.png',
@@ -45,6 +71,7 @@ class Character extends MovableObject {
     './img/character/dead/default_options/animated_horizontal/5.png',
     './img/character/dead/default_options/animated_horizontal/6.png'
   ];
+
   IMAGES_POISEND = [
     './img/character/hurt/poisoned/1.png',
     './img/character/hurt/poisoned/2.png',
@@ -52,6 +79,7 @@ class Character extends MovableObject {
     './img/character/hurt/poisoned/4.png',
     './img/character/hurt/poisoned/5.png'
   ];
+
   IMAGES_SHOCK = [
     './img/character/hurt/electric_shock/01.png',
     './img/character/hurt/electric_shock/02.png'
@@ -65,6 +93,8 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_POISEND);
     this.loadImages(this.IMAGES_SHOCK);
+    this.loadImages(this.IMAGES_SHOOT);
+    this.loadImages(this.IMAGES_SHOOTPOISEN);
     this.animate();
     // this.applyGravity();
   }
@@ -72,6 +102,7 @@ class Character extends MovableObject {
   animate() {
     this.runMovement();
     this.runAnimation();
+    this.runShoot()
   }
 
   runMovement() {
@@ -150,6 +181,7 @@ class Character extends MovableObject {
 
   runAnimation() {
     setInterval(() => {
+      if (this.isShooting) return;
       if (this.isDead()) {
         this.deadAnimation();
       } else if (this.isInDamagePhase() && this.poisend) {
@@ -164,12 +196,66 @@ class Character extends MovableObject {
     }, 100);
   }
 
+  runShoot() {
+    let shootKeyReleased = true;
+    setInterval(() => {
+      if (!this.world) return;
+      const kb = this.world.keyboard;
+      if (!kb.SHOOT) {
+        shootKeyReleased = true;
+      }
+      if (kb.SHOOT && shootKeyReleased && !this.isShooting) {
+        shootKeyReleased = false;
+        this.startShootingSequence();
+      }
+    }, 1000 / 60);
+  }
+
+  startShootingSequence() {
+    this.isShooting = true;
+    const images = this.poisend ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
+    const duration = images.length * 100;
+    this.overrideAnimation(images);
+    setTimeout(() => {
+      this.shootBubble();
+      this.lastShootTime = Date.now();
+      this.isShooting = false;
+    }, duration);
+  }
+
+  overrideAnimation(images) {
+    let i = 0;
+    const interval = setInterval(() => {
+      this.img = this.imageCache[images[i]];
+      i++;
+      if (i >= images.length) {
+        clearInterval(interval);
+      }
+    }, 100);
+  }
+
+  shootBubble() {
+    if (!this.world || !this.world.shootingObject) return;
+    const x = this.otherDirection ? this.x : this.x + this.width - 50;
+    const y = this.y + this.height / 2;
+    const bubble = new ShootingObject(this, x, y, this.otherDirection, this.poisend);
+    this.world.shootingObject.push(bubble);
+  }
+
   idleAnimation() {
     this.playAnimation(this.IMAGES_STAND);
   }
 
   swimAnimation() {
     this.playAnimation(this.IMAGES_SWIM);
+  }
+
+  shootAnimation() {
+    this.playAnimation(this.IMAGES_SHOOT);
+  }
+
+  shootPoisenAnimation() {
+    this.playAnimation(this.IMAGES_SHOOT);
   }
 
   poisendAnimation() {
