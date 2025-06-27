@@ -1,10 +1,12 @@
 class Level extends DrawableObject {
-  enemies = [];
-  sunlights = [];
-  barrier = [];
   level_end_x = 4800;
   level_top_y = -80;
   level_bottom_y = 320;
+
+  enemies = [];
+  sunlights = [];
+  barrier = [];
+  coin = [];
 
   backgroundObjects = [
     new BackgroundObject('./img/backgrounds/water/2.png', -960),
@@ -36,12 +38,14 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(countsPuff, countsJelly, sunlights, barrier, endboss) {
+  constructor(countsPuff, countsJelly, sunlights, barrier, coinsCount, arcCount, endboss) {
     super();
     EnemyPositionManager.reset();
     this.addEnemies(countsPuff, countsJelly, endboss);
     this.addSunlights(sunlights);
     this.addBarrierReef(barrier);
+    this.addCoins(coinsCount);
+    this.addCoinArcs(arcCount);
   }
 
   addEnemies(countsPuff, countsJelly, endboss) {
@@ -62,7 +66,7 @@ class Level extends DrawableObject {
   }
 
   addPurpleXjelly(counts) {
-    const purpleX = [450, 1050, 1650];
+    const purpleX = [400, 2250, 3450];
     let purpleIndex = 0;
     for (let i = 0; i < counts['purple']; i++) {
       const x = purpleX[purpleIndex];
@@ -72,7 +76,7 @@ class Level extends DrawableObject {
   }
 
   addYellowXjelly(counts) {
-    const yellowX = [2050, 2650, 3250];
+    const yellowX = [1500, 2800];
     let yellowIndex = 0;
     for (let i = 0; i < counts['yellow']; i++) {
       const x = yellowX[yellowIndex];
@@ -105,6 +109,24 @@ class Level extends DrawableObject {
   addBarrierReef(barrier) {
     if (barrier) {
       this.barrier.push(new BarrierReef());
+    }
+  }
+
+  addCoins(counts) {
+    for (let i = 0; i < counts; i++) {
+      let x = Coin.positionXcoin[i];
+      if (x !== undefined) {
+        this.coin.push(new Coin(x));
+      }
+    }
+  }
+
+  addCoinArcs(counts) {
+    for (let i = 0; i < counts; i++) {
+      let arc = Coin.coinArcs[i];
+      if (arc) {
+        this.coin.push(...Coin.setArcCoinPositions(arc.x, arc.y, arc.count));
+      }
     }
   }
 }

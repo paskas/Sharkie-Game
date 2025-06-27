@@ -1,7 +1,14 @@
 class World {
   character = new Character();
   gameStarted = false;
-  level = new Level({ green: 5, red: 3, orange: 2 }, { purple: 3, yellow: 3 }, 1, 1, new Endboss());
+  level = new Level(
+    { green: 4, red: 2, orange: 2 },
+    { purple: 3, yellow: 2 },
+    1,
+    1,
+    11,
+    3,
+    new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -112,6 +119,7 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.sunlights);
     this.addObjectsToMap(this.level.barrier);
+    this.addObjectsToMap(this.level.coin);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.shootingObject);
     this.addToMap(this.character);

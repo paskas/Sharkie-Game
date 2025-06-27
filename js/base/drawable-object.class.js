@@ -6,6 +6,7 @@ class DrawableObject {
   img;
   imageCache = {};
   currentImage = 0;
+  static setCoin = 0;
 
   static offsets = {
     Character: { top: 130, bottom: 65, left: 50, right: 50 },
@@ -18,7 +19,8 @@ class DrawableObject {
     BarrierReef: [
       { top: 0, bottom: 405, left: 5, right: 5 },
       { top: 450, bottom: 0, left: 0, right: 15 }
-    ]
+    ],
+    Coin: {top: 8, bottom: 8, left: 8, right: 8}
   };
 
   getObjectHitbox() {
@@ -75,7 +77,8 @@ class DrawableObject {
       this instanceof JellyFishYellow ||
       this instanceof JellyFishPurple ||
       this instanceof Endboss ||
-      this instanceof BarrierReef
+      this instanceof BarrierReef ||
+      this instanceof Coin
     ) {
       ctx.beginPath();
       ctx.lineWidth = '2';

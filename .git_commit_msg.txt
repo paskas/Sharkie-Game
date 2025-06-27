@@ -1,1 +1,14 @@
-feat: dynamically follow character with camera until end of level
+feat:
+centralized
+management
+of
+coin
+positions
+and
+arcs
+in
+the
+coin
+class
+opponent
+repositioning
