@@ -17,6 +17,20 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  playAnimationOnce(images, callback, framerate) {
+    clearInterval(this.interval);
+    this.loadImages(images);
+    let i = 0;
+    let interval = setInterval(() => {
+      this.img = this.imageCache[images[i]];
+      i++;
+      if (i >= images.length) {
+        clearInterval(interval);
+        if (callback) callback();
+      }
+    }, 1000 / framerate);
+  }
+
   moveRight() {
     this.x += this.speed;
   }
@@ -49,11 +63,11 @@ class MovableObject extends DrawableObject {
     }, 1000 / 60);
   }
 
-  ifDeadMoveUp(){
+  ifDeadMoveUp() {
     setInterval(() => {
-        if (this.dead) {
-          this.y -= 2;
-        }
+      if (this.dead) {
+        this.y -= 2;
+      }
     }, 1000 / 60);
   }
 

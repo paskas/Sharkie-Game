@@ -16,6 +16,12 @@ class ShootingObject extends MovableObject {
     './img/UI/bubbles/poisen/poisen_b5.png',
   ];
 
+  IMAGES_SPLASHBUBBLE = [
+    './img/UI/bubbles/splash/default_splash_b1.png',
+    './img/UI/bubbles/splash/default_splash_b2.png',
+    './img/UI/bubbles/splash/default_splash_b3.png'
+  ];
+
   constructor(character, x, y, otherDirection, isPoisend = false) {
     super();
     this.character = character;
@@ -26,6 +32,7 @@ class ShootingObject extends MovableObject {
     this.height = 60;
     this.isPoisend = isPoisend;
     this.initBubbleImages();
+    this.loadImages(this.IMAGES_SPLASHBUBBLE);
     this.shoot();
     this.animate();
   }
@@ -50,5 +57,11 @@ class ShootingObject extends MovableObject {
     const images = this.getBubbleImages();
     this.loadImages(images);
     this.img = this.imageCache[images[0]];
+  }
+
+  splashBubble(callback) {
+    this.width = 100;
+    this.height = 100;
+    this.playAnimationOnce(this.IMAGES_SPLASHBUBBLE, callback, 30)
   }
 }

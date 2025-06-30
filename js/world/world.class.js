@@ -50,10 +50,20 @@ class World {
   handleBubbleCollisionWithEnemy(bubble, enemy) {
     if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
       this.lastBubbleHit = Date.now();
+      enemy.dead = true;
+      clearInterval(bubble.interval);
+      this.setOffsetBubble(bubble);
+      bubble.splashBubble(() => {
+        this.removeBubble(bubble);
+      });
+      enemy.dead = true;
+      this.removeEnemy(enemy);
     }
-    enemy.dead = true;
-    this.removeBubble(bubble);
-    this.removeEnemy(enemy);
+  }
+
+  setOffsetBubble(bubble) {
+    let offset = -40
+    bubble.x += bubble.otherDirection ? -offset : offset;
   }
 
   handleBubbleCollisionWithEndboss(bubble, enemy) {
