@@ -25,8 +25,7 @@ class ShootingObject extends MovableObject {
     this.width = 60;
     this.height = 60;
     this.isPoisend = isPoisend;
-    this.loadImages(this.IMAGES_BUBBLE);
-    this.img = this.imageCache[this.IMAGES_BUBBLE[0]];
+    this.initBubbleImages();
     this.shoot();
     this.animate();
   }
@@ -47,4 +46,9 @@ class ShootingObject extends MovableObject {
     return this.isPoisend ? this.IMAGES_POISENBUBBLE : this.IMAGES_BUBBLE;
   }
 
+  initBubbleImages() {
+    const images = this.getBubbleImages();
+    this.loadImages(images);
+    this.img = this.imageCache[images[0]];
+  }
 }

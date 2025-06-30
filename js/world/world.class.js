@@ -15,7 +15,7 @@ class World {
   camera_x = 0;
   healthBarCharacter = new HealthBarCharacter();
   shootingObject = [];
-  lastBubbleTime = Date.now();
+  lastBubbleHit = 0;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -29,8 +29,55 @@ class World {
   startWorldLoop() {
     setInterval(() => {
       this.checkCharacterEnemyCollisions();
+      this.checkBubbleEnemyCollisions();
       this.level.sunlights.forEach(s => s.animate());
     }, 1000 / 60);
+  }
+
+  checkBubbleEnemyCollisions() {
+    this.shootingObject.forEach(bubble => {
+      this.level.enemies.forEach(enemy => {
+        if (bubble.isColliding(enemy) && !(enemy instanceof Endboss)) {
+          this.handleBubbleCollisionWithEnemy(bubble, enemy);
+        }
+        if (bubble.isColliding(enemy) && this.character.shootPoisend && enemy instanceof Endboss) {
+          this.handleBubbleCollisionWithEndboss(bubble, enemy);
+        }
+      });
+    });
+  }
+
+  handleBubbleCollisionWithEnemy(bubble, enemy) {
+    if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
+      this.lastBubbleHit = Date.now();
+    }
+    enemy.dead = true;
+    this.removeBubble(bubble);
+    this.removeEnemy(enemy);
+  }
+
+  handleBubbleCollisionWithEndboss(bubble, enemy) {
+    if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
+      this.lastBubbleHit = Date.now();
+    }
+    enemy.dead = true;
+    this.removeBubble(bubble);
+  }
+
+  removeBubble(bubble) {
+    let bubbleIndex = this.shootingObject.indexOf(bubble);
+    if (bubbleIndex !== -1) {
+      this.shootingObject.splice(bubbleIndex, 1);
+    }
+  }
+
+  removeEnemy(enemy) {
+    setTimeout(() => {
+      let enemyIndex = this.level.enemies.indexOf(enemy);
+      if (enemyIndex !== -1) {
+        this.level.enemies.splice(enemyIndex, 1);
+      }
+    }, 1000);
   }
 
   checkCharacterEnemyCollisions() {

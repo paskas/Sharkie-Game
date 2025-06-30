@@ -56,27 +56,44 @@ class PufferFishRed extends MovableObject {
 
     this.loadImage('./img/enemies/puffer_fish(3_options)/swim/swim_green1.png');
     this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_DEAD);
     this.animate();
   }
 
   animate() {
     this.animationLoop();
     this.movePuffer();
+    this.ifDead();
+  }
+
+  animationLoop() {
+    this.swimPuffer();
   }
 
   movePuffer() {
     setInterval(() => {
-      this.moveLeft();
+      if (!this.dead) {
+        this.moveLeft();
+      }
     }, 1000 / 60);
   }
 
-  animationLoop() {
+  swimPuffer() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIM)
+      if (!this.dead) {
+        this.playAnimation(this.IMAGES_SWIM);
+      }
     }, 200);
   }
 
-  checkIfDead() {
-
+  ifDead() {
+    setTimeout(() => {
+      setInterval(() => {
+        if (this.dead) {
+          this.playAnimation(this.IMAGES_DEAD)
+          this.ifDeadMoveUp();
+        }
+      }, 1000 / 5);
+    }, 50);
   }
 }

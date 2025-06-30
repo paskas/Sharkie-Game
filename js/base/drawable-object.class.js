@@ -20,7 +20,8 @@ class DrawableObject {
       { top: 0, bottom: 405, left: 5, right: 5 },
       { top: 450, bottom: 0, left: 0, right: 15 }
     ],
-    Coin: {top: 8, bottom: 8, left: 8, right: 8}
+    Coin: {top: 8, bottom: 8, left: 8, right: 8},
+    ShootingObject: {top: 5, bottom: 5, left: 5, right: 5}
   };
 
   getObjectHitbox() {
@@ -78,7 +79,8 @@ class DrawableObject {
       this instanceof JellyFishPurple ||
       this instanceof Endboss ||
       this instanceof BarrierReef ||
-      this instanceof Coin
+      this instanceof Coin ||
+      this instanceof ShootingObject
     ) {
       ctx.beginPath();
       ctx.lineWidth = '2';

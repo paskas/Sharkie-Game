@@ -9,6 +9,9 @@ class Character extends MovableObject {
   isShooting = false;
   lastShootTime = Date.now();
   canShootAgain = true;
+  shootPoisend = false;
+  isPoisendByHit = false;
+  isShockByHit = false;
   static life = 5;
 
   IMAGES_STAND = [
@@ -184,9 +187,9 @@ class Character extends MovableObject {
       if (this.isShooting) return;
       if (this.isDead()) {
         this.deadAnimation();
-      } else if (this.isInDamagePhase() && this.poisend) {
+      } else if (this.isInDamagePhase() && this.isPoisendByHit) {
         this.poisendAnimation();
-      } else if (this.isInDamagePhase() && this.shock) {
+      } else if (this.isInDamagePhase() && this.isShockByHit) {
         this.shockAnimation();
       } else if (this.isMoving()) {
         this.swimAnimation();
@@ -238,7 +241,7 @@ class Character extends MovableObject {
     if (!this.world || !this.world.shootingObject) return;
     const x = this.otherDirection ? this.x : this.x + this.width - 50;
     const y = this.y + this.height / 2;
-    const bubble = new ShootingObject(this, x, y, this.otherDirection, this.poisend);
+    const bubble = new ShootingObject(this, x, y, this.otherDirection, this.shootPoisend);
     this.world.shootingObject.push(bubble);
   }
 

@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
   acceleratiion = 1.5;
   energy = 100;
   lastHit = 0;
+  dead = false;
   blocking_objects = [];
 
   playAnimation(images) {
@@ -32,7 +33,7 @@ class MovableObject extends DrawableObject {
     this.y += this.speed
   }
 
-  moveJelly() {
+  moveUpAndDown() {
     setInterval(() => {
       if (this.upwards) {
         this.moveUp();
@@ -45,6 +46,14 @@ class MovableObject extends DrawableObject {
           this.upwards = true;
         }
       }
+    }, 1000 / 60);
+  }
+
+  ifDeadMoveUp(){
+    setInterval(() => {
+        if (this.dead) {
+          this.y -= 2;
+        }
     }, 1000 / 60);
   }
 
@@ -79,15 +88,15 @@ class MovableObject extends DrawableObject {
 
   poisenHit(enemy) {
     if (enemy.poisend) {
-      this.poisend = true;
-      this.shock = false;
+      this.isPoisendByHit = true;
+      this.isShockByHit = false;
     }
   }
 
   shockHit(enemy) {
     if (enemy.shock) {
-      this.poisend = false;
-      this.shock = true;
+      this.isPoisendByHit = false;
+      this.isShockByHit = true;
     }
   }
 
