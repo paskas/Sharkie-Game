@@ -47,6 +47,7 @@ class World {
   handleBubbleCollisionWithEnemy(bubble, enemy) {
     this.handleBubbleHit(bubble);
     enemy.dead = true;
+    enemy.ifDead();
     this.removeEnemy(enemy);
   }
 
@@ -96,7 +97,7 @@ class World {
       if (enemyIndex !== -1) {
         this.level.enemies.splice(enemyIndex, 1);
       }
-    }, 1000);
+    }, 1500);
   }
 
   checkCharacterEnemyCollisions() {

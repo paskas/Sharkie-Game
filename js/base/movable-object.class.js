@@ -28,7 +28,7 @@ class MovableObject extends DrawableObject {
         clearInterval(interval);
         if (callback) callback();
       }
-    }, 1000 / framerate);
+    }, framerate);
   }
 
   moveRight() {
@@ -66,7 +66,7 @@ class MovableObject extends DrawableObject {
   ifDeadMoveUp() {
     setInterval(() => {
       if (this.dead) {
-        this.y -= 2;
+        this.y -= 0.5;
       }
     }, 1000 / 60);
   }
@@ -95,7 +95,7 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  bossHit(){
+  bossHit() {
     if (!this.isInDamagePhase()) {
       this.lastHit = new Date().getTime();
       Endboss.life--;

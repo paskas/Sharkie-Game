@@ -87,13 +87,8 @@ class PufferFishGreen extends MovableObject {
   }
 
   ifDead() {
-    setTimeout(() => {
-      setInterval(() => {
-        if (this.dead) {
-          this.playAnimation(this.IMAGES_DEAD)
-          this.ifDeadMoveUp();
-        }
-      }, 1000 / 5);
-    }, 50);
+    this.playAnimationOnce(this.IMAGES_DEAD, () => {
+      this.ifDeadMoveUp();
+    }, 100);
   }
 }
