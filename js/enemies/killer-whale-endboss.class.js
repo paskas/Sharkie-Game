@@ -4,6 +4,7 @@ class Endboss extends MovableObject {
   height = 530;
   width = 500;
   hadFirstContact = false;
+  static life = 5;
 
   IMAGES_FLOATING = [
     './img/enemies/killer_whale_endboss/idle/1.png',
@@ -20,6 +21,7 @@ class Endboss extends MovableObject {
     './img/enemies/killer_whale_endboss/idle/12.png',
     './img/enemies/killer_whale_endboss/idle/13.png'
   ];
+
   IMAGES_SPAWNING = [
     './img/enemies/killer_whale_endboss/incoming/1.png',
     './img/enemies/killer_whale_endboss/incoming/2.png',

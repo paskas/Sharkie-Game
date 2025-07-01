@@ -83,7 +83,7 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit(enemy) {
+  charHitt(enemy) {
     if (!this.isInDamagePhase()) {
       if (enemy.poisend) {
         this.poisenHit(enemy);
@@ -92,6 +92,13 @@ class MovableObject extends DrawableObject {
       }
       this.lastHit = new Date().getTime();
       Character.life--;
+    }
+  }
+
+  bossHit(){
+    if (!this.isInDamagePhase()) {
+      this.lastHit = new Date().getTime();
+      Endboss.life--;
     }
   }
 

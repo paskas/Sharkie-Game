@@ -1,14 +1,10 @@
 class World {
   character = new Character();
+  levelManager = new LevelManager();
+  get level() {
+    return this.levelManager.getCurrentLevel();
+  }
   gameStarted = false;
-  level = new Level(
-    { green: 4, red: 2, orange: 2 },
-    { purple: 3, yellow: 2 },
-    1,
-    1,
-    11,
-    3,
-    new Endboss());
   canvas;
   ctx;
   keyboard;
@@ -30,6 +26,7 @@ class World {
     setInterval(() => {
       this.checkCharacterEnemyCollisions();
       this.checkBubbleEnemyCollisions();
+      this.handleLevelProgress();
       this.level.sunlights.forEach(s => s.animate());
     }, 1000 / 60);
   }
@@ -48,16 +45,24 @@ class World {
   }
 
   handleBubbleCollisionWithEnemy(bubble, enemy) {
+    this.handleBubbleHit(bubble);
+    enemy.dead = true;
+    this.removeEnemy(enemy);
+  }
+
+  handleBubbleCollisionWithEndboss(bubble, enemy) {
+    this.handleBubbleHit(bubble);
+    enemy.bossHit();
+  }
+
+  handleBubbleHit(bubble) {
     if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
       this.lastBubbleHit = Date.now();
-      enemy.dead = true;
       clearInterval(bubble.interval);
       this.setOffsetBubble(bubble);
       bubble.splashBubble(() => {
         this.removeBubble(bubble);
       });
-      enemy.dead = true;
-      this.removeEnemy(enemy);
     }
   }
 
@@ -66,12 +71,16 @@ class World {
     bubble.x += bubble.otherDirection ? -offset : offset;
   }
 
-  handleBubbleCollisionWithEndboss(bubble, enemy) {
-    if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
-      this.lastBubbleHit = Date.now();
+  handleLevelProgress() {
+    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    if (endboss?.dead) {
+      if (!this.levelManager.isLastLevel()) {
+        this.levelManager.loadNextLevel();
+      } else {
+        this.levelManager.resetLevels();
+      }
+      this.character.world = this;
     }
-    enemy.dead = true;
-    this.removeBubble(bubble);
   }
 
   removeBubble(bubble) {
@@ -93,7 +102,7 @@ class World {
   checkCharacterEnemyCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit(enemy);
+        this.character.charHitt(enemy);
       }
     });
   }
