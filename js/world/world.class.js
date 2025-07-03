@@ -27,8 +27,12 @@ class World {
       this.checkCharacterEnemyCollisions();
       this.checkBubbleEnemyCollisions();
       this.handleLevelProgress();
-      this.level.sunlights.forEach(s => s.animate());
+      this.handleSunlightAnimate();
     }, 1000 / 60);
+  }
+
+  handleSunlightAnimate() {
+    this.level.sunlights.forEach(s => s.animate());
   }
 
   checkBubbleEnemyCollisions() {
@@ -97,7 +101,7 @@ class World {
       if (enemyIndex !== -1) {
         this.level.enemies.splice(enemyIndex, 1);
       }
-    }, 1500);
+    }, 2500);
   }
 
   checkCharacterEnemyCollisions() {
@@ -148,6 +152,9 @@ class World {
 
   setWorld() {
     this.character.world = this;
+    this.level.enemies.forEach(enemy => {
+      enemy.world = this;
+    });
   }
 
   draw() {
