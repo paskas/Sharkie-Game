@@ -69,8 +69,8 @@ class Level extends DrawableObject {
     const purpleX = [400, 2250, 3450];
     let purpleIndex = 0;
     for (let i = 0; i < counts['purple']; i++) {
-      const x = purpleX[purpleIndex];
-      this.enemies.push(this.createJellyFish('purple', x))
+      let x = purpleX[purpleIndex];
+      this.enemies.push(this.createJellyFish('purple', x, 0.4 + Math.random() * 0.3))
       purpleIndex++;
     }
   }
@@ -79,24 +79,24 @@ class Level extends DrawableObject {
     const yellowX = [1500, 2800];
     let yellowIndex = 0;
     for (let i = 0; i < counts['yellow']; i++) {
-      const x = yellowX[yellowIndex];
-      this.enemies.push(this.createJellyFish('yellow', x))
+      let x = yellowX[yellowIndex];
+      this.enemies.push(this.createJellyFish('yellow', x, 0.4 + Math.random() * 0.3))
       yellowIndex++;
     }
   }
 
   createPufferFish(type) {
     switch (type) {
-      case 'green': return new PufferFishGreen();
-      case 'red': return new PufferFishRed();
-      case 'orange': return new PufferFishOrange();
+      case 'green': return new PufferFishGreen(0.25);
+      case 'red': return new PufferFishRed(0.30 + Math.random() * 0.5);
+      case 'orange': return new PufferFishOrange(0.25 + Math.random() * 0.5);
     }
   }
 
-  createJellyFish(type, x) {
+  createJellyFish(type, x, speed) {
     switch (type) {
-      case 'purple': return new JellyFishPurple(x);
-      case 'yellow': return new JellyFishYellow(x);
+      case 'purple': return new JellyFishPurple(x, speed);
+      case 'yellow': return new JellyFishYellow(x, speed);
     }
   }
 

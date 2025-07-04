@@ -1,6 +1,6 @@
 class PufferFishGreen extends PufferFishManager {
 
-  constructor() {
+  constructor(speed) {
     super({
       swim: [
         './img/enemies/puffer_fish(3_options)/swim/swim_green1.png',
@@ -30,7 +30,6 @@ class PufferFishGreen extends PufferFishManager {
         './img/enemies/puffer_fish(3_options)/dead/dead_green2.png',
         './img/enemies/puffer_fish(3_options)/dead/dead_green3.png'
       ]
-    })
-    this.speed = 0.25;
+    }, speed);
   }
 }

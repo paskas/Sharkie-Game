@@ -1,6 +1,6 @@
 class PufferFishOrange extends PufferFishManager {
 
-  constructor() {
+  constructor(speed) {
     super({
       swim: [
         './img/enemies/puffer_fish(3_options)/swim/swim_orange1.png',
@@ -30,7 +30,6 @@ class PufferFishOrange extends PufferFishManager {
         './img/enemies/puffer_fish(3_options)/dead/dead_orange2.png',
         './img/enemies/puffer_fish(3_options)/dead/dead_orange3.png'
       ]
-    });
-    this.speed = 0.25 + Math.random() * 0.5;
+    }, speed);
   }
 }
