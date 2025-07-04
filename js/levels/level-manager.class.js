@@ -5,7 +5,7 @@ class LevelManager {
   constructor() {
     this.levels = [
       new Level(
-        { green: 4, red: 2, orange: 2 },
+        { green: 4, red: 2, orange: 3 },
         { purple: 3, yellow: 2 },
         1,
         1,
