@@ -14,7 +14,7 @@ class Character extends MovableObject {
   isShockByHit = false;
   static life = 5;
 
-  IMAGES_STAND = [
+  IMAGES_FLOATING = [
     './img/character/idle/1.png',
     './img/character/idle/2.png',
     './img/character/idle/3.png',
@@ -66,15 +66,6 @@ class Character extends MovableObject {
     './img/character/attack/bubble_trap/attack_poisen_bubbles/8.png',
   ];
 
-  IMAGES_DEAD = [
-    './img/character/dead/default_options/animated_horizontal/1.png',
-    './img/character/dead/default_options/animated_horizontal/2.png',
-    './img/character/dead/default_options/animated_horizontal/3.png',
-    './img/character/dead/default_options/animated_horizontal/4.png',
-    './img/character/dead/default_options/animated_horizontal/5.png',
-    './img/character/dead/default_options/animated_horizontal/6.png'
-  ];
-
   IMAGES_POISEND = [
     './img/character/hurt/poisoned/1.png',
     './img/character/hurt/poisoned/2.png',
@@ -88,16 +79,27 @@ class Character extends MovableObject {
     './img/character/hurt/electric_shock/02.png'
   ];
 
+  IMAGES_DEAD = [
+    './img/character/dead/default_options/animated_horizontal/1.png',
+    './img/character/dead/default_options/animated_horizontal/2.png',
+    './img/character/dead/default_options/animated_horizontal/3.png',
+    './img/character/dead/default_options/animated_horizontal/4.png',
+    './img/character/dead/default_options/animated_horizontal/5.png',
+    './img/character/dead/default_options/animated_horizontal/6.png'
+  ];
+
   constructor() {
     super();
-    this.loadImage('./img/character/idle/1.png');
-    this.loadImages(this.IMAGES_STAND);
+    
+    this.img = new Image();
+    this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_POISEND);
     this.loadImages(this.IMAGES_SHOCK);
     this.loadImages(this.IMAGES_SHOOT);
     this.loadImages(this.IMAGES_SHOOTPOISEN);
+
     this.animate();
     // this.applyGravity();
   }
@@ -246,7 +248,7 @@ class Character extends MovableObject {
   }
 
   idleAnimation() {
-    this.playAnimation(this.IMAGES_STAND);
+    this.playAnimation(this.IMAGES_FLOATING);
   }
 
   swimAnimation() {
