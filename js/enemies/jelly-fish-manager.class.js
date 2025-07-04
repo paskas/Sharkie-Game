@@ -12,8 +12,9 @@ class JellyFishManager extends MovableObject {
       EnemyPositionManager.registerY
     );
 
-    this.shock = true;
     this.speed = speed;
+    this.shock = true;
+    this.canDealDmg = true;
 
     this.IMAGES_DEFAULT = images.default;
     this.IMAGES_DEFAULTDEAD = images.defaultDead;

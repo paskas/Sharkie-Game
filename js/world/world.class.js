@@ -51,6 +51,7 @@ class World {
   handleBubbleCollisionWithEnemy(bubble, enemy) {
     this.handleBubbleHit(bubble);
     enemy.dead = true;
+    enemy.canDealDmg = false;
     enemy.ifDead();
     this.removeEnemy(enemy);
   }
@@ -71,6 +72,22 @@ class World {
     }
   }
 
+  removeBubble(bubble) {
+    let bubbleIndex = this.shootingObject.indexOf(bubble);
+    if (bubbleIndex !== -1) {
+      this.shootingObject.splice(bubbleIndex, 1);
+    }
+  }
+
+  removeEnemy(enemy) {
+    setTimeout(() => {
+      let enemyIndex = this.level.enemies.indexOf(enemy);
+      if (enemyIndex !== -1) {
+        this.level.enemies.splice(enemyIndex, 1);
+      }
+    }, 2500);
+  }
+
   setOffsetBubble(bubble) {
     let offset = -40
     bubble.x += bubble.otherDirection ? -offset : offset;
@@ -88,25 +105,9 @@ class World {
     }
   }
 
-  removeBubble(bubble) {
-    let bubbleIndex = this.shootingObject.indexOf(bubble);
-    if (bubbleIndex !== -1) {
-      this.shootingObject.splice(bubbleIndex, 1);
-    }
-  }
-
-  removeEnemy(enemy) {
-    setTimeout(() => {
-      let enemyIndex = this.level.enemies.indexOf(enemy);
-      if (enemyIndex !== -1) {
-        this.level.enemies.splice(enemyIndex, 1);
-      }
-    }, 2500);
-  }
-
   checkCharacterEnemyCollisions() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
+      if (enemy.canDealDmg && this.character.isColliding(enemy)) {
         this.character.charHitt(enemy);
       }
     });

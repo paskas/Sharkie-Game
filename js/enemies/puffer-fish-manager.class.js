@@ -19,8 +19,9 @@ class PufferFishManager extends MovableObject {
       EnemyPositionManager.registerY
     );
 
-    this.poisend = true;
     this.speed = speed;
+    this.poisend = true;
+    this.canDealDmg = true;
 
     this.IMAGES_SWIM = images.swim;
     this.IMAGES_BUBBLESWIM = images.bubbleswim;
