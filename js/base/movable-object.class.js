@@ -63,6 +63,27 @@ class MovableObject extends DrawableObject {
     }, 1000 / 60);
   }
 
+  setMovementRange(minY, maxY) {
+    this.minY = minY;
+    this.maxY = maxY;
+  }
+
+  getDistanceToCharacter() {
+    let char = this.world.character.getMainHitbox();
+    let object = this.getMainHitbox();
+    return {
+      distanceX: char.x - object.x,
+      distanceY: char.y - object.y
+    };
+  }
+
+  getMoveDirection(x, y) {
+    return {
+      directionX: x !== 0 ? x / Math.abs(x) : 0,
+      directionY: y !== 0 ? y / Math.abs(y) : 0
+    };
+  }
+
   ifDeadMoveUp() {
     setInterval(() => {
       if (this.dead) {
@@ -126,17 +147,17 @@ class MovableObject extends DrawableObject {
   }
 
   /**
- * Finds a free coordinate along a given axis (x or y), ensuring a minimum distance to existing values.
- * Falls back to a random value if no suitable position is found.
- *
- * @param {number} minDistance - Minimum distance required from other coordinates.
- * @param {number} min - Minimum allowed coordinate value.
- * @param {number} max - Maximum allowed coordinate value.
- * @param {number} interval - Step size between tested coordinate values.
- * @param {function(number, number): boolean} isAvailableFn - Function that checks if a value is available.
- * @param {function(number): void} registerFn - Function to register the chosen coordinate value.
- * @returns {number} A valid coordinate that does not violate the minimum distance rule.
- */
+  * Finds a free coordinate along a given axis (x or y), ensuring a minimum distance to existing values.
+  * Falls back to a random value if no suitable position is found.
+  *
+  * @param {number} minDistance - Minimum distance required from other coordinates.
+  * @param {number} min - Minimum allowed coordinate value.
+  * @param {number} max - Maximum allowed coordinate value.
+  * @param {number} interval - Step size between tested coordinate values.
+  * @param {function(number, number): boolean} isAvailableFn - Function that checks if a value is available.
+  * @param {function(number): void} registerFn - Function to register the chosen coordinate value.
+  * @returns {number} A valid coordinate that does not violate the minimum distance rule.
+  */
   findFreeCoordinate(minDistance, min, max, interval, isAvailableFn, registerFn) {
     const candidates = [];
     for (let v = min; v <= max; v += interval) {

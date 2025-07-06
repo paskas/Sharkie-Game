@@ -1,24 +1,27 @@
 class World {
-  character = new Character();
-  levelManager = new LevelManager();
-  get level() {
-    return this.levelManager.getCurrentLevel();
-  }
-  gameStarted = false;
   canvas;
   ctx;
   keyboard;
+  character;
+  levelManager;
   camera_x = 0;
-  healthBarCharacter = new HealthBarCharacter();
+  healthBarCharacter;
+  gameStarted = false;
   shootingObject = [];
   lastBubbleHit = 0;
 
   constructor(canvas, keyboard) {
-    this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+
     this.keyboard = keyboard;
-    this.draw();
+
+    this.initGameObjects();
+    this.setHitbox();
     this.setWorld();
+
+    this.draw();
+
     this.startWorldLoop();
   }
 
@@ -29,6 +32,31 @@ class World {
       this.handleLevelProgress();
       this.handleSunlightAnimate();
     }, 1000 / 60);
+  }
+
+  setWorld() {
+    this.character.world = this;
+    this.level.enemies.forEach(enemy => {
+      enemy.world = this;
+    });
+  }
+
+  initGameObjects() {
+    this.character = new Character();
+    this.healthBarCharacter = new HealthBarCharacter();
+    this.levelManager = new LevelManager(this.canvas);
+  }
+
+  setHitbox(){
+    this.character.showHitbox = true;
+    this.level.enemies.forEach(e => e.showHitbox = true);
+    this.level.sunlights.forEach(e => e.showHitbox = true);
+    this.level.barrier.forEach(e => e.showHitbox = true);
+    this.level.coin.forEach(e => e.showHitbox = true);
+  }
+
+  get level() {
+    return this.levelManager.getCurrentLevel();
   }
 
   handleSunlightAnimate() {
@@ -151,13 +179,6 @@ class World {
     );
   }
 
-  setWorld() {
-    this.character.world = this;
-    this.level.enemies.forEach(enemy => {
-      enemy.world = this;
-    });
-  }
-
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
@@ -192,7 +213,10 @@ class World {
       this.rotatedCharacter(this.ctx, mo)
     } else {
       mo.draw(this.ctx);
-      mo.drawHitbox(this.ctx);
+      mo.drawFrame(this.ctx);
+      if (mo.showHitbox) {
+        mo.drawHitbox(this.ctx);
+      }
     }
     if (mo.otherDirection) {
       this.restoreImgae(mo);

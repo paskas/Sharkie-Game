@@ -6,6 +6,7 @@ class DrawableObject {
   img;
   imageCache = {};
   currentImage = 0;
+  showHitbox = false;
   static setCoin = 0;
 
   static offsets = {
@@ -20,8 +21,8 @@ class DrawableObject {
       { top: 0, bottom: 405, left: 5, right: 5 },
       { top: 450, bottom: 0, left: 0, right: 15 }
     ],
-    Coin: {top: 8, bottom: 8, left: 8, right: 8},
-    ShootingObject: {top: 5, bottom: 5, left: 5, right: 5}
+    Coin: { top: 8, bottom: 8, left: 8, right: 8 },
+    ShootingObject: { top: 5, bottom: 5, left: 5, right: 5 }
   };
 
   getObjectHitbox() {
@@ -48,6 +49,15 @@ class DrawableObject {
     }));
   }
 
+  getMainHitbox() {
+    let hitbox = this.getObjectHitbox();
+    if (!hitbox) return { x: this.x, y: this.y };
+    return {
+      x: hitbox.x + hitbox.width / 2,
+      y: hitbox.y + hitbox.height / 2
+    };
+  }
+  
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;
