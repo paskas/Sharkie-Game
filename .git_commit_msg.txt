@@ -1,1 +1,5 @@
-refactor(endboss): endboss logic revised and World/DrawableObject optimized`n- combat and movement logic of the endboss split`n- collision and hitbox functions in DrawableObject added and optimized`n- world logic for collision revised`n- Drawing functions extended".\up.bat "refactor(endboss): endboss logic revised and World/DrawableObject optimized`n- combat and movement logic of the endboss split`n- collision and hitbox functions in DrawableObject added and optimized`n- world logic for collision revised`n- Drawing functions extended
+feat: Endboss healthbar Shows when spwan 
+
+- triggerEndbossHeatlhBar added 
+
+

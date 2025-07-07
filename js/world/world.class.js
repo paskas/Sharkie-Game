@@ -204,9 +204,16 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBarCharacter);
-    this.addToMap(this.healthBarEndboss);
+    this.triggerEndbossHeatlhBar();
 
     requestAnimationFrame(() => this.draw());
+  }
+
+  triggerEndbossHeatlhBar() {
+    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+    if (endboss?.hadFirstContact && !endboss.dead) {
+      this.addToMap(this.healthBarEndboss);
+    }
   }
 
   addObjectsToMap(objects) {
@@ -225,7 +232,7 @@ class World {
       this.rotatedCharacter(this.ctx, mo)
     } else {
       mo.draw(this.ctx);
-      mo.drawFrame(this.ctx);
+      // mo.drawFrame(this.ctx);
       if (mo.showHitbox) {
         mo.drawHitbox(this.ctx);
       }
