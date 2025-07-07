@@ -19,7 +19,6 @@ class MovableObject extends DrawableObject {
 
   playAnimationOnce(images, callback, framerate) {
     clearInterval(this.interval);
-    this.loadImages(images);
     let i = 0;
     let interval = setInterval(() => {
       this.img = this.imageCache[images[i]];
@@ -113,6 +112,9 @@ class MovableObject extends DrawableObject {
       }
       this.lastHit = new Date().getTime();
       Character.life--;
+      if (this.world && this.world.handleDeath) {
+        this.world.handleDeath();
+      }
     }
   }
 
@@ -120,6 +122,9 @@ class MovableObject extends DrawableObject {
     if (!this.isInDamagePhase()) {
       this.lastHit = new Date().getTime();
       Endboss.life--;
+      if (this.world && this.world.handleDeath) {
+        this.world.handleDeath();
+      }
     }
   }
 
@@ -142,8 +147,15 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  isDead() {
-    return Character.life == 0;
+  die() {
+    this.dead = true;
+    if (this.playAnimationOnce) {
+      this.playAnimationOnce(this.IMAGES_DEAD, () => {
+        if (!(this instanceof Character) && !(this instanceof Endboss)) {
+          this.ifDeadMoveUp();
+        }
+      }, 100);
+    }
   }
 
   /**

@@ -44,10 +44,11 @@ class World {
   initGameObjects() {
     this.character = new Character();
     this.healthBarCharacter = new HealthBarCharacter();
+    this.healthBarEndboss = new HealthBarEndboss();
     this.levelManager = new LevelManager(this.canvas);
   }
 
-  setHitbox(){
+  setHitbox() {
     this.character.showHitbox = true;
     this.level.enemies.forEach(e => e.showHitbox = true);
     this.level.sunlights.forEach(e => e.showHitbox = true);
@@ -78,9 +79,8 @@ class World {
 
   handleBubbleCollisionWithEnemy(bubble, enemy) {
     this.handleBubbleHit(bubble);
-    enemy.dead = true;
     enemy.canDealDmg = false;
-    enemy.ifDead();
+    enemy.die();
     this.removeEnemy(enemy);
   }
 
@@ -130,6 +130,17 @@ class World {
         this.levelManager.resetLevels();
       }
       this.character.world = this;
+    }
+  }
+
+  handleDeath() {
+    const endboss = this.level.enemies.find(e => e instanceof Endboss);
+    if (Character.life === 0 && !this.character.dead) {
+      this.character.die();
+    }
+    if (Endboss.life === 0 && endboss && !endboss.dead) {
+      endboss.canDealDmg = false;
+      endboss.die();
     }
   }
 
@@ -193,6 +204,7 @@ class World {
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBarCharacter);
+    this.addToMap(this.healthBarEndboss);
 
     requestAnimationFrame(() => this.draw());
   }

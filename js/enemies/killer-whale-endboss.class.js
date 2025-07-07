@@ -2,6 +2,7 @@ class Endboss extends MovableObject {
   height = 530;
   width = 500;
   hadFirstContact = false;
+  dead = false;
   static life = 5;
 
   currentAnimation = null;
@@ -70,6 +71,7 @@ class Endboss extends MovableObject {
     this.y = 30;
 
     this.speed = 3;
+    this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
 
     this.img = new Image();

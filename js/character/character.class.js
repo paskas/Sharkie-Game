@@ -90,7 +90,7 @@ class Character extends MovableObject {
 
   constructor() {
     super();
-    
+
     this.img = new Image();
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SWIM);
@@ -112,7 +112,7 @@ class Character extends MovableObject {
 
   runMovement() {
     setInterval(() => {
-      if (!this.world) return;
+      if (!this.world || this.dead) return;
       const kb = this.world.keyboard;
       const { targetX, targetY } = this.updateNextPosition(kb);
       this.handleCollisionAndMove(targetX, targetY);
@@ -186,29 +186,22 @@ class Character extends MovableObject {
 
   runAnimation() {
     setInterval(() => {
-      if (this.isShooting) return;
-      if (this.isDead()) {
-        this.deadAnimation();
-      } else if (this.isInDamagePhase() && this.isPoisendByHit) {
-        this.poisendAnimation();
-      } else if (this.isInDamagePhase() && this.isShockByHit) {
-        this.shockAnimation();
-      } else if (this.isMoving()) {
-        this.swimAnimation();
-      } else {
-        this.idleAnimation();
+      if (this.dead || this.isShooting) return;
+      if (this.isInDamagePhase()) {
+        if (this.isShockByHit) return this.shockAnimation();
+        if (this.isPoisendByHit) return this.poisendAnimation();
       }
+      if (this.isMoving()) return this.swimAnimation();
+      this.idleAnimation();
     }, 100);
   }
 
   runShoot() {
     let shootKeyReleased = true;
     setInterval(() => {
-      if (!this.world) return;
+      if (!this.world || this.dead) return;
       const kb = this.world.keyboard;
-      if (!kb.SHOOT) {
-        shootKeyReleased = true;
-      }
+      if (!kb.SHOOT) shootKeyReleased = true;
       if (kb.SHOOT && shootKeyReleased && !this.isShooting) {
         shootKeyReleased = false;
         this.startShootingSequence();
@@ -269,10 +262,6 @@ class Character extends MovableObject {
 
   shockAnimation() {
     this.playAnimation(this.IMAGES_SHOCK);
-  }
-
-  deadAnimation() {
-    this.playAnimation(this.IMAGES_DEAD);
   }
 
   isMoving() {

@@ -1,12 +1,12 @@
 class HealthBarCharacter extends DrawableObject {
 
   IMAGES_HEALTH = [
-    './img/UI/healthbar/healthbar_0.png',
-    './img/UI/healthbar/healthbar_20.png',
-    './img/UI/healthbar/healthbar_40.png',
-    './img/UI/healthbar/healthbar_60.png',
-    './img/UI/healthbar/healthbar_80.png',
-    './img/UI/healthbar/healthbar_100.png'
+    './img/UI/healthbar/healthbar_char_0.png',
+    './img/UI/healthbar/healthbar_char_20.png',
+    './img/UI/healthbar/healthbar_char_40.png',
+    './img/UI/healthbar/healthbar_char_60.png',
+    './img/UI/healthbar/healthbar_char_80.png',
+    './img/UI/healthbar/healthbar_char_100.png'
   ];
 
   constructor() {
@@ -16,7 +16,7 @@ class HealthBarCharacter extends DrawableObject {
     this.y = -15;
     this.width = 290;
     this.height = 70;
-    this.img = this.imageCache[this.IMAGES_HEALTH[Character.life]];
+    this.img = new Image();
     this.updatingHealthBar();
   }
 
@@ -25,6 +25,10 @@ class HealthBarCharacter extends DrawableObject {
   }
 
   updateImagesHealth() {
-    this.img = this.imageCache[this.IMAGES_HEALTH[Character.life]];
+    let image = this.imageCache[this.IMAGES_HEALTH[Character.life]];
+    if (image) {
+      this.img = image;
+    }
   }
+
 }

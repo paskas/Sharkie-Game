@@ -33,7 +33,7 @@ class PufferFishManager extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_BUBBLESWIM);
     this.loadImages(this.IMAGES_TRANSITION);
-    
+
     this.animate();
   }
 
@@ -100,15 +100,6 @@ class PufferFishManager extends MovableObject {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
-    }
-  }
-
-  ifDead() {
-    if (this.dead) {
-      this.clearAnimationInterval();
-      this.playAnimationOnce(this.IMAGES_DEAD, () => {
-        this.ifDeadMoveUp();
-      }, 100);
     }
   }
 }

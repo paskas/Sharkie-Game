@@ -17,11 +17,11 @@ class JellyFishManager extends MovableObject {
     this.canDealDmg = true;
 
     this.IMAGES_DEFAULT = images.default;
-    this.IMAGES_DEFAULTDEAD = images.defaultDead;
+    this.IMAGES_DEAD = images.defaultDead;
 
     this.img = new Image();
     this.loadImages(this.IMAGES_DEFAULT);
-    this.loadImages(this.IMAGES_DEFAULTDEAD);
+    this.loadImages(this.IMAGES_DEAD);
 
     this.animate();
   }
@@ -29,7 +29,6 @@ class JellyFishManager extends MovableObject {
   animate() {
     this.animationLoop();
     this.moveUpAndDown();
-    this.ifDead();
   }
 
   animationLoop() {
@@ -45,14 +44,5 @@ class JellyFishManager extends MovableObject {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
     }
-  }
-
-  ifDead() {
-    setInterval(() => {
-      if (this.dead) {
-        this.playAnimation(this.IMAGES_DEFAULTDEAD)
-        this.ifDeadMoveUp();
-      }
-    }, 200);
   }
 }
