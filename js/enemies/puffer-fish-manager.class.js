@@ -4,20 +4,11 @@ class PufferFishManager extends MovableObject {
   animationLoopInterval = null;
   isTransition = false;
 
-  constructor(images, speed) {
+  constructor(world, images, speed) {
     super();
+    this.world = world;
     this.height = 110;
     this.width = 140;
-    this.x = this.findFreeCoordinate(
-      this.width + 250, 500, 3640, 50,
-      EnemyPositionManager.isXAvailable,
-      EnemyPositionManager.registerX
-    );
-    this.y = this.findFreeCoordinate(
-      this.height + 10, 40, 380, 30,
-      EnemyPositionManager.isYAvailable,
-      EnemyPositionManager.registerY
-    );
 
     this.speed = speed;
     this.poisend = true;
@@ -35,6 +26,19 @@ class PufferFishManager extends MovableObject {
     this.loadImages(this.IMAGES_TRANSITION);
 
     this.animate();
+  }
+
+  initPosition() {
+    this.x = this.world.gameHelper.findFreeCoordinate(
+      this.width + 250, 500, 3640, 50,
+      EnemyPositionManager.isXAvailable,
+      EnemyPositionManager.registerX
+    );
+    this.y = this.world.gameHelper.findFreeCoordinate(
+      this.height + 10, 40, 380, 30,
+      EnemyPositionManager.isYAvailable,
+      EnemyPositionManager.registerY
+    );
   }
 
   animate() {

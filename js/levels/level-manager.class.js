@@ -2,13 +2,14 @@ class LevelManager {
   levels = [];
   currentLevelIndex = 0;
 
-  constructor(canvas) {
+  constructor(world, canvas) {
+    this.world = world;
     this.levels = [
       new Level(
         { green: 4, red: 2, orange: 3 },
         { purple: 3, yellow: 2 },
         1, 1, 11, 3,
-        new Endboss(canvas)
+        new Endboss(world, canvas)
       )
     ];
   }

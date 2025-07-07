@@ -1,5 +1,6 @@
-feat: Endboss healthbar Shows when spwan 
+refactor: outsourcing of the World class and new structuring
 
-- triggerEndbossHeatlhBar added 
-
-
+- DrawHandler, BubbleHandler, CollisionHandler and GameHelper created
+- Functions suitably outsourced to the new classes
+- World class methodically organized according to functionality (Init, Loop, Behavior)
+- adapted the transfer of the world to enemies

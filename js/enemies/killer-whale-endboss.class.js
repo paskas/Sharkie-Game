@@ -65,8 +65,9 @@ class Endboss extends MovableObject {
     './img/enemies/killer_whale_endboss/dead/6.png'
   ];
 
-  constructor(canvas) {
+  constructor(world, canvas) {
     super();
+    this.world = world;
     this.x = 4300;
     this.y = 30;
 

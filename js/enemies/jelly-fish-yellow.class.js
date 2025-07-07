@@ -1,7 +1,7 @@
 class JellyFishYellow extends JellyFishManager {
 
-  constructor(x, speed) {
-    super({
+  constructor(world, x, speed) {
+    super(world, {
       default: [
         './img/enemies/jelly_fish_(2_options)/jelly_fish_yellow/default_damage/1.png',
         './img/enemies/jelly_fish_(2_options)/jelly_fish_yellow/default_damage/2.png',

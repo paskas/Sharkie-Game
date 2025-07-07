@@ -41,6 +41,7 @@ class Level extends DrawableObject {
   constructor(countsPuff, countsJelly, sunlights, barrier, coinsCount, arcCount, endboss) {
     super();
     EnemyPositionManager.reset();
+    this.world = null;
     this.addEnemies(countsPuff, countsJelly, endboss);
     this.addSunlights(sunlights);
     this.addBarrierReef(barrier);
@@ -87,16 +88,16 @@ class Level extends DrawableObject {
 
   createPufferFish(type) {
     switch (type) {
-      case 'green': return new PufferFishGreen(0.25);
-      case 'red': return new PufferFishRed(0.30 + Math.random() * 0.5);
-      case 'orange': return new PufferFishOrange(0.25 + Math.random() * 0.5);
+      case 'green': return new PufferFishGreen(this.world, 0.25);
+      case 'red': return new PufferFishRed(this.world, 0.30 + Math.random() * 0.5);
+      case 'orange': return new PufferFishOrange(this.world, 0.25 + Math.random() * 0.5);
     }
   }
 
   createJellyFish(type, x, speed) {
     switch (type) {
-      case 'purple': return new JellyFishPurple(x, speed);
-      case 'yellow': return new JellyFishYellow(x, speed);
+      case 'purple': return new JellyFishPurple(this.world, x, speed);
+      case 'yellow': return new JellyFishYellow(this.world, x, speed);
     }
   }
 

@@ -33,8 +33,8 @@ class Character extends MovableObject {
     './img/character/idle/16.png',
     './img/character/idle/17.png',
     './img/character/idle/18.png'
-
   ];
+
   IMAGES_SWIM = [
     './img/character/swim/1.png',
     './img/character/swim/2.png',
@@ -101,7 +101,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SHOOTPOISEN);
 
     this.animate();
-    // this.applyGravity();
   }
 
   animate() {
@@ -134,7 +133,7 @@ class Character extends MovableObject {
 
   handleCollisionAndMove(targetX, targetY) {
     const blockingObjects = this.getBlockingObjects();
-    if (!this.world.isCollidingWithObject(targetX, targetY, blockingObjects)) {
+    if (!this.world.gameHelper.isCollidingWithObject(targetX, targetY, blockingObjects)) {
       this.x = targetX;
       this.y = targetY;
     }

@@ -1,16 +1,12 @@
 class JellyFishManager extends MovableObject {
   animationInterval = null;
 
-  constructor(images, x, speed) {
+  constructor(world, images, x, speed) {
     super();
+    this.world = world;
     this.height = 140;
     this.width = 100;
     this.x = x;
-    this.y = this.findFreeCoordinate(
-      this.height + 10, 40, 380, 30,
-      EnemyPositionManager.isYAvailable,
-      EnemyPositionManager.registerY
-    );
 
     this.speed = speed;
     this.shock = true;
@@ -26,6 +22,14 @@ class JellyFishManager extends MovableObject {
     this.animate();
   }
 
+  initPosition() {
+    this.y = this.world.gameHelper.findFreeCoordinate(
+      this.height + 10, 40, 380, 30,
+      EnemyPositionManager.isYAvailable,
+      EnemyPositionManager.registerY
+    );
+  }
+
   animate() {
     this.animationLoop();
     this.moveUpAndDown();
@@ -38,7 +42,7 @@ class JellyFishManager extends MovableObject {
       }
     }, 200);
   }
-  
+
   clearAnimationInterval() {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);

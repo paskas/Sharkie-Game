@@ -1,7 +1,7 @@
 class PufferFishRed extends PufferFishManager {
 
-  constructor(speed) {
-    super({
+  constructor(world, speed) {
+    super(world, {
       swim: [
         './img/enemies/puffer_fish(3_options)/swim/swim_red1.png',
         './img/enemies/puffer_fish(3_options)/swim/swim_red2.png',
