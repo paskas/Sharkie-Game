@@ -7,7 +7,7 @@ class DrawableObject {
   imageCache = {};
   currentImage = 0;
   showHitbox = false;
-  static setCoin = 0;
+  static coinCount = 0;
 
   static offsets = {
     Character: { top: 130, bottom: 65, left: 50, right: 50 },

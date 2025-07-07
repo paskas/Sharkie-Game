@@ -6,7 +6,7 @@ class Level extends DrawableObject {
   enemies = [];
   sunlights = [];
   barrier = [];
-  coin = [];
+  coins = [];
 
   backgroundObjects = [
     new BackgroundObject('./img/backgrounds/water/2.png', -960),
@@ -117,7 +117,7 @@ class Level extends DrawableObject {
     for (let i = 0; i < counts; i++) {
       let x = Coin.positionXcoin[i];
       if (x !== undefined) {
-        this.coin.push(new Coin(x));
+        this.coins.push(new Coin(x));
       }
     }
   }
@@ -126,7 +126,7 @@ class Level extends DrawableObject {
     for (let i = 0; i < counts; i++) {
       let arc = Coin.coinArcs[i];
       if (arc) {
-        this.coin.push(...Coin.setArcCoinPositions(arc.x, arc.y, arc.count));
+        this.coins.push(...Coin.setArcCoinPositions(arc.x, arc.y, arc.count));
       }
     }
   }

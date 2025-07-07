@@ -19,8 +19,8 @@ class Coin extends MovableObject {
   
   constructor(x = null, y = 440) {
     super()
-    this.loadImages(this.IMAGES_COIN);
     this.img = new Image();
+    this.loadImages(this.IMAGES_COIN);
     this.x = x !== null ? x : this.setSingleCoinX();
     this.y = y;
     this.width = 50;

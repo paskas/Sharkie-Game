@@ -26,6 +26,7 @@ class World {
     this.character = new Character();
     this.healthBarCharacter = new HealthBarCharacter();
     this.healthBarEndboss = new HealthBarEndboss();
+    this.coinCounter = new CoinCounter();
     this.gameHelper = new GameHelper(this);
     this.levelManager = new LevelManager(this, this.canvas);
     this.collisionHandler = new CollisionHandler(this);
@@ -49,7 +50,7 @@ class World {
     this.level.enemies.forEach(e => e.showHitbox = true);
     this.level.sunlights.forEach(e => e.showHitbox = true);
     this.level.barrier.forEach(e => e.showHitbox = true);
-    this.level.coin.forEach(e => e.showHitbox = true);
+    this.level.coins.forEach(e => e.showHitbox = true);
   }
 
   get level() {
@@ -64,6 +65,7 @@ class World {
     setInterval(() => {
       this.collisionHandler.checkCharacterEnemyCollisions();
       this.collisionHandler.checkBubbleEnemyCollisions();
+      this.collisionHandler.checkCoinCollisions();
       this.handleLevelProgress();
       this.handleSunlightAnimate();
     }, 1000 / 60);

@@ -11,7 +11,7 @@ class DrawHandler {
     this.addObjectsToMap(this.world.level.backgroundObjects);
     this.addObjectsToMap(this.world.level.sunlights);
     this.addObjectsToMap(this.world.level.barrier);
-    this.addObjectsToMap(this.world.level.coin);
+    this.addObjectsToMap(this.world.level.coins);
     this.addObjectsToMap(this.world.level.enemies);
     this.addObjectsToMap(this.world.shootingObject);
     this.addToMap(this.world.character);
@@ -19,6 +19,7 @@ class DrawHandler {
     this.ctx.translate(-this.world.camera_x, 0);
     this.addToMap(this.world.healthBarCharacter);
     this.triggerEndbossHealthBar();
+    this.world.coinCounter.draw(this.ctx, DrawableObject.coinCount);
 
     requestAnimationFrame(() => this.draw());
   }
