@@ -21,6 +21,7 @@ class DrawableObject {
       { top: 450, bottom: 0, left: 0, right: 15 }
     ],
     Coin: { top: 8, bottom: 8, left: 8, right: 8 },
+    PoisenFlask: { top: 8, bottom: 8, left: 8, right: 8 },
     ShootingObject: { top: 5, bottom: 5, left: 5, right: 5 }
   };
 

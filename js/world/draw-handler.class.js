@@ -21,6 +21,7 @@ class DrawHandler {
     this.addToMap(this.world.healthBarCharacter);
     this.triggerEndbossHealthBar();
     this.world.coinCounter.draw(this.ctx, Coin.coinCount);
+    this.world.poisenFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
 
     requestAnimationFrame(() => this.draw());
   }

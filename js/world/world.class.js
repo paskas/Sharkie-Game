@@ -27,6 +27,7 @@ class World {
     this.healthBarCharacter = new HealthBarCharacter();
     this.healthBarEndboss = new HealthBarEndboss();
     this.coinCounter = new CoinCounter();
+    this.poisenFlaskCounter = new PoisenFlaskCounter();
     this.gameHelper = new GameHelper(this);
     this.levelManager = new LevelManager(this, this.canvas);
     this.collisionHandler = new CollisionHandler(this);
@@ -66,6 +67,7 @@ class World {
       this.collisionHandler.checkCharacterEnemyCollisions();
       this.collisionHandler.checkBubbleEnemyCollisions();
       this.collisionHandler.checkCoinCollisions();
+      this.collisionHandler.checkPoisenFlasksCollisions();
       this.handleLevelProgress();
       this.handleSunlightAnimate();
     }, 1000 / 60);
