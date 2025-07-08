@@ -29,7 +29,7 @@ class CollisionHandler {
   checkCoinCollisions() {
     this.world.level.coins.forEach((coin, index) => {
       if (this.world.character.isColliding(coin)) {
-        DrawableObject.coinCount++;
+        Coin.coinCount++;
         this.world.level.coins.splice(index, 1);
       }
     });

@@ -7,7 +7,6 @@ class DrawableObject {
   imageCache = {};
   currentImage = 0;
   showHitbox = false;
-  static coinCount = 0;
 
   static offsets = {
     Character: { top: 130, bottom: 65, left: 50, right: 50 },
@@ -57,7 +56,7 @@ class DrawableObject {
       y: hitbox.y + hitbox.height / 2
     };
   }
-  
+
   loadImage(path) {
     this.img = new Image();
     this.img.src = path;

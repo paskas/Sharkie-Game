@@ -7,6 +7,7 @@ class Level extends DrawableObject {
   sunlights = [];
   barrier = [];
   coins = [];
+  poisenFlasks = [];
 
   backgroundObjects = [
     new BackgroundObject('./img/backgrounds/water/2.png', -960),
@@ -38,7 +39,7 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(countsPuff, countsJelly, sunlights, barrier, coinsCount, arcCount, endboss) {
+  constructor(countsPuff, countsJelly, sunlights, barrier, coinsCount, arcCount, flasksCount, endboss) {
     super();
     EnemyPositionManager.reset();
     this.world = null;
@@ -47,6 +48,7 @@ class Level extends DrawableObject {
     this.addBarrierReef(barrier);
     this.addCoins(coinsCount);
     this.addCoinArcs(arcCount);
+    this.addPoisenFlasks(flasksCount);
   }
 
   addEnemies(countsPuff, countsJelly, endboss) {
@@ -127,6 +129,15 @@ class Level extends DrawableObject {
       let arc = Coin.coinArcs[i];
       if (arc) {
         this.coins.push(...Coin.setArcCoinPositions(arc.x, arc.y, arc.count));
+      }
+    }
+  }
+
+  addPoisenFlasks(counts) {
+    for (let i = 0; i < counts; i++) {
+      let x = PoisenFlask.flaskCoordinates[i];
+      if (x !== undefined) {
+        this.poisenFlasks.push(new PoisenFlask(x));
       }
     }
   }
