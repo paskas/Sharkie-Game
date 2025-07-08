@@ -41,6 +41,10 @@ class PoisenFlask extends MovableObject {
   }
 
   animate() {
+    this.animationFlask();
+  }
+
+  animationFlask() {
     this.animationInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_FLASKS);
     }, 1000 / 8);

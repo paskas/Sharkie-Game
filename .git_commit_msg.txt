@@ -1,4 +1,1 @@
-feat: shootPoisend query added for existing poison bottles
-
-- checkAndSetPoison, assignment of the poison status 
-- checkPoisenShootStatus, whether poison use is possible
+refactor: animationFlask outsourced for PoisenFlask, frames interval adjusted for Coin
