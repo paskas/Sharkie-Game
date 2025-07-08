@@ -30,8 +30,8 @@ class ShootingObject extends MovableObject {
     this.otherDirection = otherDirection;
     this.width = 60;
     this.height = 60;
-    this.isPoisend = isPoisend;
-    this.initBubbleImages();
+
+    this.initBubbleImages(isPoisend);
     this.loadImages(this.IMAGES_SPLASHBUBBLE);
     this.shoot();
     this.animate();
@@ -53,10 +53,20 @@ class ShootingObject extends MovableObject {
     return this.isPoisend ? this.IMAGES_POISENBUBBLE : this.IMAGES_BUBBLE;
   }
 
-  initBubbleImages() {
+  initBubbleImages(isPoisend) {
+    this.checkAndSetPoison(isPoisend);
     const images = this.getBubbleImages();
     this.loadImages(images);
     this.img = this.imageCache[images[0]];
+  }
+
+  checkAndSetPoison(isPoisend) {
+    if (isPoisend && PoisenFlask.flaskCount > 0) {
+      this.isPoisend = true;
+      PoisenFlask.flaskCount--;
+    } else {
+      this.isPoisend = false;
+    }
   }
 
   splashBubble(callback) {

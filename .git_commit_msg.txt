@@ -1,5 +1,4 @@
-feat: coins collision, collect and CoinCounter added
+feat: shootPoisend query added for existing poison bottles
 
-- CoinCounter class created
-- checkCoinCollisions added
-- CoinCounter design adjusted
+- checkAndSetPoison, assignment of the poison status 
+- checkPoisenShootStatus, whether poison use is possible

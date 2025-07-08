@@ -15,7 +15,7 @@ class World {
     this.keyboard = keyboard;
 
     this.initGameObjects();
-    this.setHitbox();
+    // this.setHitbox();
     this.setWorld();
 
     this.startDrawLoop();
@@ -70,6 +70,7 @@ class World {
       this.collisionHandler.checkPoisenFlasksCollisions();
       this.handleLevelProgress();
       this.handleSunlightAnimate();
+      this.checkPoisenShootStatus();
     }, 1000 / 60);
   }
 
@@ -97,6 +98,14 @@ class World {
     if (Endboss.life === 0 && endboss && !endboss.dead) {
       endboss.canDealDmg = false;
       endboss.die();
+    }
+  }
+
+  checkPoisenShootStatus() {
+    if (PoisenFlask.flaskCount >= 1) {
+      this.character.shootPoisend = true;
+    } else {
+      this.character.shootPoisend = false;
     }
   }
 
