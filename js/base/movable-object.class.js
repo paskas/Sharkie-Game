@@ -1,10 +1,13 @@
 class MovableObject extends DrawableObject {
   speed = 0;
+  speedY = 0;
+  speedX = 0;
   minY = 30;
   maxY = 400;
   upwards = true;
   otherDirection = false;
-  acceleratiion = 1.5;
+  acceleration = 1.5;
+  gravityInterval = null;
   energy = 100;
   lastHit = 0;
   dead = false;
@@ -39,11 +42,11 @@ class MovableObject extends DrawableObject {
   }
 
   moveUp() {
-    this.y -= this.speed
+    this.y -= this.speed;
   }
 
   moveDown() {
-    this.y += this.speed
+    this.y += this.speed;
   }
 
   moveUpAndDown() {
@@ -81,6 +84,24 @@ class MovableObject extends DrawableObject {
       directionX: x !== 0 ? x / Math.abs(x) : 0,
       directionY: y !== 0 ? y / Math.abs(y) : 0
     };
+  }
+
+  startArcMovement() {
+    if (this.gravityInterval) clearInterval(this.gravityInterval);
+    this.speedX = this.otherDirection ? -5.5 : 5.5;
+    this.speedY = -12;
+    this.gravityInterval = setInterval(() => {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.speedY += this.acceleration;
+      if (!this.isAboveGround()) {
+        clearInterval(this.gravityInterval);
+      }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    return this.y + this.height < 540;
   }
 
   ifDeadMoveUp() {
@@ -144,7 +165,18 @@ class MovableObject extends DrawableObject {
     if (enemy.shock) {
       this.isPoisendByHit = false;
       this.isShockByHit = true;
+      this.losePoisonFlask();
     }
+  }
+
+  losePoisonFlask() {
+    if (PoisenFlask.flaskCount <= 0) return;
+    PoisenFlask.flaskCount--;
+    let flask = new PoisenFlask(this.x, this.y, 'animated');
+    flask.isLost = true;
+    flask.world = this.world;
+    flask.startFallingFlask();
+    this.world.level.poisenFlasks.push(flask);
   }
 
   die() {

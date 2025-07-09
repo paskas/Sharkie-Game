@@ -1,12 +1,7 @@
 class PoisenFlask extends MovableObject {
 
-  static setFlask = 0;
+  isLost = false;
   static flaskCount = 0;
-
-  static flaskCoordinates = [
-    { x: 890, y: 410 },
-    { x: 1890, y: 300 }
-  ];
 
   IMAGES_FLASKS = [
     './img/UI/poisen_flasks/poisen_flask_animated/1.png',
@@ -27,43 +22,50 @@ class PoisenFlask extends MovableObject {
     './img/UI/poisen_flasks/poisen_flask_left_right/poisen_flask_dark_right.png',
   ];
 
-  constructor(x = null, y = null) {
+  constructor(x, y, variant) {
     super()
-    this.setFlaskPosition(x, y)
+    this.x = x;
+    this.y = y;
+    this.variant = variant;
     this.width = 70;
     this.height = 95;
 
     this.img = new Image();
-    this.loadImages(this.IMAGES_FLASKS);
-    this.loadImage(this.IMAGES_FLASKLEFT);
-    this.loadImage(this.IMAGES_FLASKRIGHT);
-    this.animate();
+    this.initFlaskImage();
   }
 
-  animate() {
-    this.animationFlask();
+  initFlaskImage() {
+    if (this.variant === 'left') {
+      this.loadImage(this.IMAGES_FLASKLEFT);
+    } else if (this.variant === 'right') {
+      this.loadImage(this.IMAGES_FLASKRIGHT);
+    } else if (this.variant === 'animated') {
+      this.loadImages(this.IMAGES_FLASKS);
+    }
   }
 
-  animationFlask() {
+  startAnimationFlask() {
     this.animationInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_FLASKS);
     }, 1000 / 8);
   }
 
-  getFlaskCoordinates() {
-    let position = PoisenFlask.flaskCoordinates[PoisenFlask.setFlask];
-    PoisenFlask.setFlask++;
-    return position;
+  animateFlaskDrop() {
+    if (this.variant === 'animated') {
+      this.startAnimationFlask();
+      setTimeout(() => {
+        clearInterval(this.animationInterval);
+        this.world.level.poisenFlasks = this.world.level.poisenFlasks.filter(f => f !== this);
+      }, 1500);
+    }
   }
 
-  setFlaskPosition(x, y) {
-    if (x === null || y === null) {
-      let position = this.getFlaskCoordinates();
-      this.x = position.x;
-      this.y = position.y;
-    } else {
-      this.x = x;
-      this.y = y;
-    }
+  startFallingFlask() {
+    this.animateFlaskDrop();
+    this.startArcMovement();
+  }
+
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 }

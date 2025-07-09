@@ -1,4 +1,5 @@
 class DrawHandler {
+  
   constructor(world) {
     this.world = world;
     this.ctx = world.ctx;

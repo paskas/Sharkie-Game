@@ -37,6 +37,7 @@ class CollisionHandler {
 
   checkPoisenFlasksCollisions() {
     this.world.level.poisenFlasks.forEach((flask, index) => {
+      if (flask.isLost) return;
       if (this.world.character.isColliding(flask)) {
         PoisenFlask.flaskCount++;
         this.world.level.poisenFlasks.splice(index, 1);
