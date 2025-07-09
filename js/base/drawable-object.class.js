@@ -22,12 +22,14 @@ class DrawableObject {
     ],
     Coin: { top: 8, bottom: 8, left: 8, right: 8 },
     PoisenFlask: { top: 8, bottom: 8, left: 8, right: 8 },
-    ShootingObject: { top: 5, bottom: 5, left: 5, right: 5 }
+    PoisenFlaskLeft: { top: 42, bottom: 6, left: 25, right: 6 },
+    PoisenFlaskRight: { top: 40, bottom: 8, left: 6, right: 25 },
+    ShootingObject: { top: 4, bottom: 4, left: 4, right: 4 }
   };
 
   getObjectHitbox() {
-    let className = this.constructor.name;
-    let offset = DrawableObject.offsets[className];
+    let offsetKey = GameHelper.resolveOffsetClassName(this);
+    let offset = DrawableObject.offsets[offsetKey];
     if (!offset || Array.isArray(offset)) return undefined;
     return {
       x: this.x + offset.left,
@@ -38,14 +40,14 @@ class DrawableObject {
   }
 
   getObjectHitboxes() {
-    let className = this.constructor.name;
-    let offsets = DrawableObject.offsets[className];
-    if (!Array.isArray(offsets)) return undefined;
-    return offsets.map((o) => ({
-      x: this.x + o.left,
-      y: this.y + o.top,
-      width: this.width - o.left - o.right,
-      height: this.height - o.top - o.bottom
+    let offsetKey = GameHelper.resolveOffsetClassName(this);
+    let offset = DrawableObject.offsets[offsetKey];
+    if (!offset || !Array.isArray(offset)) return undefined;
+    return offset.map((offset) => ({
+      x: this.x + offset.left,
+      y: this.y + offset.top,
+      width: this.width - offset.left - offset.right,
+      height: this.height - offset.top - offset.bottom
     }));
   }
 
@@ -63,10 +65,6 @@ class DrawableObject {
     this.img.src = path;
   }
 
-  /**
-   * 
-   * @param {Array} arr - ['Imges'] 
-   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();

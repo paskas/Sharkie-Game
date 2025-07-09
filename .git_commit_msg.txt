@@ -1,1 +1,6 @@
-refactor: animationFlask outsourced for PoisenFlask, frames interval adjusted for Coin
+feat: Hitbox offsets for PoisenFlask variants and ShootingObject adjusted
+
+- Offsets for PoisenFlaskLeft, PoisenFlaskRight and ShootingObject added to DrawableObject.offsets
+- resolveOffsetClassName added to assign based on variant
+- getObjectHitbox and getObjectHitboxes adjusted
+- setHitbox extended by poisenFlasks

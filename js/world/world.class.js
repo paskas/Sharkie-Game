@@ -15,7 +15,7 @@ class World {
     this.keyboard = keyboard;
 
     this.initGameObjects();
-    // this.setHitbox();
+    this.setHitbox();
     this.setWorld();
 
     this.startDrawLoop();
@@ -48,10 +48,11 @@ class World {
 
   setHitbox() {
     this.character.showHitbox = true;
-    this.level.enemies.forEach(e => e.showHitbox = true);
-    this.level.sunlights.forEach(e => e.showHitbox = true);
-    this.level.barrier.forEach(e => e.showHitbox = true);
-    this.level.coins.forEach(e => e.showHitbox = true);
+    this.level.enemies.forEach(enemy => enemy.showHitbox = true);
+    this.level.sunlights.forEach(obj => obj.showHitbox = true);
+    this.level.barrier.forEach(obj => obj.showHitbox = true);
+    this.level.coins.forEach(obj => obj.showHitbox = true);
+    this.level.poisenFlasks.forEach(obj => obj.showHitbox = true);
   }
 
   get level() {

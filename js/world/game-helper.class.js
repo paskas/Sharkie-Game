@@ -1,5 +1,21 @@
 class GameHelper {
 
+  static offsetClassMap = {
+    PoisenFlask: {
+      left: 'PoisenFlaskLeft',
+      right: 'PoisenFlaskRight',
+      animated: 'PoisenFlask'
+    }
+  };
+
+  static resolveOffsetClassName(obj) {
+    let className = obj.constructor.name;
+    if (this.offsetClassMap[className] && obj.variant) {
+      return this.offsetClassMap[className][obj.variant] || className;
+    }
+    return className;
+  }
+
   constructor(world) {
     this.world = world;
   }

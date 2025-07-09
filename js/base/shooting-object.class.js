@@ -33,6 +33,7 @@ class ShootingObject extends MovableObject {
 
     this.initBubbleImages(isPoisend);
     this.loadImages(this.IMAGES_SPLASHBUBBLE);
+
     this.shoot();
     this.animate();
   }
