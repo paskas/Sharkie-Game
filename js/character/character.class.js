@@ -6,6 +6,8 @@ class Character extends MovableObject {
   speed = 6;
   rotationAngle = 0;
   world;
+  isSleeping = false;
+  sleepTimeout = null;
   isShooting = false;
   lastShootTime = Date.now();
   canShootAgain = true;
@@ -42,6 +44,23 @@ class Character extends MovableObject {
     './img/character/swim/4.png',
     './img/character/swim/5.png',
     './img/character/swim/6.png'
+  ];
+
+  IMAGES_SLEEP = [
+    './img/character/long_idle/1.png',
+    './img/character/long_idle/2.png',
+    './img/character/long_idle/3.png',
+    './img/character/long_idle/4.png',
+    './img/character/long_idle/5.png',
+    './img/character/long_idle/6.png',
+    './img/character/long_idle/7.png',
+    './img/character/long_idle/8.png',
+    './img/character/long_idle/9.png',
+    './img/character/long_idle/10.png',
+    './img/character/long_idle/11.png',
+    './img/character/long_idle/12.png',
+    './img/character/long_idle/13.png',
+    './img/character/long_idle/14.png'
   ];
 
   IMAGES_SHOOT = [
@@ -91,14 +110,16 @@ class Character extends MovableObject {
   constructor() {
     super();
 
-    this.img = new Image();
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_SLEEP);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_POISEND);
     this.loadImages(this.IMAGES_SHOCK);
     this.loadImages(this.IMAGES_SHOOT);
     this.loadImages(this.IMAGES_SHOOTPOISEN);
+
+    this.img = this.imageCache[this.IMAGES_FLOATING[0]];
 
     this.animate();
   }
@@ -128,7 +149,18 @@ class Character extends MovableObject {
     if (kb.LEFT && this.x > 0) targetX -= this.speed;
     if (kb.UP && this.y > w.level.level_top_y) targetY -= this.speed;
     if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += this.speed;
+    this.resetSleepStatus();
     return { targetX, targetY };
+  }
+
+  resetSleepStatus() {
+    if (!this.sleepTimeout) clearTimeout(this.sleepTimeout);
+    if (this.isSleeping) {
+      this.isSleeping = false;
+    }
+    this.sleepTimeout = setTimeout(() => {
+      this.isSleeping = true;
+    }, 3000);
   }
 
   handleCollisionAndMove(targetX, targetY) {
@@ -186,6 +218,7 @@ class Character extends MovableObject {
   runAnimation() {
     setInterval(() => {
       if (this.dead || this.isShooting) return;
+      if (this.isSleeping) return this.sleepAnimation();
       if (this.isInDamagePhase()) {
         if (this.isShockByHit) return this.shockAnimation();
         if (this.isPoisendByHit) return this.poisendAnimation();
@@ -245,6 +278,10 @@ class Character extends MovableObject {
 
   swimAnimation() {
     this.playAnimation(this.IMAGES_SWIM);
+  }
+
+  sleepAnimation() {
+    this.playAnimation(this.IMAGES_SLEEP);
   }
 
   shootAnimation() {
