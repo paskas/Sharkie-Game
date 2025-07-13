@@ -116,6 +116,6 @@ class World {
       if (enemyIndex !== -1) {
         this.level.enemies.splice(enemyIndex, 1);
       }
-    }, 2500);
+    }, 3000);
   }
 }

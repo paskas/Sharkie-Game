@@ -1,31 +1,51 @@
 class BubbleHandler {
-  lastBubbleHit = 0;
 
   constructor(world) {
     this.world = world;
   }
 
   handleBubbleCollisionWithEnemy(bubble, enemy) {
+    if (bubble.isUsed) return;
+    bubble.isUsed = true;
     this.handleBubbleHit(bubble);
+    this.handleBubbleDamage(enemy);
+  }
+
+  handleBubbleCollisionWithEndboss(bubble, enemy) {
+    if (bubble.isUsed) return;
+    bubble.isUsed = true;
+    this.handleBubbleHit(bubble);
+    enemy.bossHit();
+  }
+
+  handleBubbleDamage(enemy) {
+    if (!enemy.canDealDmg) return;
+
+    if (enemy instanceof JellyFishYellow || enemy instanceof JellyFishPurple) {
+      if (enemy.isElectricActive) {
+        enemy.shockLife--;
+        if (enemy.shockLife <= 0) {
+          enemy.clearJellyIntervals();
+          this.handleEnemyKill(enemy);
+        }
+        return;
+      }
+    }
+    this.handleEnemyKill(enemy);
+  }
+
+  handleEnemyKill(enemy) {
     enemy.canDealDmg = false;
     enemy.die();
     this.world.removeEnemy(enemy);
   }
 
-  handleBubbleCollisionWithEndboss(bubble, enemy) {
-    this.handleBubbleHit(bubble);
-    enemy.bossHit();
-  }
-
   handleBubbleHit(bubble) {
-    if (this.lastBubbleHit < (Date.now() - 1000 / 5)) {
-      this.lastBubbleHit = Date.now();
-      clearInterval(bubble.interval);
-      this.setOffsetBubble(bubble);
-      bubble.splashBubble(() => {
-        this.removeBubble(bubble);
-      });
-    }
+    clearInterval(bubble.interval);
+    this.setOffsetBubble(bubble);
+    bubble.splashBubble(() => {
+      this.removeBubble(bubble);
+    });
   }
 
   removeBubble(bubble) {

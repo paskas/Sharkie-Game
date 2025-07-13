@@ -1,8 +1,7 @@
-feat/refactor: Character variables and flags sorted thematically and tidied up
+feat/fix: prevents multiple damage and shock errors with JellyFish
 
-- idle lang combined with initSleep sleep via startSleepAnimation added
-- resetSleepStatus optimized and set 
-- Character variables and flags sorted thematically and tidied up
-- Variables for dimensions, status, animation and shooting logically grouped
-- Constructor and methods adapted accordingly
-- Order improved for a better overview and faster maintainability
+- BubbleHandler tidied up
+- handleBubbleDamage implemented and adjusted (incl. ShockLife logic)
+- Bubble (ShootingObject) receives isUsed flag, damage only possible once
+- JellyFishManager shockLife and shock animation added
+- Animation remains stable, even when hit in shock state

@@ -109,7 +109,7 @@ class MovableObject extends DrawableObject {
   ifDeadMoveUp() {
     setInterval(() => {
       if (this.dead) {
-        this.y -= 0.5;
+        this.y -= 2.5;
       }
     }, 1000 / 60);
   }
