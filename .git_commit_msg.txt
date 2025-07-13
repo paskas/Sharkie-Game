@@ -1,0 +1,8 @@
+feat/refactor: Character variables and flags sorted thematically and tidied up
+
+- idle lang combined with initSleep sleep via startSleepAnimation added
+- resetSleepStatus optimized and set 
+- Character variables and flags sorted thematically and tidied up
+- Variables for dimensions, status, animation and shooting logically grouped
+- Constructor and methods adapted accordingly
+- Order improved for a better overview and faster maintainability

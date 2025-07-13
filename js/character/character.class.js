@@ -285,18 +285,7 @@ class Character extends MovableObject {
     if (kb.LEFT && this.x > 0) targetX -= this.speed;
     if (kb.UP && this.y > w.level.level_top_y) targetY -= this.speed;
     if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += this.speed;
-    this.resetSleepStatus();
     return { targetX, targetY };
-  }
-
-  resetSleepStatus() {
-    if (!this.sleepTimeout) clearTimeout(this.sleepTimeout);
-    if (this.isSleeping) {
-      this.isSleeping = false;
-    }
-    this.sleepTimeout = setTimeout(() => {
-      this.isSleeping = true;
-    }, 3000);
   }
 
   handleCollisionAndMove(targetX, targetY) {
