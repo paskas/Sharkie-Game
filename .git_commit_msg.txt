@@ -1,7 +1,6 @@
-feat/fix: prevents multiple damage and shock errors with JellyFish
+feat: damage detection for PufferFish added and character life loss adjusted
 
-- BubbleHandler tidied up
-- handleBubbleDamage implemented and adjusted (incl. ShockLife logic)
-- Bubble (ShootingObject) receives isUsed flag, damage only possible once
-- JellyFishManager shockLife and shock animation added
-- Animation remains stable, even when hit in shock state
+- BubbleHandler handleBubbleDamage extended to include PufferFish with bubbleLife
+- new damage handling methods introduced for JellyFish and PufferFish
+- BufferFishManager bubbleLife added
+- MovableObject charHitt now uses characterDamage with enemy status evaluation

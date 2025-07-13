@@ -12,7 +12,7 @@ class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   dead = false;
-  
+
   blocking_objects = [];
 
   playAnimation(images) {
@@ -134,7 +134,7 @@ class MovableObject extends DrawableObject {
         this.shockHit(enemy);
       }
       this.lastHit = new Date().getTime();
-      Character.life--;
+      this.charakterDamage(enemy)
       if (this.world && this.world.handleDeath) {
         this.world.handleDeath();
       }
@@ -150,6 +150,15 @@ class MovableObject extends DrawableObject {
       }
     }
   }
+
+  charakterDamage(enemy) {
+    if (enemy instanceof JellyFishManager && enemy.isElectricActive) {
+      Character.life -= 2;
+    } else {
+      Character.life--;
+    }
+  }
+
 
   isInDamagePhase() {
     let timeSinceLastHit = new Date().getTime() - this.lastHit;

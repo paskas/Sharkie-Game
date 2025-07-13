@@ -63,7 +63,6 @@ class JellyFishManager extends MovableObject {
   runElectricInterval() {
     this.electricTimerInterval = setInterval(() => {
       if (this.dead || this.isElectricActive) return;
-      this.shockLife = 2;
       this.triggerElectricAnimation();
     }, 3000);
   }

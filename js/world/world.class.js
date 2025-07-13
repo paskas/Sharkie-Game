@@ -93,10 +93,10 @@ class World {
 
   handleDeath() {
     const endboss = this.level.enemies.find(e => e instanceof Endboss);
-    if (Character.life === 0 && !this.character.dead) {
+    if (Character.life <= 0 && !this.character.dead) {
       this.character.die();
     }
-    if (Endboss.life === 0 && endboss && !endboss.dead) {
+    if (Endboss.life <= 0 && endboss && !endboss.dead) {
       endboss.canDealDmg = false;
       endboss.die();
     }

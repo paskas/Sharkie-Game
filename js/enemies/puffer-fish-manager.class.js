@@ -3,6 +3,7 @@ class PufferFishManager extends MovableObject {
   animationInterval = null;
   animationLoopInterval = null;
   isTransition = false;
+  isBubbleActive = false;
 
   constructor(world, images, speed) {
     super();
@@ -13,6 +14,7 @@ class PufferFishManager extends MovableObject {
     this.speed = speed;
     this.poisend = true;
     this.canDealDmg = true;
+    this.bubbleLife = 2;
 
     this.IMAGES_SWIM = images.swim;
     this.IMAGES_BUBBLESWIM = images.bubbleswim;
@@ -74,6 +76,7 @@ class PufferFishManager extends MovableObject {
     this.playAnimationOnce(this.IMAGES_TRANSITION, () => {
       if (this.dead) return;
       this.isTransition = false;
+      this.isBubbleActive = true;
       this.setAnimationLoop(this.IMAGES_BUBBLESWIM, 'bubbleswim');
     }, 100);
   }
@@ -87,6 +90,7 @@ class PufferFishManager extends MovableObject {
     this.playAnimationOnce(reversedTransition, () => {
       if (this.dead) return;
       this.isTransition = false;
+      this.isBubbleActive = false;
       this.currentAnimation = 'swim';
       this.setAnimationLoop(this.IMAGES_SWIM, 'swim');
     }, 100);

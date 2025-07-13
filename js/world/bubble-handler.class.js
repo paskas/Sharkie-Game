@@ -20,18 +20,31 @@ class BubbleHandler {
 
   handleBubbleDamage(enemy) {
     if (!enemy.canDealDmg) return;
-
-    if (enemy instanceof JellyFishYellow || enemy instanceof JellyFishPurple) {
-      if (enemy.isElectricActive) {
-        enemy.shockLife--;
-        if (enemy.shockLife <= 0) {
-          enemy.clearJellyIntervals();
-          this.handleEnemyKill(enemy);
-        }
-        return;
-      }
+    if (enemy instanceof JellyFishManager && enemy.isElectricActive) {
+      this.damageElectricJelly(enemy);
+      return;
+    }
+    if (enemy instanceof PufferFishManager && enemy.isBubbleActive) {
+      this.damageBubblePuffer(enemy);
+      return;
     }
     this.handleEnemyKill(enemy);
+  }
+
+  damageElectricJelly(enemy) {
+    enemy.shockLife--;
+    if (enemy.shockLife <= 0) {
+      enemy.clearJellyIntervals();
+      this.handleEnemyKill(enemy);
+    }
+  }
+
+  damageBubblePuffer(enemy) {
+    enemy.bubbleLife--;
+    if (enemy.bubbleLife <= 0) {
+      enemy.clearAnimationInterval();
+      this.handleEnemyKill(enemy);
+    }
   }
 
   handleEnemyKill(enemy) {
