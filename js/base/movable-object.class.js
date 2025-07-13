@@ -8,9 +8,11 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   acceleration = 1.5;
   gravityInterval = null;
+
   energy = 100;
   lastHit = 0;
   dead = false;
+  
   blocking_objects = [];
 
   playAnimation(images) {
@@ -181,6 +183,7 @@ class MovableObject extends DrawableObject {
 
   die() {
     this.dead = true;
+    if (this.animationInterval) clearInterval(this.animationInterval);
     if (this.playAnimationOnce) {
       this.playAnimationOnce(this.IMAGES_DEAD, () => {
         if (!(this instanceof Character) && !(this instanceof Endboss)) {

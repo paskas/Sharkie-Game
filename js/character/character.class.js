@@ -3,17 +3,23 @@ class Character extends MovableObject {
   y = 200;
   height = 260;
   width = 240;
-  speed = 6;
   rotationAngle = 0;
+  speed = 6;
   world;
+
+  animationInterval = null;
+  currentAnimation = null;
+  untilSleep = 8000;
+  sleepStartTime = Date.now();
   isSleeping = false;
   sleepTimeout = null;
+
   isShooting = false;
-  lastShootTime = Date.now();
-  canShootAgain = true;
   shootPoisend = false;
   isPoisendByHit = false;
   isShockByHit = false;
+  lastShootTime = Date.now();
+
   static life = 5;
 
   IMAGES_FLOATING = [
@@ -46,7 +52,7 @@ class Character extends MovableObject {
     './img/character/swim/6.png'
   ];
 
-  IMAGES_SLEEP = [
+  IMAGES_INITSLEEP = [
     './img/character/long_idle/1.png',
     './img/character/long_idle/2.png',
     './img/character/long_idle/3.png',
@@ -63,6 +69,13 @@ class Character extends MovableObject {
     './img/character/long_idle/14.png'
   ];
 
+  IMAGES_SLEEP = [
+    './img/character/long_idle/11.png',
+    './img/character/long_idle/12.png',
+    './img/character/long_idle/13.png',
+    './img/character/long_idle/14.png'
+  ];
+
   IMAGES_SHOOT = [
     './img/character/attack/bubble_trap/attack_bubbles/1.png',
     './img/character/attack/bubble_trap/attack_bubbles/2.png',
@@ -71,7 +84,7 @@ class Character extends MovableObject {
     './img/character/attack/bubble_trap/attack_bubbles/5.png',
     './img/character/attack/bubble_trap/attack_bubbles/6.png',
     './img/character/attack/bubble_trap/attack_bubbles/7.png',
-    './img/character/attack/bubble_trap/attack_bubbles/8.png',
+    './img/character/attack/bubble_trap/attack_bubbles/8.png'
   ];
 
   IMAGES_SHOOTPOISEN = [
@@ -82,7 +95,7 @@ class Character extends MovableObject {
     './img/character/attack/bubble_trap/attack_poisen_bubbles/5.png',
     './img/character/attack/bubble_trap/attack_poisen_bubbles/6.png',
     './img/character/attack/bubble_trap/attack_poisen_bubbles/7.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/8.png',
+    './img/character/attack/bubble_trap/attack_poisen_bubbles/8.png'
   ];
 
   IMAGES_POISEND = [
@@ -109,9 +122,9 @@ class Character extends MovableObject {
 
   constructor() {
     super();
-
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_INITSLEEP);
     this.loadImages(this.IMAGES_SLEEP);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_POISEND);
@@ -121,24 +134,147 @@ class Character extends MovableObject {
 
     this.img = this.imageCache[this.IMAGES_FLOATING[0]];
 
-    this.animate();
+    this.runAnimate();
+    this.runMovement();
+    this.runShoot();
   }
 
-  animate() {
-    this.runMovement();
-    this.runAnimation();
-    this.runShoot()
+  runAnimate() {
+    setInterval(() => {
+      this.resolveAnimationStatus();
+    }, 1000 / 60);
+  }
+
+  resolveAnimationStatus() {
+    if (this.dead) return;
+    if (this.isInDamagePhase()) {
+      if (this.currentAnimation !== 'damage') this.startDamageAnimation();
+      return;
+    }
+    if (this.isShooting) {
+      if (this.currentAnimation !== 'shoot') this.startShootAnimation();
+      return;
+    }
+    if (this.isMoving()) {
+      if (this.currentAnimation !== 'swim') this.startSwimAnimation();
+      return;
+    }
+    if (this.startSleepTimer()) {
+      if (this.currentAnimation !== 'sleep') this.startSleepAnimation();
+    } else {
+      if (this.currentAnimation !== 'idle') this.startIdleAnimation();
+    }
+  }
+
+  startSleepTimer() {
+    return Date.now() - this.sleepStartTime > this.untilSleep;
+  }
+
+  resetSleepStatus() {
+    this.sleepStartTime = Date.now();
+    if (this.sleepTimeout) {
+      clearTimeout(this.sleepTimeout)
+      this.sleepTimeout = null;
+    }
+    if (this.isSleeping) {
+      this.isSleeping = false;
+    }
+  }
+
+  startIdleAnimation() {
+    this.setAnimation('idle', () => this.idleAnimation(), 140);
+  }
+
+  startSwimAnimation() {
+    this.setAnimation('swim', () => this.swimAnimation(), 100);
+  }
+
+  startSleepAnimation() {
+    if (this.sleepTimeout || this.isSleeping) return;
+    this.setAnimation('initSleep', () => this.initSleepAnimation(), 140);
+    this.sleepTimeout = setTimeout(() => {
+      this.isSleeping = true;
+      this.setAnimation('sleep', () => this.sleepAnimation(), 200);
+      this.sleepTimeout = null;
+    }, this.IMAGES_INITSLEEP.length * 140);
+  }
+
+  startShootAnimation() {
+    this.setAnimation('shoot', () => this.shootAnimation(), 100);
+  }
+
+  startDamageAnimation() {
+    this.setAnimation('damage', () => {
+      if (this.isShockByHit) this.shockAnimation();
+      else if (this.isPoisendByHit) this.poisendAnimation();
+    }, 140);
+    setTimeout(() => {
+      this.isShockByHit = false;
+      this.isPoisendByHit = false;
+    }, 800);
+  }
+
+  idleAnimation() {
+    this.playAnimation(this.IMAGES_FLOATING);
+  }
+
+  swimAnimation() {
+    this.playAnimation(this.IMAGES_SWIM);
+  }
+
+  initSleepAnimation() {
+    this.playAnimation(this.IMAGES_INITSLEEP);
+  }
+
+  sleepAnimation() {
+    this.playAnimation(this.IMAGES_SLEEP);
+  }
+
+  shootAnimation() {
+    const images = this.shootPoisend ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
+    this.playAnimation(images);
+  }
+
+  poisendAnimation() {
+    this.playAnimation(this.IMAGES_POISEND);
+  }
+
+  shockAnimation() {
+    this.playAnimation(this.IMAGES_SHOCK);
+  }
+
+  setAnimation(mode, animationStep, animationSpeed) {
+    if (this.currentAnimation === mode) return;
+    this.clearAnimationInterval();
+    this.currentImage = 0;
+    this.currentAnimation = mode;
+    this.animationInterval = setInterval(animationStep, animationSpeed);
+  }
+
+  clearAnimationInterval() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
   }
 
   runMovement() {
     setInterval(() => {
       if (!this.world || this.dead) return;
       const kb = this.world.keyboard;
+      if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
       const { targetX, targetY } = this.updateNextPosition(kb);
       this.handleCollisionAndMove(targetX, targetY);
       this.updateRotationAngle(kb);
       this.moveCamera();
     }, 1000 / 60);
+  }
+
+  isMoving() {
+    const kb = this.world.keyboard;
+    if (kb.LEFT) this.otherDirection = true;
+    if (kb.RIGHT) this.otherDirection = false;
+    return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
   }
 
   updateNextPosition(kb) {
@@ -215,27 +351,15 @@ class Character extends MovableObject {
     this.world.camera_x = Math.max(minCameraX, Math.min(this.world.camera_x, 0));
   }
 
-  runAnimation() {
-    setInterval(() => {
-      if (this.dead || this.isShooting) return;
-      if (this.isSleeping) return this.sleepAnimation();
-      if (this.isInDamagePhase()) {
-        if (this.isShockByHit) return this.shockAnimation();
-        if (this.isPoisendByHit) return this.poisendAnimation();
-      }
-      if (this.isMoving()) return this.swimAnimation();
-      this.idleAnimation();
-    }, 100);
-  }
-
   runShoot() {
     let shootKeyReleased = true;
     setInterval(() => {
-      if (!this.world || this.dead) return;
+      if (!this.world || this.dead || this.isInDamagePhase()) return;
       const kb = this.world.keyboard;
       if (!kb.SHOOT) shootKeyReleased = true;
       if (kb.SHOOT && shootKeyReleased && !this.isShooting) {
         shootKeyReleased = false;
+        this.resetSleepStatus();
         this.startShootingSequence();
       }
     }, 1000 / 60);
@@ -243,25 +367,14 @@ class Character extends MovableObject {
 
   startShootingSequence() {
     this.isShooting = true;
-    const images = this.poisend ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
-    const duration = images.length * 100;
-    this.overrideAnimation(images);
+    const isPoisend = this.shootPoisend;
+    const shootFrames = isPoisend ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
+    const duration = shootFrames * 120;
     setTimeout(() => {
-      this.shootBubble();
+      this.shootBubble(duration);
       this.lastShootTime = Date.now();
       this.isShooting = false;
     }, duration);
-  }
-
-  overrideAnimation(images) {
-    let i = 0;
-    const interval = setInterval(() => {
-      this.img = this.imageCache[images[i]];
-      i++;
-      if (i >= images.length) {
-        clearInterval(interval);
-      }
-    }, 100);
   }
 
   shootBubble() {
@@ -270,40 +383,5 @@ class Character extends MovableObject {
     const y = this.y + this.height / 2;
     const bubble = new ShootingObject(this, x, y, this.otherDirection, this.shootPoisend);
     this.world.shootingObject.push(bubble);
-  }
-
-  idleAnimation() {
-    this.playAnimation(this.IMAGES_FLOATING);
-  }
-
-  swimAnimation() {
-    this.playAnimation(this.IMAGES_SWIM);
-  }
-
-  sleepAnimation() {
-    this.playAnimation(this.IMAGES_SLEEP);
-  }
-
-  shootAnimation() {
-    this.playAnimation(this.IMAGES_SHOOT);
-  }
-
-  shootPoisenAnimation() {
-    this.playAnimation(this.IMAGES_SHOOT);
-  }
-
-  poisendAnimation() {
-    this.playAnimation(this.IMAGES_POISEND);
-  }
-
-  shockAnimation() {
-    this.playAnimation(this.IMAGES_SHOCK);
-  }
-
-  isMoving() {
-    const kb = this.world.keyboard;
-    if (kb.LEFT) this.otherDirection = true;
-    if (kb.RIGHT) this.otherDirection = false;
-    return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
   }
 }

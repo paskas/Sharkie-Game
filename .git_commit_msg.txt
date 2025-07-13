@@ -1,6 +1,8 @@
-feat: Hitbox offsets for PoisenFlask variants and ShootingObject adjusted
+feat/refactor: Character variables and flags sorted by topic and tidied up
 
-- Offsets for PoisenFlaskLeft, PoisenFlaskRight and ShootingObject added to DrawableObject.offsets
-- resolveOffsetClassName added to assign based on variant
-- getObjectHitbox and getObjectHitboxes adjusted
-- setHitbox extended by poisenFlasks
+- idle lang combined with initSleep sleep via startSleepAnimation added
+- resetSleepStatus optimized and set
+- Character variables and flags sorted thematically and tidied up
+- Variables for dimensions, status, animation and shooting logically grouped
+- Constructor and methods adapted accordingly
+- Order improved for a better overview and faster maintainability

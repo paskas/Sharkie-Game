@@ -1,15 +1,17 @@
 class Endboss extends MovableObject {
   height = 530;
   width = 500;
-  hadFirstContact = false;
-  dead = false;
-  static life = 5;
 
   currentAnimation = null;
   animationInterval = null;
   combatLoopInterval = null;
+
   lastAttackTime = 0;
   attackCooldown = 1500;
+
+  hadFirstContact = false;
+  dead = false;
+  static life = 5;
 
   IMAGES_SPAWNING = [
     './img/enemies/killer_whale_endboss/incoming/1.png',
