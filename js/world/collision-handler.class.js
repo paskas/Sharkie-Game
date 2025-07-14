@@ -16,7 +16,6 @@ class CollisionHandler {
     this.world.shootingObject.forEach(bubble => {
       this.world.level.enemies.forEach(enemy => {
         if (!bubble.isColliding(enemy)) return;
-
         if (enemy instanceof Endboss) {
           this.world.bubbleHandler.handleBubbleCollisionWithEndboss(bubble, enemy);
         } else {
@@ -26,12 +25,15 @@ class CollisionHandler {
     });
   }
 
-
   checkCoinCollisions() {
     this.world.level.coins.forEach((coin, index) => {
       if (this.world.character.isColliding(coin)) {
         Coin.coinCount++;
         this.world.level.coins.splice(index, 1);
+        if ([10, 20, 30].includes(Coin.coinCount)) {
+          PoisenFlask.flaskCount++;
+        }
+        this.world.coinCounter.updateImage(Coin.coinCount);
       }
     });
   }

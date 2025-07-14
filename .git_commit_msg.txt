@@ -1,6 +1,7 @@
-feat: damage detection for PufferFish added and character life loss adjusted
+feat: coin bonus system and glowing symbol at 30 coins
 
-- BubbleHandler handleBubbleDamage extended to include PufferFish with bubbleLife
-- new damage handling methods introduced for JellyFish and PufferFish
-- BufferFishManager bubbleLife added
-- MovableObject charHitt now uses characterDamage with enemy status evaluation
+- bonus PoisenFlask added to CollisionHandler
+- updateImage added to CoinCounter to switch to glowing icon
+- adjusted size and position of CoinCounter icon when glowing
+- optimized image switching with internal isGlowing flag
+- restructuring of addPoisenFlasks to addLeftFlasks and addRightFlasks for better separation

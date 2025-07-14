@@ -10,7 +10,7 @@ class LevelManager {
         countsJelly: { purple: 3, yellow: 2 },
         sunlights: 1,
         barrier: 1,
-        coinsCount: 11,
+        coinsCount: 13,
         coinsArcCount: 3,
         flasksCount: { FlaskLeft: 3, FlaskRight: 2 },
         endboss: new Endboss(world, canvas)

@@ -154,26 +154,35 @@ class Level extends DrawableObject {
   }
 
   addPoisenFlasks(counts) {
+    this.addLeftFlasks(counts['FlaskLeft']);
+    this.addRightFlasks(counts['FlaskRight']);
+  }
+
+  addLeftFlasks(count) {
     const leftCoords = [
-      { x: 890, y: 410 },
-      { x: 1000, y: 410 },
-      { x: 3000, y: 300 }
+      { x: 880, y: 382 },
+      { x: 1500, y: 358 },
+      { x: 3130, y: 355 }
     ];
-    const rightCoords = [
-      { x: 1890, y: 300 },
-      { x: 2000, y: 300 }
-    ];
-    for (let i = 0; i < counts['FlaskLeft']; i++) {
+    for (let i = 0; i < count; i++) {
       let coord = leftCoords[i];
       if (coord) {
         this.poisonFlasks.push(new PoisenFlask(coord.x, coord.y, 'left'));
       }
     }
-    for (let i = 0; i < counts['FlaskRight']; i++) {
+  }
+
+  addRightFlasks(count) {
+    const rightCoords = [
+      { x: 1900, y: 310 },
+      { x: 2300, y: 360 }
+    ];
+    for (let i = 0; i < count; i++) {
       let coord = rightCoords[i];
       if (coord) {
         this.poisonFlasks.push(new PoisenFlask(coord.x, coord.y, 'right'));
       }
     }
   }
+
 }

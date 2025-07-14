@@ -32,4 +32,19 @@ class CoinCounter extends DrawableObject {
     ctx.fillText(`${count}`, textX, textY);
     ctx.strokeText(`${count}`, textX, textY);
   }
+
+  updateImage(count) {
+    if (count >= 30) {
+      this.x = 0;
+      this.y = 40;
+      this.width = 80;
+      this.height = 80;
+      this.textOffsetX = 75;
+      this.textOffsetY = 50;
+      this.loadImage('./img/UI/status/status_coin_glowing.png');
+    } else {
+      this.loadImage('./img/UI/status/status_coin.png');
+    }
+  }
+
 }

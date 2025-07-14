@@ -4,12 +4,12 @@ class Coin extends MovableObject {
   static coinCount = 0;
 
   static positionXcoin = [
-    500, 600, 1200, 1300, 2500, 2600, 2700, 3600, 3700, 3800
+    400, 500, 600, 1200, 1300, 2500, 2600, 2700, 2800, 3500, 3600, 3700, 3800
   ];
 
   static coinArcs = [
     { x: 700, y: 350, count: 5 },
-    { x: 1600, y: 270, count: 7 },
+    { x: 1600, y: 300, count: 7 },
     { x: 2950, y: 350, count: 5 }
   ];
 
