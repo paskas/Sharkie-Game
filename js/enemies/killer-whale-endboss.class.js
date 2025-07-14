@@ -9,6 +9,9 @@ class Endboss extends MovableObject {
   lastAttackTime = 0;
   attackCooldown = 1500;
 
+  isHurtByBubble = 0;
+  isHurtByPoisenbubble = 0;
+
   hadFirstContact = false;
   dead = false;
   static life = 5;
@@ -144,6 +147,12 @@ class Endboss extends MovableObject {
     }, 100);
   }
 
+  startHurtAnimation() {
+    this.playAnimationOnce(this.IMAGES_HURT, () => {
+      this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
+    }, 100);
+  }
+
   isInAttackRange(x, y) {
     let offsetX = 260 + 55;
     let offsetY = 90 + 35;
@@ -204,6 +213,39 @@ class Endboss extends MovableObject {
       this.y += this.speed;
     } else {
       this.y = this.maxY;
+    }
+  }
+
+  handlePoisenBubbleHit() {
+    this.isHurtByPoisenbubble++;
+    if (this.isHurtByPoisenbubble >= 1) {
+      if (!this.isInDamagePhase()) {
+        this.lastHit = new Date().getTime();
+        this.loseLife();
+      }
+      this.isHurtByPoisenbubble = 0;
+    }
+  }
+
+  handleBubbleHit() {
+    this.isHurtByBubble++;
+    if (this.isHurtByBubble >= 3) {
+      if (!this.isInDamagePhase()) {
+        this.lastHit = new Date().getTime();
+        this.loseLife();
+      }
+      this.isHurtByBubble = 0;
+    }
+  }
+
+  loseLife() {
+    if (Endboss.life > 0) {
+      Endboss.life--;
+      this.startHurtAnimation();
+      if (Endboss.life <= 0) {
+        this.canDealDmg = false;
+        this.die();
+      }
     }
   }
 }

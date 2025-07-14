@@ -135,19 +135,7 @@ class MovableObject extends DrawableObject {
       }
       this.lastHit = new Date().getTime();
       this.charakterDamage(enemy)
-      if (this.world && this.world.handleDeath) {
-        this.world.handleDeath();
-      }
-    }
-  }
-
-  bossHit() {
-    if (!this.isInDamagePhase()) {
-      this.lastHit = new Date().getTime();
-      Endboss.life--;
-      if (this.world && this.world.handleDeath) {
-        this.world.handleDeath();
-      }
+      this.checkCharDeath();
     }
   }
 
@@ -159,6 +147,11 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  checkCharDeath() {
+    if (Character.life <= 0 && !this.dead) {
+      this.die();
+    }
+  }
 
   isInDamagePhase() {
     let timeSinceLastHit = new Date().getTime() - this.lastHit;

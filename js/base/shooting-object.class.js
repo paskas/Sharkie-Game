@@ -32,6 +32,7 @@ class ShootingObject extends MovableObject {
     this.height = 60;
 
     this.isUsed = false;
+    this.isPoisenBubble = isPoisend;
 
     this.initBubbleImages(isPoisend);
     this.loadImages(this.IMAGES_SPLASHBUBBLE);

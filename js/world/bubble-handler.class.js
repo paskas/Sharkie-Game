@@ -15,7 +15,11 @@ class BubbleHandler {
     if (bubble.isUsed) return;
     bubble.isUsed = true;
     this.handleBubbleHit(bubble);
-    enemy.bossHit();
+    if (bubble.isPoisenBubble) {
+      enemy.handlePoisenBubbleHit();
+    } else {
+      enemy.handleBubbleHit();
+    }
   }
 
   handleBubbleDamage(enemy) {
