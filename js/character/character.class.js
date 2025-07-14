@@ -16,6 +16,9 @@ class Character extends MovableObject {
 
   isShooting = false;
   shootPoisend = false;
+  shootKeyReleased = true;
+  poisenShootKeyReleased = true;
+  currentShotPoisoned = false;
   isPoisendByHit = false;
   isShockByHit = false;
   lastShootTime = Date.now();
@@ -231,7 +234,7 @@ class Character extends MovableObject {
   }
 
   shootAnimation() {
-    const images = this.shootPoisend ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
+    const images = this.currentShotPoisoned ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
     this.playAnimation(images);
   }
 
@@ -341,36 +344,49 @@ class Character extends MovableObject {
   }
 
   runShoot() {
-    let shootKeyReleased = true;
     setInterval(() => {
       if (!this.world || this.dead || this.isInDamagePhase()) return;
       const kb = this.world.keyboard;
-      if (!kb.SHOOT) shootKeyReleased = true;
-      if (kb.SHOOT && shootKeyReleased && !this.isShooting) {
-        shootKeyReleased = false;
-        this.resetSleepStatus();
-        this.startShootingSequence();
-      }
+      this.triggerBubbleShoot(kb);
+      this.triggerPoisenBubbleShoot(kb);
     }, 1000 / 60);
   }
 
-  startShootingSequence() {
+  triggerBubbleShoot(kb) {
+    if (!kb.SHOOT) this.shootKeyReleased = true;
+    if (kb.SHOOT && this.shootKeyReleased && !this.isShooting) {
+      this.shootKeyReleased = false;
+      this.resetSleepStatus();
+      this.startShootingSequence(false);
+    }
+  }
+
+  triggerPoisenBubbleShoot(kb) {
+    if (!kb.POISENSHOOT) this.poisenShootKeyReleased = true;
+    if (kb.POISENSHOOT && this.poisenShootKeyReleased && !this.isShooting && this.shootPoisend) {
+      this.poisenShootKeyReleased = false;
+      this.resetSleepStatus();
+      this.startShootingSequence(true);
+    }
+  }
+
+  startShootingSequence(isPoisendShoot) {
     this.isShooting = true;
-    const isPoisend = this.shootPoisend;
-    const shootFrames = isPoisend ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
+    this.currentShotPoisoned = isPoisendShoot;
+    const shootFrames = isPoisendShoot ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
     const duration = shootFrames * 120;
     setTimeout(() => {
-      this.shootBubble(duration);
+      this.shootBubble(isPoisendShoot);
       this.lastShootTime = Date.now();
       this.isShooting = false;
     }, duration);
   }
 
-  shootBubble() {
+  shootBubble(isPoisendShoot) {
     if (!this.world || !this.world.shootingObject) return;
     const x = this.otherDirection ? this.x : this.x + this.width - 50;
     const y = this.y + this.height / 2;
-    const bubble = new ShootingObject(this, x, y, this.otherDirection, this.shootPoisend);
+    const bubble = new ShootingObject(this, x, y, this.otherDirection, isPoisendShoot);
     this.world.shootingObject.push(bubble);
   }
 }

@@ -3,8 +3,8 @@ class Keyboard {
   RIGHT = false;
   UP = false;
   DOWN = false;
-  TAILWHIP = false;
   SHOOT = false;
+  POISENSHOOT = false;
 
   constructor() {
     this.initKeyboardControl();
@@ -37,8 +37,8 @@ class Keyboard {
         case 'e':
           this.SHOOT = isPressed;
           break;
-        case 'space':
-          this.TAILWHIP = isPressed;
+        case ' ':
+          this.POISENSHOOT = isPressed;
           break;
       }
     }
