@@ -78,7 +78,6 @@ class Endboss extends MovableObject {
 
     this.speed = 3;
     this.poisoned = true;
-    this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
 
     this.img = new Image();
@@ -219,7 +218,7 @@ class Endboss extends MovableObject {
   handlePoisenBubbleHit() {
     this.isHurtByPoisenbubble++;
     if (this.isHurtByPoisenbubble >= 1) {
-      if (!this.isInDamagePhase()) {
+      if (Endboss.life > 0 && !this.isInDamagePhase()) {
         this.lastHit = new Date().getTime();
         this.loseLife();
       }
@@ -230,7 +229,7 @@ class Endboss extends MovableObject {
   handleBubbleHit() {
     this.isHurtByBubble++;
     if (this.isHurtByBubble >= 3) {
-      if (!this.isInDamagePhase()) {
+      if (Endboss.life > 0 && !this.isInDamagePhase()) {
         this.lastHit = new Date().getTime();
         this.loseLife();
       }
@@ -243,7 +242,6 @@ class Endboss extends MovableObject {
       Endboss.life--;
       this.startHurtAnimation();
       if (Endboss.life <= 0) {
-        this.canDealDmg = false;
         this.die();
       }
     }

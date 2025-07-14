@@ -184,6 +184,7 @@ class MovableObject extends DrawableObject {
   }
 
   die() {
+    if (this.dead) return;
     this.dead = true;
     if (this.animationInterval) clearInterval(this.animationInterval);
     if (this.playAnimationOnce) {
