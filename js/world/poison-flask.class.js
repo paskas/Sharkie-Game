@@ -4,22 +4,22 @@ class PoisenFlask extends MovableObject {
   static flaskCount = 0;
 
   IMAGES_FLASKS = [
-    './img/UI/poisen_flasks/poisen_flask_animated/1.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/2.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/3.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/4.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/5.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/6.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/7.png',
-    './img/UI/poisen_flasks/poisen_flask_animated/8.png'
+    './img/UI/poison_flasks/poison_flask_animated/1.png',
+    './img/UI/poison_flasks/poison_flask_animated/2.png',
+    './img/UI/poison_flasks/poison_flask_animated/3.png',
+    './img/UI/poison_flasks/poison_flask_animated/4.png',
+    './img/UI/poison_flasks/poison_flask_animated/5.png',
+    './img/UI/poison_flasks/poison_flask_animated/6.png',
+    './img/UI/poison_flasks/poison_flask_animated/7.png',
+    './img/UI/poison_flasks/poison_flask_animated/8.png'
   ];
 
   IMAGES_FLASKLEFT = [
-    './img/UI/poisen_flasks/poisen_flask_left_right/poisen_flask_dark_left.png',
+    './img/UI/poison_flasks/poison_flask_left_right/poison_flask_dark_left.png',
   ];
 
   IMAGES_FLASKRIGHT = [
-    './img/UI/poisen_flasks/poisen_flask_left_right/poisen_flask_dark_right.png',
+    './img/UI/poison_flasks/poison_flask_left_right/poison_flask_dark_right.png',
   ];
 
   constructor(x, y, variant) {
@@ -55,7 +55,7 @@ class PoisenFlask extends MovableObject {
       this.startAnimationFlask();
       setTimeout(() => {
         clearInterval(this.animationInterval);
-        this.world.level.poisenFlasks = this.world.level.poisenFlasks.filter(f => f !== this);
+        this.world.level.poisonFlasks = this.world.level.poisonFlasks.filter(f => f !== this);
       }, 1500);
     }
   }

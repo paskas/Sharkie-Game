@@ -27,7 +27,7 @@ class World {
     this.healthBarCharacter = new HealthBarCharacter();
     this.healthBarEndboss = new HealthBarEndboss();
     this.coinCounter = new CoinCounter();
-    this.poisenFlaskCounter = new PoisenFlaskCounter();
+    this.poisonFlaskCounter = new PoisenFlaskCounter();
     this.gameHelper = new GameHelper(this);
     this.levelManager = new LevelManager(this, this.canvas);
     this.collisionHandler = new CollisionHandler(this);
@@ -52,7 +52,7 @@ class World {
     this.level.sunlights.forEach(obj => obj.showHitbox = true);
     this.level.barrier.forEach(obj => obj.showHitbox = true);
     this.level.coins.forEach(obj => obj.showHitbox = true);
-    this.level.poisenFlasks.forEach(obj => obj.showHitbox = true);
+    this.level.poisonFlasks.forEach(obj => obj.showHitbox = true);
   }
 
   get level() {

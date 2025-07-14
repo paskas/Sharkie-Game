@@ -11,7 +11,7 @@ class PoisenFlaskCounter extends DrawableObject {
     this.textOffsetY = 70;
 
     this.img = new Image();
-    this.loadImage('./img/UI/status/status_poisenFlask.png');
+    this.loadImage('./img/UI/status/status_poisonFlask.png');
   }
 
   draw(ctx, count) {

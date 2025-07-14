@@ -9,11 +9,11 @@ class ShootingObject extends MovableObject {
   ];
 
   IMAGES_POISENBUBBLE = [
-    './img/UI/bubbles/poisen/poisen_b1.png',
-    './img/UI/bubbles/poisen/poisen_b2.png',
-    './img/UI/bubbles/poisen/poisen_b3.png',
-    './img/UI/bubbles/poisen/poisen_b4.png',
-    './img/UI/bubbles/poisen/poisen_b5.png',
+    './img/UI/bubbles/poison/poison_b1.png',
+    './img/UI/bubbles/poison/poison_b2.png',
+    './img/UI/bubbles/poison/poison_b3.png',
+    './img/UI/bubbles/poison/poison_b4.png',
+    './img/UI/bubbles/poison/poison_b5.png',
   ];
 
   IMAGES_SPLASHBUBBLE = [

@@ -7,7 +7,7 @@ class Level extends DrawableObject {
   sunlights = [];
   barrier = [];
   coins = [];
-  poisenFlasks = [];
+  poisonFlasks = [];
 
   backgroundObjects = [
     new BackgroundObject('./img/backgrounds/water/2.png', -960),
@@ -166,13 +166,13 @@ class Level extends DrawableObject {
     for (let i = 0; i < counts['FlaskLeft']; i++) {
       let coord = leftCoords[i];
       if (coord) {
-        this.poisenFlasks.push(new PoisenFlask(coord.x, coord.y, 'left'));
+        this.poisonFlasks.push(new PoisenFlask(coord.x, coord.y, 'left'));
       }
     }
     for (let i = 0; i < counts['FlaskRight']; i++) {
       let coord = rightCoords[i];
       if (coord) {
-        this.poisenFlasks.push(new PoisenFlask(coord.x, coord.y, 'right'));
+        this.poisonFlasks.push(new PoisenFlask(coord.x, coord.y, 'right'));
       }
     }
   }

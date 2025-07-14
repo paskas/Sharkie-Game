@@ -13,7 +13,7 @@ class DrawHandler {
     this.addObjectsToMap(this.world.level.sunlights);
     this.addObjectsToMap(this.world.level.barrier);
     this.addObjectsToMap(this.world.level.coins);
-    this.addObjectsToMap(this.world.level.poisenFlasks);
+    this.addObjectsToMap(this.world.level.poisonFlasks);
     this.addObjectsToMap(this.world.level.enemies);
     this.addObjectsToMap(this.world.shootingObject);
     this.addToMap(this.world.character);
@@ -22,7 +22,7 @@ class DrawHandler {
     this.addToMap(this.world.healthBarCharacter);
     this.triggerEndbossHealthBar();
     this.world.coinCounter.draw(this.ctx, Coin.coinCount);
-    this.world.poisenFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
+    this.world.poisonFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
 
     requestAnimationFrame(() => this.draw());
   }

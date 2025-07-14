@@ -17,7 +17,7 @@ class Character extends MovableObject {
   isShooting = false;
   shootPoisend = false;
   shootKeyReleased = true;
-  poisenShootKeyReleased = true;
+  poisonShootKeyReleased = true;
   currentShotPoisoned = false;
   isPoisendByHit = false;
   isShockByHit = false;
@@ -91,14 +91,14 @@ class Character extends MovableObject {
   ];
 
   IMAGES_SHOOTPOISEN = [
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/1.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/2.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/3.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/4.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/5.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/6.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/7.png',
-    './img/character/attack/bubble_trap/attack_poisen_bubbles/8.png'
+    './img/character/attack/bubble_trap/attack_poison_bubbles/1.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/2.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/3.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/4.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/5.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/6.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/7.png',
+    './img/character/attack/bubble_trap/attack_poison_bubbles/8.png'
   ];
 
   IMAGES_POISEND = [
@@ -209,7 +209,7 @@ class Character extends MovableObject {
   startDamageAnimation() {
     this.setAnimation('damage', () => {
       if (this.isShockByHit) this.shockAnimation();
-      else if (this.isPoisendByHit) this.poisendAnimation();
+      else if (this.isPoisendByHit) this.poisonedAnimation();
     }, 140);
     setTimeout(() => {
       this.isShockByHit = false;
@@ -238,7 +238,7 @@ class Character extends MovableObject {
     this.playAnimation(images);
   }
 
-  poisendAnimation() {
+  poisonedAnimation() {
     this.playAnimation(this.IMAGES_POISEND);
   }
 
@@ -362,9 +362,9 @@ class Character extends MovableObject {
   }
 
   triggerPoisenBubbleShoot(kb) {
-    if (!kb.POISENSHOOT) this.poisenShootKeyReleased = true;
-    if (kb.POISENSHOOT && this.poisenShootKeyReleased && !this.isShooting && this.shootPoisend) {
-      this.poisenShootKeyReleased = false;
+    if (!kb.POISENSHOOT) this.poisonShootKeyReleased = true;
+    if (kb.POISENSHOOT && this.poisonShootKeyReleased && !this.isShooting && this.shootPoisend) {
+      this.poisonShootKeyReleased = false;
       this.resetSleepStatus();
       this.startShootingSequence(true);
     }

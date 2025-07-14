@@ -128,8 +128,8 @@ class MovableObject extends DrawableObject {
 
   charHitt(enemy) {
     if (!this.isInDamagePhase()) {
-      if (enemy.poisend) {
-        this.poisenHit(enemy);
+      if (enemy.poisoned) {
+        this.poisonHit(enemy);
       } else if (enemy.shock) {
         this.shockHit(enemy);
       }
@@ -158,8 +158,8 @@ class MovableObject extends DrawableObject {
     return timeSinceLastHit < 1000;
   }
 
-  poisenHit(enemy) {
-    if (enemy.poisend) {
+  poisonHit(enemy) {
+    if (enemy.poisoned) {
       this.isPoisendByHit = true;
       this.isShockByHit = false;
     }
@@ -180,7 +180,7 @@ class MovableObject extends DrawableObject {
     flask.isLost = true;
     flask.world = this.world;
     flask.startFallingFlask();
-    this.world.level.poisenFlasks.push(flask);
+    this.world.level.poisonFlasks.push(flask);
   }
 
   die() {

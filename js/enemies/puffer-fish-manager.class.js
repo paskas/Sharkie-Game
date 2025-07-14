@@ -12,7 +12,7 @@ class PufferFishManager extends MovableObject {
     this.width = 140;
 
     this.speed = speed;
-    this.poisend = true;
+    this.poisoned = true;
     this.canDealDmg = true;
     this.bubbleLife = 2;
 
