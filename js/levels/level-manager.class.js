@@ -5,13 +5,16 @@ class LevelManager {
   constructor(world, canvas) {
     this.world = world;
     this.levels = [
-      new Level(
-        { green: 4, red: 2, orange: 3 },
-        { purple: 3, yellow: 2 },
-        1, 1, 11, 3,
-        { FlaskLeft: 3, FlaskRight: 2 },
-        new Endboss(world, canvas)
-      )
+      new Level({
+        countsPuff: { green: 4, red: 2, orange: 3 },
+        countsJelly: { purple: 3, yellow: 2 },
+        sunlights: 1,
+        barrier: 1,
+        coinsCount: 11,
+        coinsArcCount: 3,
+        flasksCount: { FlaskLeft: 3, FlaskRight: 2 },
+        endboss: new Endboss(world, canvas)
+      })
     ];
   }
 

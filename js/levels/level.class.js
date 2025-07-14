@@ -39,25 +39,45 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
 
-  constructor(countsPuff, countsJelly, sunlights, barrier, coinsCount, arcCount, flasksCount, endboss) {
+  constructor(setup) {
     super();
     EnemyPositionManager.reset();
     this.world = null;
-    this.addEnemies(countsPuff, countsJelly, endboss);
-    this.addSunlights(sunlights);
-    this.addBarrierReef(barrier);
-    this.addCoins(coinsCount);
-    this.addCoinArcs(arcCount);
-    this.addPoisenFlasks(flasksCount);
+
+    const {
+      countsPuff = { green: 0, red: 0, orange: 0 },
+      countsJelly = { purple: 0, yellow: 0 },
+      sunlights = 0,
+      barrier = 0,
+      coinsCount = 0,
+      coinsArcCount = 0,
+      flasksCount = { FlaskLeft: 0, FlaskRight: 0 },
+      endboss = null
+    } = setup;
+
+    this.initEnemies(countsPuff, countsJelly, endboss);
+    this.initLevelElements(sunlights, barrier);
+    this.initCollectibles(coinsCount, coinsArcCount, flasksCount);
   }
 
-  addEnemies(countsPuff, countsJelly, endboss) {
+  initEnemies(countsPuff, countsJelly, endboss) {
     this.addPuffer(countsPuff);
     this.addPurpleXjelly(countsJelly);
     this.addYellowXjelly(countsJelly);
     if (endboss) {
       this.enemies.push(endboss);
     }
+  }
+
+  initLevelElements(sunlights, barrier) {
+    this.addSunlights(sunlights);
+    this.addBarrierReef(barrier);
+  }
+
+  initCollectibles(coinsCount, coinsArcCount, flasksCount) {
+    this.addCoins(coinsCount);
+    this.addCoinArcs(coinsArcCount);
+    this.addPoisenFlasks(flasksCount);
   }
 
   addPuffer(counts) {
