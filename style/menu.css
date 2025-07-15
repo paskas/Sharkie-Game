@@ -36,11 +36,9 @@
 }
 
 .game-overlay-btn {
-  background-image: url('../img/interface/overlay/fullscreen_btn.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: 20;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -51,12 +49,23 @@
 }
 
 .f-screen-btn {
-  background-image: url('../img/interface/overlay/fullscreen_btn.png');
   position: absolute;
-  top: 2%;
-  right: 1%;
   width: clamp(32px, 8vw, 60px);
   aspect-ratio: 1 / 1;
+}
+
+.f-screen-game-btn {
+  background-image: url('../img/interface/overlay/fullscreen_btn.png');
+  z-index: 1;
+  top: 2%;
+  right: 45%;
+}
+
+.f-screen-menu-btn {
+  background-image: url('../img/interface/overlay/fullscreen_btn.png');
+  top: 2%;
+  right: 1%;
+  z-index: 2;
 }
 
 .play-btn {
@@ -67,6 +76,7 @@
   height: clamp(68px, 14vw, 140px);
   width: clamp(60px, 12vw, 120px);
   aspect-ratio: 1 / 1;
+  z-index: 2;
 }
 
 .controls {
@@ -82,11 +92,12 @@
   background-image: url('../img/interface/overlay/control_btn.png');
   width: clamp(32px, 8vw, 60px);
   aspect-ratio: 1 / 1;
+  z-index: 2;
 }
 
 .info-btn {
   background-image: url('../img/interface/overlay/info_btn.png');
   width: clamp(32px, 8vw, 60px);
   aspect-ratio: 1 / 1;
+  z-index: 2;
 }
-

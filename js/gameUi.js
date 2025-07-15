@@ -15,11 +15,11 @@ function clearOverlayContent() {
 
 function mainMenuOverlayHTML() {
   return `
-<div class="game-overlay">
+<div id="overlayContainer" class="game-overlay">
   <div class="title-sign">
     <h1>Sharkie</h1>
   </div>
-  <button id="toggleFullScreen" class="game-overlay-btn f-screen-btn" onclick="fullscreen()"></button>
+  <button class="game-overlay-btn f-screen-btn f-screen-menu-btn" onclick="fullscreen('menu');"></button>
   <button class="game-overlay-btn play-btn" onclick="playGame()"></button>
   <div class="controls">
     <button class="game-overlay-btn control-btn"></button>

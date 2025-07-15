@@ -17,10 +17,15 @@ function playGame() {
   clearOverlayContent();
 }
 
-function fullscreen() {
-  let fullscreen = document.getElementById('gameContainer');
+function fullscreen(mode = 'game') {
+  let container;
   let canvas = document.getElementById('canvas');
-  enterFullscreen(fullscreen, canvas);
+  if (mode === 'menu') {
+    container = document.getElementById('overlayContainer');
+  } else {
+    container = document.getElementById('gameContainer');
+  }
+  enterFullscreen(container, canvas);
 }
 
 function enterFullscreen(container, canvas) {
