@@ -40,7 +40,7 @@ canvas {
 h1 {
   color: #65e8ef;
   z-index: 10;
-  font-size: 48px;
+  font-size: clamp(18px, 4vw, 48px);
   letter-spacing: 4px;
   text-shadow: 4px 4px 6px rgba(0,0,0,0.5);
 }

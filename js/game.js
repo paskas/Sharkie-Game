@@ -3,20 +3,18 @@ let world;
 let keyboard = new Keyboard();
 
 function initGame() {
+  showGameMenu();
+  initWorld();
+}
+
+function initWorld() {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
 }
 
 function playGame() {
   world.gameStarted = true;
-  removeOverlay();
-}
-
-function removeOverlay() {
-  const ifaceContainer = document.getElementById('iface');
-  if (ifaceContainer) {
-    ifaceContainer.classList.add('d-none');
-  }
+  clearOverlayContent();
 }
 
 function fullscreen() {

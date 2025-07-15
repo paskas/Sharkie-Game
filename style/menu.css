@@ -1,40 +1,13 @@
 .game-container {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 }
 
-.menu-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 20;
-  height: 423px;
-}
-
-.play-container {
-  margin: 70px 0px 0px 70px;
-
-}
-
-.info-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 8px;
-  gap: 16px;
-}
-
-.iface-overlay {
+.game-overlay {
   max-width: 960px;
   width: 100%;
   max-height: 540px;
   height: 100%;
-  position: fixed;
+  position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   background-image: url('../img/interface/overlay/overlay_menu.png');
   background-position: center;
@@ -49,20 +22,20 @@
   height: 100vh;
 }
 
-.titleSign {
+.title-sign {
   background-image: url('../img/interface/overlay/titleSign.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 274px;
-  height: 100px;
+  width: clamp(120px, 32vw, 274px);
+  height: clamp(45px, 10vw, 100px);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 8px;
 }
 
-.iface-btn {
+.game-overlay-btn {
   background-image: url('../img/interface/overlay/fullscreen_btn.png');
   background-position: center;
   background-repeat: no-repeat;
@@ -73,33 +46,47 @@
   background-color: transparent;
 }
 
-.iface-btn:hover {
+.game-overlay-btn:hover {
   transform: scale(1.1);
 }
 
 .f-screen-btn {
-  position: absolute;
   background-image: url('../img/interface/overlay/fullscreen_btn.png');
-  width: 60px;
-  height: 60px;
-  top: 8px;
-  right: 8px;
+  position: absolute;
+  top: 2%;
+  right: 1%;
+  width: clamp(32px, 8vw, 60px);
+  aspect-ratio: 1 / 1;
 }
 
 .play-btn {
   background-image: url('../img/interface/overlay/play_btn.png');
-  width: 120px;
-  height: 140px;
+  position: absolute;
+  top: 32%;
+  left: 14%;
+  height: clamp(68px, 14vw, 140px);
+  width: clamp(60px, 12vw, 120px);
+  aspect-ratio: 1 / 1;
+}
+
+.controls {
+  position: absolute;
+  left: 1%;
+  bottom: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .control-btn {
   background-image: url('../img/interface/overlay/control_btn.png');
-  width: 60px;
-  height: 60px;
+  width: clamp(32px, 8vw, 60px);
+  aspect-ratio: 1 / 1;
 }
 
 .info-btn {
   background-image: url('../img/interface/overlay/info_btn.png');
-  width: 60px;
-  height: 60px;
+  width: clamp(32px, 8vw, 60px);
+  aspect-ratio: 1 / 1;
 }
+
