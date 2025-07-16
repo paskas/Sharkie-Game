@@ -32,6 +32,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   margin: 8px;
 }
 
@@ -71,7 +72,7 @@
 .play-btn {
   background-image: url('../img/interface/overlay/play_btn.png');
   position: absolute;
-  top: 32%;
+  top: 37%;
   left: 14%;
   height: clamp(68px, 14vw, 140px);
   width: clamp(60px, 12vw, 120px);
@@ -97,6 +98,45 @@
 
 .info-btn {
   background-image: url('../img/interface/overlay/info_btn.png');
+  width: clamp(32px, 8vw, 60px);
+  aspect-ratio: 1 / 1;
+  z-index: 2;
+}
+
+.end-title {
+  width: clamp(120px, 32vw, 314px);
+  height: clamp(45px, 10vw, 114px);
+  margin: 0px;
+}
+
+.end-title-control {
+  position: absolute;
+  top: 37%;
+  left: 34%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: clamp(8px, 2vw, 16px);
+}
+
+.end-control-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: clamp(120px, 20vw, 160px);
+  gap: clamp(16px, 4vw, 32px);
+}
+
+.repeat-btn {
+  background-image: url('../img/interface/overlay/tryAgain_btn.png');
+  width: clamp(32px, 8vw, 60px);
+  aspect-ratio: 1 / 1;
+  z-index: 2;
+}
+
+.back-menu-btn {
+  background-image: url('../img/interface/overlay/home_btn.png');
   width: clamp(32px, 8vw, 60px);
   aspect-ratio: 1 / 1;
   z-index: 2;

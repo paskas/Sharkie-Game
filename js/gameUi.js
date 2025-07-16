@@ -13,6 +13,10 @@ function clearOverlayContent() {
   setGameOverlay('gameOverlay', '');
 }
 
+function showEndscreen(){
+  setGameOverlay('gameOverlay', gameOverOverlayHTML());
+}
+
 function mainMenuOverlayHTML() {
   return `
 <div id="overlayContainer" class="game-overlay">
@@ -24,6 +28,23 @@ function mainMenuOverlayHTML() {
   <div class="controls">
     <button class="game-overlay-btn control-btn"></button>
     <button class="game-overlay-btn info-btn"></button>
+  </div>
+  `
+}
+
+function gameOverOverlayHTML() {
+  return `
+<div id="endscreenOverlay">
+  <div class="game-overlay ">
+    <div class="end-title-control">
+      <div class="title-sign end-title">
+        <h1>Game Over</h1>
+      </div>
+      <div class="end-control-btn">
+        <button class="game-overlay-btn repeat-btn"></button>
+        <button class="game-overlay-btn back-menu-btn"></button>
+      </div>
+    </div>
   </div>
   `
 }

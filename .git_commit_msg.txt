@@ -1,7 +1,5 @@
-feat: coin bonus system and glowing symbol at 30 coins
+feat: added end screen with game over display and control buttons
 
-- bonus PoisenFlask added to CollisionHandler
-- updateImage added to CoinCounter to switch to glowing icon
-- adjusted size and position of CoinCounter icon when glowing
-- optimized image switching with internal isGlowing flag
-- restructuring of addPoisenFlasks to addLeftFlasks and addRightFlasks for better separation
+- showEndscreen template for game overlay created
+- buttons for repeat and back to menu prepared
+- die method shortened and end screen trigger adapted

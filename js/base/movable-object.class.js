@@ -189,9 +189,8 @@ class MovableObject extends DrawableObject {
     if (this.animationInterval) clearInterval(this.animationInterval);
     if (this.playAnimationOnce) {
       this.playAnimationOnce(this.IMAGES_DEAD, () => {
-        if (!(this instanceof Character) && !(this instanceof Endboss)) {
-          this.ifDeadMoveUp();
-        }
+        this.ifDeadMoveUp();
+        if (this instanceof Character) setTimeout(showEndscreen, 1000);
       }, 100);
     }
   }
