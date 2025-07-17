@@ -25,6 +25,14 @@ function restartLevel() {
   clearOverlayContent();
 }
 
+function backToMenu() {
+  stopRunningWorld();
+  resetGameState();
+  reloadLevel();
+  startWorldFresh();
+  showGameMenu();
+}
+
 function stopRunningWorld() {
   if (world) {
     world.clearWorld();
