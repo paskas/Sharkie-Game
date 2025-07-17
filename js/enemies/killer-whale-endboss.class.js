@@ -118,7 +118,7 @@ class Endboss extends MovableObject {
 
   startCombatLoop() {
     this.combatLoopInterval = setInterval(() => {
-      if (this.dead || !this.world?.character) return;
+      if (this.dead || !this.world?.character || this.isInDamagePhase()) return;
       let { distanceX, distanceY } = this.getDistanceToCharacter();
       this.otherDirection = distanceX > 0;
       if (this.isInAttackRange(distanceX, distanceY)) {
@@ -132,7 +132,7 @@ class Endboss extends MovableObject {
   }
 
   initAttackPhase() {
-    if (this.dead) return;
+    if (this.dead || this.isInDamagePhase()) return;
     this.clearAnimationInterval();
     let { distanceX, distanceY } = this.getDistanceToCharacter();
     let { directionX, directionY } = this.getMoveDirection(distanceX, distanceY);
@@ -147,6 +147,7 @@ class Endboss extends MovableObject {
   }
 
   startHurtAnimation() {
+    this.lastHit = Date.now();
     this.playAnimationOnce(this.IMAGES_HURT, () => {
       this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
     }, 100);

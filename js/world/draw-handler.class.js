@@ -1,5 +1,5 @@
 class DrawHandler {
-  
+
   constructor(world) {
     this.world = world;
     this.ctx = world.ctx;
@@ -19,12 +19,13 @@ class DrawHandler {
     this.addToMap(this.world.character);
 
     this.ctx.translate(-this.world.camera_x, 0);
+    this.world.healthBarCharacter.updatingHealthBar();
     this.addToMap(this.world.healthBarCharacter);
     this.triggerEndbossHealthBar();
     this.world.coinCounter.draw(this.ctx, Coin.coinCount);
     this.world.poisonFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
 
-    requestAnimationFrame(() => this.draw());
+    this.world.animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
   triggerEndbossHealthBar() {

@@ -9,16 +9,16 @@ class HealthBarCharacter extends DrawableObject {
     './img/UI/healthbar/healthbar_char_100.png'
   ];
 
-  constructor() {
+  constructor(character) {
     super();
+    this.character = character;
     this.x = 0;
     this.y = -15;
     this.width = 290;
     this.height = 70;
-    
+
     this.img = new Image();
     this.loadImages(this.IMAGES_HEALTH);
-    this.updatingHealthBar();
   }
 
   updatingHealthBar() {
@@ -31,5 +31,4 @@ class HealthBarCharacter extends DrawableObject {
       this.img = image;
     }
   }
-
 }

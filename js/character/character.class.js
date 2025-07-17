@@ -123,8 +123,9 @@ class Character extends MovableObject {
     './img/character/dead/default_options/animated_horizontal/6.png'
   ];
 
-  constructor() {
+  constructor(world) {
     super();
+    this.world = world;
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_INITSLEEP);

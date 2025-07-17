@@ -41,8 +41,8 @@ function gameOverOverlayHTML() {
         <h1>Game Over</h1>
       </div>
       <div class="end-control-btn">
-        <button class="game-overlay-btn repeat-btn"></button>
-        <button class="game-overlay-btn back-menu-btn"></button>
+        <button class="game-overlay-btn repeat-btn" onclick="restartLevel()"></button>
+        <button class="game-overlay-btn back-menu-btn" onclick="backToMenu()"></button>
       </div>
     </div>
   </div>

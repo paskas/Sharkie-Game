@@ -42,9 +42,9 @@ class Level extends DrawableObject {
   constructor(setup) {
     super();
     EnemyPositionManager.reset();
-    this.world = null;
-
+    this.config = setup;
     const {
+      world = null,
       countsPuff = { green: 0, red: 0, orange: 0 },
       countsJelly = { purple: 0, yellow: 0 },
       sunlights = 0,
@@ -54,6 +54,7 @@ class Level extends DrawableObject {
       flasksCount = { FlaskLeft: 0, FlaskRight: 0 },
       endboss = null
     } = setup;
+    this.world = world;
 
     this.initEnemies(countsPuff, countsJelly, endboss);
     this.initLevelElements(sunlights, barrier);
@@ -83,7 +84,11 @@ class Level extends DrawableObject {
   addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {
-        this.enemies.push(this.createPufferFish(type));
+        let puffer = this.createPufferFish(type)
+        if (puffer?.initPosition) {
+          puffer.initPosition();
+        }
+        this.enemies.push(puffer);
       }
     });
   }

@@ -8,23 +8,23 @@ class World {
   healthBarCharacter;
   gameStarted = false;
   shootingObject = [];
+  animationFrameId = null;
 
   constructor(canvas, keyboard) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.keyboard = keyboard;
 
-    this.initGameObjects();
+    this.initWorldObjects();
     this.setHitbox();
-    this.setWorld();
 
     this.startDrawLoop();
     this.startWorldLoop();
   }
 
-  initGameObjects() {
-    this.character = new Character();
-    this.healthBarCharacter = new HealthBarCharacter();
+  initWorldObjects() {
+    this.character = new Character(this);
+    this.healthBarCharacter = new HealthBarCharacter(this.character);
     this.healthBarEndboss = new HealthBarEndboss();
     this.coinCounter = new CoinCounter();
     this.poisonFlaskCounter = new PoisenFlaskCounter();
@@ -33,17 +33,6 @@ class World {
     this.collisionHandler = new CollisionHandler(this);
     this.bubbleHandler = new BubbleHandler(this);
     this.drawHandler = new DrawHandler(this);
-  }
-
-  setWorld() {
-    this.character.world = this;
-    this.level.world = this;
-    this.level.enemies.forEach(enemy => {
-      enemy.world = this;
-      if (enemy.initPosition) {
-        enemy.initPosition();
-      }
-    });
   }
 
   setHitbox() {
@@ -64,7 +53,7 @@ class World {
   }
 
   startWorldLoop() {
-    setInterval(() => {
+    this.worldLoop = setInterval(() => {
       this.collisionHandler.checkCharacterEnemyCollisions();
       this.collisionHandler.checkBubbleEnemyCollisions();
       this.collisionHandler.checkCoinCollisions();
@@ -73,6 +62,17 @@ class World {
       this.handleSunlightAnimate();
       this.checkPoisenShootStatus();
     }, 1000 / 60);
+  }
+
+  clearWorld() {
+    if (this.worldLoop) {
+      clearInterval(this.worldLoop)
+      this.worldLoop = null;
+    }
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
   }
 
   handleSunlightAnimate() {
@@ -85,7 +85,7 @@ class World {
       if (!this.levelManager.isLastLevel()) {
         this.levelManager.loadNextLevel();
       } else {
-        this.levelManager.resetLevels();
+        this.levelManager.resetCurrentLevelIndex();
       }
       this.character.world = this;
     }
