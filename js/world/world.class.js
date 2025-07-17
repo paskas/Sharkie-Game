@@ -58,7 +58,6 @@ class World {
       this.collisionHandler.checkBubbleEnemyCollisions();
       this.collisionHandler.checkCoinCollisions();
       this.collisionHandler.checkPoisenFlasksCollisions();
-      this.handleLevelProgress();
       this.handleSunlightAnimate();
       this.checkPoisenShootStatus();
     }, 1000 / 60);
@@ -77,18 +76,6 @@ class World {
 
   handleSunlightAnimate() {
     this.level.sunlights.forEach(s => s.animate());
-  }
-
-  handleLevelProgress() {
-    const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
-    if (endboss?.dead) {
-      if (!this.levelManager.isLastLevel()) {
-        this.levelManager.loadNextLevel();
-      } else {
-        this.levelManager.resetCurrentLevelIndex();
-      }
-      this.character.world = this;
-    }
   }
 
   checkPoisenShootStatus() {

@@ -13,8 +13,12 @@ function clearOverlayContent() {
   setGameOverlay('gameOverlay', '');
 }
 
-function showEndscreen(){
-  setGameOverlay('gameOverlay', gameOverOverlayHTML());
+function showEndscreen(status = 'complete') {
+  if (status === 'gameOver') {
+    setGameOverlay('gameOverlay', gameOverOverlayHTML());
+  } else {
+    setGameOverlay('gameOverlay', levelCompleteOverlayHTML());
+  }
 }
 
 function mainMenuOverlayHTML() {
@@ -39,6 +43,23 @@ function gameOverOverlayHTML() {
     <div class="end-title-control">
       <div class="title-sign end-title">
         <h1>Game Over</h1>
+      </div>
+      <div class="end-control-btn">
+        <button class="game-overlay-btn repeat-btn" onclick="restartLevel()"></button>
+        <button class="game-overlay-btn back-menu-btn" onclick="backToMenu()"></button>
+      </div>
+    </div>
+  </div>
+  `
+}
+
+function levelCompleteOverlayHTML() {
+  return `
+<div id="endscreenOverlay">
+  <div class="game-overlay ">
+    <div class="end-title-control">
+      <div class="title-sign end-title">
+        <h1>Victory</h1>
       </div>
       <div class="end-control-btn">
         <button class="game-overlay-btn repeat-btn" onclick="restartLevel()"></button>

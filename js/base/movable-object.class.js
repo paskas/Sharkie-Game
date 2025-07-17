@@ -190,7 +190,20 @@ class MovableObject extends DrawableObject {
     if (this.playAnimationOnce) {
       this.playAnimationOnce(this.IMAGES_DEAD, () => {
         this.ifDeadMoveUp();
-        if (this instanceof Character) setTimeout(showEndscreen, 1000);
+        if (this instanceof Character) setTimeout(showEndscreen('gameOver'), 1000);
+      }, 100);
+    }
+  }
+
+  die() {
+    if (this.dead) return;
+    this.dead = true;
+    if (this.animationInterval) clearInterval(this.animationInterval);
+    if (this.playAnimationOnce) {
+      this.playAnimationOnce(this.IMAGES_DEAD, () => {
+        this.ifDeadMoveUp();
+        if (this instanceof Character) setTimeout(() => showEndscreen('gameOver'), 1000);
+        if (this instanceof Endboss) setTimeout(() => showEndscreen('complete'), 1000);
       }, 100);
     }
   }
