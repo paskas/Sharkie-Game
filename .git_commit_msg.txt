@@ -1,5 +1,7 @@
-feat: added end screen with game over display and control buttons
+feat/ui: optimized overlay and control layouts
 
-- showEndscreen template for game overlay created
-- buttons for repeat and back to menu prepared
-- die method shortened and end screen trigger adapted
+- controlHelpOverlayHTML created and supplemented with back button
+- responsive flex layout optimized for control display with clamp values
+- CSS simplified and overlay adapts to all screen sizes
+
+bugfix: canDealDmg added to Endboss

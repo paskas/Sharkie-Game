@@ -21,6 +21,11 @@ function showEndscreen(status = 'complete') {
   }
 }
 
+function showControlHelp() {
+  clearOverlayContent();
+  setGameOverlay('gameOverlay', controlHelpOverlayHTML());
+}
+
 function mainMenuOverlayHTML() {
   return `
 <div id="overlayContainer" class="game-overlay">
@@ -30,7 +35,7 @@ function mainMenuOverlayHTML() {
   <button class="game-overlay-btn f-screen-btn f-screen-menu-btn" onclick="fullscreen('menu');"></button>
   <button class="game-overlay-btn play-btn" onclick="playGame()"></button>
   <div class="controls">
-    <button class="game-overlay-btn control-btn"></button>
+    <button class="game-overlay-btn control-btn" onclick="showControlHelp()"></button>
     <button class="game-overlay-btn info-btn"></button>
   </div>
   `
@@ -68,4 +73,54 @@ function levelCompleteOverlayHTML() {
     </div>
   </div>
   `
+}
+
+function controlHelpOverlayHTML() {
+  return `
+<div class="game-overlay controls-help">
+  <div class="controls-space">
+    <button class="game-overlay-btn repeat-btn control-back-btn" onclick="backToMenu()"></button>
+    <div class="controls-row">
+      <span class="controls-label">Move Up</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap"><span class="keyCap-label">W</span></span>
+        <span class="keyCap"><span class="keyCap-label">↑</span></span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="controls-label">Move Left</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap"><span class="keyCap-label">A</span></span>
+        <span class="keyCap"><span class="keyCap-label">←</span></span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="controls-label">Move Down</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap"><span class="keyCap-label">S</span></span>
+        <span class="keyCap"><span class="keyCap-label">↓</span></span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="controls-label">Move Right</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap"><span class="keyCap-label">D</span></span>
+        <span class="keyCap"><span class="keyCap-label">→</span></span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="controls-label">BubbleShoot</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap"><span class="keyCap-label">E</span></span>
+      </div>
+    </div>
+    <div class="controls-row">
+      <span class="controls-label">PoisenShoot</span>
+      <div class="controls-keyCaps">
+        <span class="keyCap keyCap-space"><span class="keyCap-label">SPACEBAR</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+`
 }

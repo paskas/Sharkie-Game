@@ -78,6 +78,7 @@ class Endboss extends MovableObject {
 
     this.speed = 3;
     this.poisoned = true;
+    this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
 
     this.img = new Image();
