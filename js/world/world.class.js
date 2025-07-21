@@ -72,6 +72,12 @@ class World {
       cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;
     }
+    if (this.character && typeof this.character.clearAllIntervals === 'function') {
+      this.character.clearAllIntervals();
+    }
+    if (world.level && typeof world.level.clearAllIntervals === 'function') {
+      world.level.clearAllIntervals();
+    }
   }
 
   handleSunlightAnimate() {

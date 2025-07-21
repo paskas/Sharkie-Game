@@ -81,6 +81,16 @@ class Level extends DrawableObject {
     this.addPoisenFlasks(flasksCount);
   }
 
+  clearAllIntervals() {
+    ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
+      if (this[key]) {
+        this[key].forEach(obj => {
+          if (typeof obj.clearAllIntervals === 'function') obj.clearAllIntervals();
+        });
+      }
+    });
+  }
+
   addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {

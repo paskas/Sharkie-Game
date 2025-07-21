@@ -92,7 +92,9 @@ class JellyFishManager extends MovableObject {
     }
   }
 
-  clearJellyIntervals() {
+  clearJellyIntervals() { this.clearAllIntervals(); }
+
+  clearAllIntervals() {
     this.clearDefaultAnimation();
     this.clearElectricAnimation();
     if (this.electricTimerInterval) {

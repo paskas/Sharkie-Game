@@ -1,7 +1,5 @@
-feat/ui: optimized overlay and control layouts
+fix: game loop, central stop methods for all objects added
 
-- controlHelpOverlayHTML created and supplemented with back button
-- responsive flex layout optimized for control display with clamp values
-- CSS simplified and overlay adapts to all screen sizes
-
-bugfix: canDealDmg added to Endboss
+- clearAllIntervals introduced for Character, Endboss, JellyFish, PufferFish, Coin and PoisenFlask
+- all running setInterval IDs are stopped on reset/restart
+- clearWorld now calls clearAllIntervals centrally

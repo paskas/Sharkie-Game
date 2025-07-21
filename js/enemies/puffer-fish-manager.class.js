@@ -2,6 +2,7 @@ class PufferFishManager extends MovableObject {
   currentAnimation = null;
   animationInterval = null;
   animationLoopInterval = null;
+  movePufferInterval = null;
   isTransition = false;
   isBubbleActive = false;
 
@@ -49,7 +50,7 @@ class PufferFishManager extends MovableObject {
   }
 
   movePuffer() {
-    setInterval(() => {
+    this.movePufferInterval = setInterval(() => {
       if (!this.dead) {
         this.moveLeft();
       }
@@ -108,6 +109,21 @@ class PufferFishManager extends MovableObject {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
+    }
+  }
+
+  clearAllIntervals() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
+    if (this.animationLoopInterval) {
+      clearInterval(this.animationLoopInterval);
+      this.animationLoopInterval = null;
+    }
+    if (this.movePufferInterval) {
+      clearInterval(this.movePufferInterval);
+      this.movePufferInterval = null;
     }
   }
 }

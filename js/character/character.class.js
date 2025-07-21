@@ -144,7 +144,7 @@ class Character extends MovableObject {
   }
 
   runAnimate() {
-    setInterval(() => {
+    this.runAnimateInterval = setInterval(() => {
       this.resolveAnimationStatus();
     }, 1000 / 60);
   }
@@ -262,8 +262,23 @@ class Character extends MovableObject {
     }
   }
 
+  clearAllIntervals() {
+    if (this.runAnimateInterval) {
+      clearInterval(this.runAnimateInterval);
+      this.runAnimateInterval = null;
+    }
+    if (this.runMovementInterval) {
+      clearInterval(this.runMovementInterval);
+      this.runMovementInterval = null;
+    }
+    if (this.runShootInterval) {
+      clearInterval(this.runShootInterval);
+      this.runShootInterval = null;
+    }
+  }
+
   runMovement() {
-    setInterval(() => {
+    this.runMovementInterval = setInterval(() => {
       if (!this.world || this.dead) return;
       const kb = this.world.keyboard;
       if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
@@ -345,7 +360,7 @@ class Character extends MovableObject {
   }
 
   runShoot() {
-    setInterval(() => {
+    this.runShootInterval = setInterval(() => {
       if (!this.world || this.dead || this.isInDamagePhase()) return;
       const kb = this.world.keyboard;
       this.triggerBubbleShoot(kb);

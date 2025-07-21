@@ -68,4 +68,11 @@ class PoisenFlask extends MovableObject {
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
+
+  clearAllIntervals() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
+  }
 }

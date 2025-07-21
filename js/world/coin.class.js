@@ -53,4 +53,11 @@ class Coin extends MovableObject {
     }
     return arcCoins;
   }
+
+  clearAllIntervals() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
+  }
 }

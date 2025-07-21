@@ -192,6 +192,17 @@ class Endboss extends MovableObject {
     }
   }
 
+  clearAllIntervals() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
+    if (this.combatLoopInterval) {
+      clearInterval(this.combatLoopInterval);
+      this.combatLoopInterval = null;
+    }
+  }
+
   setAnimationLoop(images, status) {
     this.clearAnimationInterval();
     this.animationInterval = setInterval(() => {
