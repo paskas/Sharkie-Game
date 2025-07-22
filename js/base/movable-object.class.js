@@ -51,22 +51,6 @@ class MovableObject extends DrawableObject {
     this.y += this.speed;
   }
 
-  moveUpAndDown() {
-    setInterval(() => {
-      if (this.upwards) {
-        this.moveUp();
-        if (this.y <= this.minY) {
-          this.upwards = false;
-        }
-      } else {
-        this.moveDown();
-        if (this.y >= this.maxY) {
-          this.upwards = true;
-        }
-      }
-    }, 1000 / 60);
-  }
-
   setMovementRange(minY, maxY) {
     this.minY = minY;
     this.maxY = maxY;
@@ -181,18 +165,6 @@ class MovableObject extends DrawableObject {
     flask.world = this.world;
     flask.startFallingFlask();
     this.world.level.poisonFlasks.push(flask);
-  }
-
-  die() {
-    if (this.dead) return;
-    this.dead = true;
-    if (this.animationInterval) clearInterval(this.animationInterval);
-    if (this.playAnimationOnce) {
-      this.playAnimationOnce(this.IMAGES_DEAD, () => {
-        this.ifDeadMoveUp();
-        if (this instanceof Character) setTimeout(showEndscreen('gameOver'), 1000);
-      }, 100);
-    }
   }
 
   die() {

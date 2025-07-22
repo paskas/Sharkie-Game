@@ -17,8 +17,8 @@ class DrawableObject {
     PufferFishOrange: { top: 10, bottom: 30, left: 8, right: 18 },
     Endboss: { top: 275, bottom: 110, left: 40, right: 50 },
     BarrierReef: [
-      { top: 0, bottom: 405, left: 5, right: 5 },
-      { top: 450, bottom: 0, left: 0, right: 15 }
+      { top: 0, bottom: 405, left: 25, right: 25 },
+      { top: 460, bottom: 0, left: 20, right: 35 }
     ],
     Coin: { top: 8, bottom: 8, left: 8, right: 8 },
     PoisenFlask: { top: 8, bottom: 8, left: 8, right: 8 },

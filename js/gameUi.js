@@ -9,6 +9,16 @@ function showGameMenu() {
   setGameOverlay('gameOverlay', mainMenuOverlayHTML());
 }
 
+function fadeOutOverlay() {
+  const menuOverlay = document.getElementById('overlayContainer');
+  if (menuOverlay) {
+    menuOverlay.classList.add('overlay-fade-out');
+    setTimeout(() => {
+      clearOverlayContent();
+    }, 500);
+  }
+}
+
 function clearOverlayContent() {
   setGameOverlay('gameOverlay', '');
 }

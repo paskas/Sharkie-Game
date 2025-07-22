@@ -57,6 +57,13 @@ class PufferFishManager extends MovableObject {
     }, 1000 / 60);
   }
 
+  clearMovePufferInterval() {
+    if (this.movePufferInterval) {
+      clearInterval(this.movePufferInterval);
+      this.movePufferInterval = null;
+    }
+  }
+
   animationLoop() {
     this.animationLoopInterval = setInterval(() => {
       if (this.dead || !this.world?.character) return;
@@ -67,6 +74,13 @@ class PufferFishManager extends MovableObject {
         this.startTransitionBackToSwim();
       }
     }, 200);
+  }
+
+  clearAnimationLoopInterval() {
+    if (this.animationLoopInterval) {
+      clearInterval(this.animationLoopInterval);
+      this.animationLoopInterval = null;
+    }
   }
 
   startTransitionAndBubbleswim() {
@@ -113,17 +127,14 @@ class PufferFishManager extends MovableObject {
   }
 
   clearAllIntervals() {
-    if (this.animationInterval) {
-      clearInterval(this.animationInterval);
-      this.animationInterval = null;
-    }
-    if (this.animationLoopInterval) {
-      clearInterval(this.animationLoopInterval);
-      this.animationLoopInterval = null;
-    }
-    if (this.movePufferInterval) {
-      clearInterval(this.movePufferInterval);
-      this.movePufferInterval = null;
-    }
+    this.clearAnimationInterval();
+    this.clearAnimationLoopInterval();
+    this.clearMovePufferInterval();
+  }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.animationLoop();
+    this.movePuffer();
   }
 }

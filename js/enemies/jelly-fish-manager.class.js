@@ -2,6 +2,7 @@ class JellyFishManager extends MovableObject {
   defaultAnimationInterval = null;
   electricTimerInterval = null;
   electricAnimationInterval = null;
+  upAndDownInterval = null;
   currentAnimation = null;
   isElectricActive = false;
 
@@ -67,6 +68,13 @@ class JellyFishManager extends MovableObject {
     }, 3000);
   }
 
+  clearElectricTimerInterval() {
+    if (this.electricTimerInterval) {
+      clearInterval(this.electricTimerInterval);
+      this.electricTimerInterval = null;
+    }
+  }
+
   triggerElectricAnimation() {
     this.isElectricActive = true;
     this.clearDefaultAnimation();
@@ -92,14 +100,42 @@ class JellyFishManager extends MovableObject {
     }
   }
 
+  moveUpAndDown() {
+    this.upAndDownInterval = setInterval(() => {
+      if (this.upwards) {
+        this.moveUp();
+        if (this.y <= this.minY) {
+          this.upwards = false;
+        }
+      } else {
+        this.moveDown();
+        if (this.y >= this.maxY) {
+          this.upwards = true;
+        }
+      }
+    }, 1000 / 60);
+  }
+
+  clearUpAndDownInterval() {
+    if (this.upAndDownInterval) {
+      clearInterval(this.upAndDownInterval);
+      this.upAndDownInterval = null;
+    }
+  }
+
   clearJellyIntervals() { this.clearAllIntervals(); }
 
   clearAllIntervals() {
     this.clearDefaultAnimation();
     this.clearElectricAnimation();
-    if (this.electricTimerInterval) {
-      clearInterval(this.electricTimerInterval);
-      this.electricTimerInterval = null;
-    }
+    this.clearElectricTimerInterval();
+    this.clearUpAndDownInterval();
+  }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.runDefaultAnimation();
+    this.runElectricInterval();
+    this.moveUpAndDown();
   }
 }

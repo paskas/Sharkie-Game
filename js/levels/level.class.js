@@ -91,6 +91,16 @@ class Level extends DrawableObject {
     });
   }
 
+  continueAllIntervals() {
+    ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
+      if (this[key]) {
+        this[key].forEach(obj => {
+          if (typeof obj.continueAllIntervals === 'function') obj.continueAllIntervals();
+        });
+      }
+    });
+  }
+
   addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {

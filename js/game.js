@@ -4,7 +4,6 @@ let keyboard = new Keyboard();
 
 function initGame() {
   showGameMenu();
-  initWorld();
 }
 
 function initWorld() {
@@ -13,8 +12,9 @@ function initWorld() {
 }
 
 function playGame() {
+  initWorld();
   world.gameStarted = true;
-  clearOverlayContent();
+  fadeOutOverlay();
 }
 
 function restartLevel() {
@@ -31,6 +31,7 @@ function backToMenu() {
   reloadLevel();
   startWorldFresh();
   showGameMenu();
+  world.gameStarted = false;
 }
 
 function stopRunningWorld() {
@@ -67,6 +68,14 @@ function resetGlobalStats() {
   Coin.coinCount = 0;
   Coin.setCoin = 0;
   PoisenFlask.flaskCount = 0;
+}
+
+function pause() {
+  world.clearWorld();
+}
+
+function resume() {
+  world.continueWorld();
 }
 
 function fullscreen(mode = 'game') {

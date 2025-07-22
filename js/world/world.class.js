@@ -16,7 +16,7 @@ class World {
     this.keyboard = keyboard;
 
     this.initWorldObjects();
-    this.setHitbox();
+    // this.setHitbox(); // Show hitboxes (debug only)
 
     this.startDrawLoop();
     this.startWorldLoop();
@@ -77,6 +77,18 @@ class World {
     }
     if (world.level && typeof world.level.clearAllIntervals === 'function') {
       world.level.clearAllIntervals();
+    }
+  }
+
+  continueWorld() {
+    this.clearWorld();
+    this.startWorldLoop();
+    this.startDrawLoop();
+    if (this.character && typeof this.character.continueAllIntervals === 'function') {
+      this.character.continueAllIntervals();
+    }
+    if (world.level && typeof world.level.continueAllIntervals === 'function') {
+      world.level.continueAllIntervals();
     }
   }
 

@@ -75,4 +75,14 @@ class PoisenFlask extends MovableObject {
       this.animationInterval = null;
     }
   }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    if (this.variant === 'animated') {
+      if (!this.img || !this.img.complete) {
+        this.loadImages(this.IMAGES_FLASKS);
+      }
+      this.startAnimationFlask();
+    }
+  }
 }

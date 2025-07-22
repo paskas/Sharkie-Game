@@ -9,11 +9,14 @@ class Character extends MovableObject {
 
   animationInterval = null;
   currentAnimation = null;
+  runAnimateInterval = null;
+  runMovementInterval = null;
   untilSleep = 8000;
   sleepStartTime = Date.now();
   isSleeping = false;
   sleepTimeout = null;
 
+  runShootInterval = null;
   isShooting = false;
   shootPoisend = false;
   shootKeyReleased = true;
@@ -275,6 +278,13 @@ class Character extends MovableObject {
       clearInterval(this.runShootInterval);
       this.runShootInterval = null;
     }
+  }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.runAnimate();
+    this.runMovement();
+    this.runShoot();
   }
 
   runMovement() {

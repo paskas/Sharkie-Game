@@ -60,4 +60,9 @@ class Coin extends MovableObject {
       this.animationInterval = null;
     }
   }
+
+  continueAllIntervals(){
+    this.clearAllIntervals();
+    this.animate();
+  }
 }
