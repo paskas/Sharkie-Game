@@ -9,19 +9,8 @@ function showGameMenu() {
   setGameOverlay('gameOverlay', mainMenuOverlayHTML());
 }
 
-function fadeOutMenuOverlay() {
-  const menuOverlay = document.getElementById('overlayContainer');
-  if (menuOverlay) {
-    menuOverlay.classList.add('overlay-fade-out');
-    clearOverlay = setTimeout(() => {
-      clearOverlayContent();
-      clearOverlay = null;
-    }, 500);
-  }
-}
-
-function clearOverlayContent() {
-  setGameOverlay('gameOverlay', '');
+function showInGameNav() {
+  setGameOverlay('gameOverlay', inGameNavOverlayHTML());
 }
 
 function showEndscreen(status = 'complete') {
@@ -35,6 +24,22 @@ function showEndscreen(status = 'complete') {
 function showControlHelp() {
   clearOverlayContent();
   setGameOverlay('gameOverlay', controlHelpOverlayHTML());
+}
+
+function fadeOutMenuOverlay() {
+  const menuOverlay = document.getElementById('overlayContainer');
+  if (menuOverlay) {
+    menuOverlay.classList.add('overlay-fade-out');
+    clearOverlay = setTimeout(() => {
+      clearOverlayContent();
+      clearOverlay = null;
+      showInGameNav();
+    }, 500);
+  }
+}
+
+function clearOverlayContent() {
+  setGameOverlay('gameOverlay', '');
 }
 
 function mainMenuOverlayHTML() {
@@ -133,6 +138,16 @@ function controlHelpOverlayHTML() {
       </div>
     </div>
   </div>
+</div>
+`
+}
+
+function inGameNavOverlayHTML() {
+  return `
+<div class="game-menu">
+  <button class="game-overlay-btn game-play-btn" onclick="triggerGameplay();"></button>
+  <button class="game-overlay-btn f-screen-game-btn" onclick="fullscreen('game');"></button>
+  <button class="game-overlay-btn sound-btn" onclick="triggerSound('game');"></button>
 </div>
 `
 }

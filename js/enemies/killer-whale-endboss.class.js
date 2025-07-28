@@ -10,8 +10,8 @@ class Endboss extends MovableObject {
   lastAttackTime = 0;
   attackCooldown = 1500;
 
-  isHurtByBubble = 0;
-  isHurtByPoisenbubble = 0;
+  isHurtByBubble = 0.5;
+  isHurtByPoisenbubble = 0.5;
 
   hadFirstContact = false;
   isCombatLoopRunning = false;

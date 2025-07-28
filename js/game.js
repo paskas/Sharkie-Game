@@ -17,6 +17,7 @@ function restartLevel() {
   startWorldFresh();
   reloadLevel();
   clearOverlayContent();
+  showInGameNav();
 }
 
 function nextLevel() {
@@ -24,6 +25,7 @@ function nextLevel() {
   startWorldFresh();
   loadNextLevel();
   clearOverlayContent();
+  showInGameNav();
 }
 
 function backToMenu() {
@@ -71,7 +73,6 @@ function reloadLevel() {
 }
 
 function loadNextLevel() {
-  if (!world?.levelManager) return;
   world.levelManager.loadNextLevel();
   const newLevel = world.levelManager.getCurrentLevel();
   newLevel.initLevel();

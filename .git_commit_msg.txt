@@ -1,7 +1,5 @@
-feat/fix: add nextLevel and ensure proper initialization, track speed for final boss
+feat: InGameNav menu rendered as overlay over canvas
 
-- amplemented logic for loading and initializing the next level
-- added next-btn overlay
-- CSS adjusted for next btn
-- new followSpeed property added to final boss constructor
-- central control of tracking speed from final boss to character
+- showInGameNav function adjusted now renders the InGame menu overlay on the overlay container of the canvas
+- this displays the menu over the canvas without overwriting the canvas.
+- CSS InGameNav adjusted
