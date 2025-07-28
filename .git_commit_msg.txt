@@ -1,5 +1,0 @@
-fix: game loop, central stop methods for all objects added
-
-- clearAllIntervals introduced for Character, Endboss, JellyFish, PufferFish, Coin and PoisenFlask
-- all running setInterval IDs are stopped on reset/restart
-- clearWorld now calls clearAllIntervals centrally

@@ -7,13 +7,13 @@ class MovableObject extends DrawableObject {
   upwards = true;
   otherDirection = false;
   acceleration = 1.5;
+  playOnceInterval = null;
   gravityInterval = null;
+  deadMoveInterval = null;
+  endScreenTimeout = null;
 
-  energy = 100;
   lastHit = 0;
   dead = false;
-
-  blocking_objects = [];
 
   playAnimation(images) {
     let i = this.currentImage % images.length;
@@ -23,13 +23,14 @@ class MovableObject extends DrawableObject {
   }
 
   playAnimationOnce(images, callback, framerate) {
-    clearInterval(this.interval);
+    if (this.playOnceInterval) clearInterval(this.playOnceInterval);
     let i = 0;
-    let interval = setInterval(() => {
+    this.playOnceInterval = setInterval(() => {
       this.img = this.imageCache[images[i]];
       i++;
       if (i >= images.length) {
-        clearInterval(interval);
+        clearInterval(this.playOnceInterval);
+        this.playOnceInterval = null;
         if (callback) callback();
       }
     }, framerate);
@@ -82,6 +83,7 @@ class MovableObject extends DrawableObject {
       this.speedY += this.acceleration;
       if (!this.isAboveGround()) {
         clearInterval(this.gravityInterval);
+        this.gravityInterval = null;
       }
     }, 1000 / 25);
   }
@@ -91,11 +93,31 @@ class MovableObject extends DrawableObject {
   }
 
   ifDeadMoveUp() {
-    setInterval(() => {
+    if (this.deadMoveInterval) clearInterval(this.deadMoveInterval);
+    this.deadMoveInterval = setInterval(() => {
       if (this.dead) {
         this.y -= 2.5;
       }
     }, 1000 / 60);
+  }
+
+  clearAllIntervals() {
+    if (this.playOnceInterval) {
+      clearInterval(this.playOnceInterval);
+      this.playOnceInterval = null;
+    }
+    if (this.gravityInterval) {
+      clearInterval(this.gravityInterval);
+      this.gravityInterval = null;
+    }
+    if (this.deadMoveInterval) {
+      clearInterval(this.deadMoveInterval);
+      this.deadMoveInterval = null;
+    }
+    if (this.endScreenTimeout) {
+      clearTimeout(this.endScreenTimeout);
+      this.endScreenTimeout = null;
+    }
   }
 
   isColliding(mo) {
@@ -174,8 +196,11 @@ class MovableObject extends DrawableObject {
     if (this.playAnimationOnce) {
       this.playAnimationOnce(this.IMAGES_DEAD, () => {
         this.ifDeadMoveUp();
-        if (this instanceof Character) setTimeout(() => showEndscreen('gameOver'), 1000);
-        if (this instanceof Endboss) setTimeout(() => showEndscreen('complete'), 1000);
+        if (this instanceof Character || this instanceof Endboss) {
+          this.endScreenTimeout = setTimeout(() => {
+            showEndscreen(this instanceof Character ? 'gameOver' : 'complete');
+          }, 1000);
+        }
       }, 100);
     }
   }

@@ -5,6 +5,7 @@ class PufferFishManager extends MovableObject {
   movePufferInterval = null;
   isTransition = false;
   isBubbleActive = false;
+  hasStarted = false;
 
   constructor(world, images, speed) {
     super();
@@ -27,7 +28,12 @@ class PufferFishManager extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_BUBBLESWIM);
     this.loadImages(this.IMAGES_TRANSITION);
+  }
 
+  start() {
+    if (this.hasStarted) return;
+    this.clearAllIntervals();
+    this.hasStarted = true;
     this.animate();
   }
 
@@ -50,6 +56,7 @@ class PufferFishManager extends MovableObject {
   }
 
   movePuffer() {
+    if (this.movePufferInterval) return;
     this.movePufferInterval = setInterval(() => {
       if (!this.dead) {
         this.moveLeft();
@@ -65,6 +72,7 @@ class PufferFishManager extends MovableObject {
   }
 
   animationLoop() {
+    if (this.animationLoopInterval) return;
     this.animationLoopInterval = setInterval(() => {
       if (this.dead || !this.world?.character) return;
       let distance = Math.abs(this.x - this.world.character.x);
@@ -84,7 +92,7 @@ class PufferFishManager extends MovableObject {
   }
 
   startTransitionAndBubbleswim() {
-    if (this.dead || this.isTransition) return;
+    if (this.dead || this.isTransition || this.currentAnimation === 'bubbleswim') return;
     this.clearAnimationInterval();
     this.currentAnimation = 'bubbleswim';
     this.isTransition = true;
@@ -112,6 +120,7 @@ class PufferFishManager extends MovableObject {
   }
 
   setAnimationLoop(images, status) {
+    if (this.animationInterval) return;
     this.animationInterval = setInterval(() => {
       if (this.dead) return;
       this.playAnimation(images);
@@ -130,6 +139,7 @@ class PufferFishManager extends MovableObject {
     this.clearAnimationInterval();
     this.clearAnimationLoopInterval();
     this.clearMovePufferInterval();
+    this.hasStarted = false;
   }
 
   continueAllIntervals() {

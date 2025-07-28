@@ -1,4 +1,6 @@
 class HealthBarEndboss extends DrawableObject {
+  updateInterval = null;
+  visible = false;
 
   IMAGES_HEALTH = [
     './img/UI/healthbar/healthbar_boss_0.png',
@@ -22,7 +24,8 @@ class HealthBarEndboss extends DrawableObject {
   }
 
   updatingHealthBar() {
-    setInterval(() => this.updateImagesHealth(), 1000 / 60);
+    if (this.updateInterval) return;
+    this.updateInterval = setInterval(() => this.updateImagesHealth(), 1000 / 60);
   }
 
   updateImagesHealth() {
@@ -30,5 +33,16 @@ class HealthBarEndboss extends DrawableObject {
     if (image) {
       this.img = image;
     }
+  }
+
+  clearAllIntervals() {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+      this.updateInterval = null;
+    }
+  }
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.updatingHealthBar();
   }
 }

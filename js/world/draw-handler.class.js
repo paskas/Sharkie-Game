@@ -1,11 +1,37 @@
 class DrawHandler {
 
+  animationFrameId = null;
+  isDrawing = false;
+  isActive = false;
+
   constructor(world) {
     this.world = world;
     this.ctx = world.ctx;
   }
 
+  startDrawLoop() {
+    if (this.isActive) return;
+    this.isActive = true;
+    const loop = () => {
+      if (!this.isActive) return;
+      this.draw();
+      this.animationFrameId = requestAnimationFrame(loop);
+    };
+    this.animationFrameId = requestAnimationFrame(loop);
+  }
+
+  stopDrawLoop() {
+    this.isActive = false;
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+  }
+
   draw() {
+    if (this.isDrawing) return;
+    this.isDrawing = true;
+
     this.ctx.clearRect(0, 0, this.world.canvas.width, this.world.canvas.height);
     this.ctx.translate(this.world.camera_x, 0);
 
@@ -19,20 +45,17 @@ class DrawHandler {
     this.addToMap(this.world.character);
 
     this.ctx.translate(-this.world.camera_x, 0);
-    this.world.healthBarCharacter.updatingHealthBar();
     this.addToMap(this.world.healthBarCharacter);
-    this.triggerEndbossHealthBar();
+    this.world.drawEndbossHealthbar(this.ctx, (obj) => this.addToMap(obj));
     this.world.coinCounter.draw(this.ctx, Coin.coinCount);
     this.world.poisonFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
 
-    this.world.animationFrameId = requestAnimationFrame(() => this.draw());
+    this.isDrawing = false;
   }
 
-  triggerEndbossHealthBar() {
-    const endboss = this.world.level.enemies.find(e => e instanceof Endboss);
-    if (endboss?.hadFirstContact && !endboss.dead) {
-      this.addToMap(this.world.healthBarEndboss);
-    }
+  getEndbossLife() {
+    const boss = this.world.level.enemies.find(e => e instanceof Endboss);
+    return boss ? boss.life : '-';
   }
 
   addObjectsToMap(objects) {
@@ -40,23 +63,17 @@ class DrawHandler {
   }
 
   addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
+    if (mo.otherDirection) this.flipImage(mo);
     if (mo instanceof Sunlight) {
       this.flickerSunlight(this.ctx, mo);
     } else if (mo instanceof Character && mo.rotationAngle !== 0) {
       this.rotatedCharacter(this.ctx, mo);
     } else {
-      // mo.drawFrame(this.ctx);
+      // mo.drawFrame(this.ctx); // Show frame (debug only)
       mo.draw(this.ctx);
-      if (mo.showHitbox) {
-        mo.drawHitbox(this.ctx);
-      }
+      if (mo.showHitbox) mo.drawHitbox(this.ctx);
     }
-    if (mo.otherDirection) {
-      this.restoreImage(mo);
-    }
+    if (mo.otherDirection) this.restoreImage(mo);
   }
 
   flipImage(mo) {

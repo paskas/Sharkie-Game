@@ -1,4 +1,5 @@
 class HealthBarCharacter extends DrawableObject {
+  updateInterval = null;
 
   IMAGES_HEALTH = [
     './img/UI/healthbar/healthbar_char_0.png',
@@ -19,10 +20,12 @@ class HealthBarCharacter extends DrawableObject {
 
     this.img = new Image();
     this.loadImages(this.IMAGES_HEALTH);
+    this.updatingHealthBar();
   }
 
   updatingHealthBar() {
-    setInterval(() => this.updateImagesHealth(), 1000 / 60);
+    if (this.updateInterval) return;
+    this.updateInterval = setInterval(() => this.updateImagesHealth(), 1000 / 60);
   }
 
   updateImagesHealth() {
@@ -30,5 +33,16 @@ class HealthBarCharacter extends DrawableObject {
     if (image) {
       this.img = image;
     }
+  }
+
+  clearAllIntervals() {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+      this.updateInterval = null;
+    }
+  }
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.updatingHealthBar();
   }
 }

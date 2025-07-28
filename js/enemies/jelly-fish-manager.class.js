@@ -5,6 +5,7 @@ class JellyFishManager extends MovableObject {
   upAndDownInterval = null;
   currentAnimation = null;
   isElectricActive = false;
+  hasStarted = false;
 
   constructor(world, images, x, speed) {
     super();
@@ -26,7 +27,12 @@ class JellyFishManager extends MovableObject {
     this.loadImages(this.IMAGES_DEFAULT);
     this.loadImages(this.IMAGES_ELECTRIC);
     this.loadImages(this.IMAGES_DEAD);
+  }
 
+  start() {
+    if (this.hasStarted) return;
+    this.clearAllIntervals();
+    this.hasStarted = true;
     this.animate();
   }
 
@@ -47,6 +53,7 @@ class JellyFishManager extends MovableObject {
   runDefaultAnimation() {
     this.clearDefaultAnimation();
     this.currentAnimation = 'default';
+    if (this.defaultAnimationInterval) return;
     this.defaultAnimationInterval = setInterval(() => {
       if (!this.dead && !this.isElectricActive) {
         this.playAnimation(this.IMAGES_DEFAULT);
@@ -62,6 +69,7 @@ class JellyFishManager extends MovableObject {
   }
 
   runElectricInterval() {
+    if (this.electricTimerInterval) return;
     this.electricTimerInterval = setInterval(() => {
       if (this.dead || this.isElectricActive) return;
       this.triggerElectricAnimation();
@@ -76,6 +84,7 @@ class JellyFishManager extends MovableObject {
   }
 
   triggerElectricAnimation() {
+    if (this.electricAnimationInterval) return;
     this.isElectricActive = true;
     this.clearDefaultAnimation();
     let frames = this.IMAGES_ELECTRIC.length;
@@ -101,6 +110,7 @@ class JellyFishManager extends MovableObject {
   }
 
   moveUpAndDown() {
+    if (this.upAndDownInterval) return;
     this.upAndDownInterval = setInterval(() => {
       if (this.upwards) {
         this.moveUp();
@@ -130,11 +140,13 @@ class JellyFishManager extends MovableObject {
     this.clearElectricAnimation();
     this.clearElectricTimerInterval();
     this.clearUpAndDownInterval();
+    this.hasStarted = false;
   }
 
   continueAllIntervals() {
     this.clearAllIntervals();
     this.runDefaultAnimation();
+    this.triggerElectricAnimation();
     this.runElectricInterval();
     this.moveUpAndDown();
   }

@@ -1,6 +1,7 @@
 class PoisenFlask extends MovableObject {
-
   isLost = false;
+  animationInterval = null;
+  flaskDropTimeout = null;
   static flaskCount = 0;
 
   IMAGES_FLASKS = [
@@ -45,6 +46,7 @@ class PoisenFlask extends MovableObject {
   }
 
   startAnimationFlask() {
+    if (this.animationInterval) return;
     this.animationInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_FLASKS);
     }, 1000 / 8);
@@ -53,7 +55,7 @@ class PoisenFlask extends MovableObject {
   animateFlaskDrop() {
     if (this.variant === 'animated') {
       this.startAnimationFlask();
-      setTimeout(() => {
+      this.flaskDropTimeout = setTimeout(() => {
         clearInterval(this.animationInterval);
         this.world.level.poisonFlasks = this.world.level.poisonFlasks.filter(f => f !== this);
       }, 1500);
@@ -73,6 +75,10 @@ class PoisenFlask extends MovableObject {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
+    }
+    if (this.flaskDropTimeout) {
+      clearTimeout(this.flaskDropTimeout);
+      this.flaskDropTimeout = null;
     }
   }
 

@@ -2,6 +2,7 @@ class Endboss extends MovableObject {
   height = 530;
   width = 500;
 
+  checkInterval = null;
   currentAnimation = null;
   animationInterval = null;
   combatLoopInterval = null;
@@ -13,6 +14,7 @@ class Endboss extends MovableObject {
   isHurtByPoisenbubble = 0;
 
   hadFirstContact = false;
+  isCombatLoopRunning = false;
   dead = false;
   static life = 5;
 
@@ -76,7 +78,7 @@ class Endboss extends MovableObject {
     this.x = 4300;
     this.y = 30;
 
-    this.speed = 3;
+    this.speed = 1;
     this.poisoned = true;
     this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
@@ -88,28 +90,30 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
 
-    this.animate();
+    this.checkForFirstContact();
   }
 
-  animate() {
-    this.triggerEndboss();
+  checkForFirstContact() {
+    this.checkInterval = setInterval(() => {
+      if (this.world.character.x > 3950 && !this.hadFirstContact) {
+        clearInterval(this.checkInterval);
+        this.hadFirstContact = true;
+        this.triggerEndboss();
+      }
+    }, 250);
   }
 
   triggerEndboss() {
-    this.animationInterval = setInterval(() => {
-      if (!this.hadFirstContact && this.world.character.x > 3950) {
-        this.hadFirstContact = true;
-        this.clearAnimationInterval();
-        this.startSpawnAnimation();
-      }
-    }, 150);
+    this.clearAnimationInterval();
+    this.startSpawnAnimation();
   }
 
   startSpawnAnimation() {
+    if (this.animationInterval || this.currentAnimation === 'spawn') return;
     this.currentAnimation = 'spawn';
     this.playAnimationOnce(this.IMAGES_SPAWNING, () => {
       this.initCombatPhase();
-    }, 150);
+    }, 120);
   }
 
   initCombatPhase() {
@@ -118,18 +122,25 @@ class Endboss extends MovableObject {
   }
 
   startCombatLoop() {
-    this.combatLoopInterval = setInterval(() => {
-      if (this.dead || !this.world?.character || this.isInDamagePhase()) return;
-      let { distanceX, distanceY } = this.getDistanceToCharacter();
-      this.otherDirection = distanceX > 0;
-      if (this.isInAttackRange(distanceX, distanceY)) {
-        this.lastAttackTime = Date.now();
-        this.initAttackPhase();
-      }
-      if (this.currentAnimation !== 'attack') {
-        this.moveTowardCharacter(distanceX, distanceY);
-      }
-    }, 1000 / 30);
+    if (this.isCombatLoopRunning) return;
+    this.isCombatLoopRunning = true;
+    this.combatLoopInterval = requestAnimationFrame((time) => this.combatLoop(time));
+  }
+
+  combatLoop(currentTime) {
+    if (this.dead) return;
+    let { distanceX, distanceY } = this.getDistanceToCharacter();
+    this.otherDirection = distanceX > 0;
+    this.moveTowardCharacter(distanceX, distanceY);
+    this.tryAttack(distanceX, distanceY, currentTime);
+    this.combatLoopInterval = requestAnimationFrame((time) => this.combatLoop(time));
+  }
+
+  tryAttack(distanceX, distanceY, currentTime) {
+    if (!this.isInAttackRange(distanceX, distanceY)) return;
+    if (currentTime - this.lastAttackTime <= this.attackCooldown) return;
+    this.lastAttackTime = currentTime;
+    this.initAttackPhase();
   }
 
   initAttackPhase() {
@@ -142,16 +153,17 @@ class Endboss extends MovableObject {
   }
 
   startAttackAnimation() {
+    this.clearAnimationInterval();
     this.playAnimationOnce(this.IMAGES_ATTACK, () => {
       this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
-    }, 100);
+    }, 120);
   }
 
   startHurtAnimation() {
     this.lastHit = Date.now();
     this.playAnimationOnce(this.IMAGES_HURT, () => {
       this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
-    }, 100);
+    }, 120);
   }
 
   isInAttackRange(x, y) {
@@ -193,12 +205,17 @@ class Endboss extends MovableObject {
   }
 
   clearAllIntervals() {
+    this.isCombatLoopRunning = false;
+    if (this.checkInterval) {
+      clearInterval(this.checkInterval);
+      this.checkInterval = null;
+    }
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
       this.animationInterval = null;
     }
     if (this.combatLoopInterval) {
-      clearInterval(this.combatLoopInterval);
+      cancelAnimationFrame(this.combatLoopInterval);
       this.combatLoopInterval = null;
     }
   }
@@ -214,6 +231,7 @@ class Endboss extends MovableObject {
   }
 
   setAnimationLoop(images, status) {
+    if (this.animationInterval) return;
     this.clearAnimationInterval();
     this.animationInterval = setInterval(() => {
       if (this.dead) return;

@@ -9,12 +9,13 @@ function showGameMenu() {
   setGameOverlay('gameOverlay', mainMenuOverlayHTML());
 }
 
-function fadeOutOverlay() {
+function fadeOutMenuOverlay() {
   const menuOverlay = document.getElementById('overlayContainer');
   if (menuOverlay) {
     menuOverlay.classList.add('overlay-fade-out');
-    setTimeout(() => {
+    clearOverlay = setTimeout(() => {
       clearOverlayContent();
+      clearOverlay = null;
     }, 500);
   }
 }
@@ -89,7 +90,7 @@ function controlHelpOverlayHTML() {
   return `
 <div class="game-overlay controls-help">
   <div class="controls-space">
-    <button class="game-overlay-btn repeat-btn control-back-btn" onclick="backToMenu()"></button>
+    <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
     <div class="controls-row">
       <span class="controls-label">Move Up</span>
       <div class="controls-keyCaps">

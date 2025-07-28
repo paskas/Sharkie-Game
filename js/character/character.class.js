@@ -25,6 +25,8 @@ class Character extends MovableObject {
   isPoisendByHit = false;
   isShockByHit = false;
   lastShootTime = Date.now();
+  shootTimeout = null;
+  dmgTimeout = null;
 
   static life = 5;
 
@@ -147,6 +149,7 @@ class Character extends MovableObject {
   }
 
   runAnimate() {
+    if (this.runAnimateInterval) return;
     this.runAnimateInterval = setInterval(() => {
       this.resolveAnimationStatus();
     }, 1000 / 60);
@@ -215,7 +218,7 @@ class Character extends MovableObject {
       if (this.isShockByHit) this.shockAnimation();
       else if (this.isPoisendByHit) this.poisonedAnimation();
     }, 140);
-    setTimeout(() => {
+    this.dmgTimeout = setTimeout(() => {
       this.isShockByHit = false;
       this.isPoisendByHit = false;
     }, 800);
@@ -266,6 +269,7 @@ class Character extends MovableObject {
   }
 
   clearAllIntervals() {
+    this.clearAnimationInterval();
     if (this.runAnimateInterval) {
       clearInterval(this.runAnimateInterval);
       this.runAnimateInterval = null;
@@ -278,6 +282,18 @@ class Character extends MovableObject {
       clearInterval(this.runShootInterval);
       this.runShootInterval = null;
     }
+    if (this.sleepTimeout) {
+      clearTimeout(this.sleepTimeout);
+      this.sleepTimeout = null;
+    }
+    if (this.dmgTimeout) {
+      clearTimeout(this.dmgTimeout);
+      this.dmgTimeout = null;
+    }
+    if (this.shootTimeout) {
+      clearTimeout(this.shootTimeout);
+      this.shootTimeout = null;
+    }
   }
 
   continueAllIntervals() {
@@ -288,6 +304,7 @@ class Character extends MovableObject {
   }
 
   runMovement() {
+    if (this.runMovementInterval) return;
     this.runMovementInterval = setInterval(() => {
       if (!this.world || this.dead) return;
       const kb = this.world.keyboard;
@@ -370,6 +387,7 @@ class Character extends MovableObject {
   }
 
   runShoot() {
+    if (this.runShootInterval) return;
     this.runShootInterval = setInterval(() => {
       if (!this.world || this.dead || this.isInDamagePhase()) return;
       const kb = this.world.keyboard;
@@ -401,7 +419,7 @@ class Character extends MovableObject {
     this.currentShotPoisoned = isPoisendShoot;
     const shootFrames = isPoisendShoot ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
     const duration = shootFrames * 120;
-    setTimeout(() => {
+    this.shootTimeout = setTimeout(() => {
       this.shootBubble(isPoisendShoot);
       this.lastShootTime = Date.now();
       this.isShooting = false;

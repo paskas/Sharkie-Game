@@ -6,38 +6,17 @@ function initGame() {
   showGameMenu();
 }
 
-function initWorld() {
-  canvas = document.getElementById('canvas');
-  world = new World(canvas, keyboard);
-}
-
 function playGame() {
-  initWorld();
+  startWorldFresh();
   world.gameStarted = true;
-  fadeOutOverlay();
+  fadeOutMenuOverlay();
 }
 
 function restartLevel() {
-  stopRunningWorld();
   resetGameState();
-  reloadLevel();
   startWorldFresh();
+  reloadLevel();
   clearOverlayContent();
-}
-
-function backToMenu() {
-  stopRunningWorld();
-  resetGameState();
-  reloadLevel();
-  startWorldFresh();
-  showGameMenu();
-  world.gameStarted = false;
-}
-
-function stopRunningWorld() {
-  if (world) {
-    world.clearWorld();
-  }
 }
 
 function resetGameState() {
@@ -45,21 +24,39 @@ function resetGameState() {
   clearWorldCanvas();
 }
 
-function reloadLevel() {
-  world.levelManager.reloadCurrentLevel();
-  world.camera_x = 0;
+function backToMenu() {
+  resetGameState();
+  showGameMenu();
 }
 
 function startWorldFresh() {
+  if (!world) {
+    initWorld(true);
+  } else {
+    world.clearWorld();
+    world.initWorldObjects();
+  }
+  initWorldLoops();
+}
+
+function initWorld(initLevels = false) {
+  canvas = document.getElementById('canvas');
+  world = new World(canvas, keyboard);
   world.initWorldObjects();
-  world.startDrawLoop();
+  if (initLevels) {
+    world.levelManager.generateLevels();
+  }
+}
+
+function initWorldLoops() {
+  world.drawHandler.startDrawLoop();
   world.startWorldLoop();
 }
 
-function clearWorldCanvas() {
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+function reloadLevel() {
+  if (!world?.levelManager) return;
+  world.levelManager.reloadCurrentLevel();
+  world.camera_x = 0;
 }
 
 function resetGlobalStats() {
@@ -68,6 +65,12 @@ function resetGlobalStats() {
   Coin.coinCount = 0;
   Coin.setCoin = 0;
   PoisenFlask.flaskCount = 0;
+}
+
+function clearWorldCanvas() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function pause() {
@@ -101,12 +104,3 @@ function exitFullscreen() {
     document.exitFullscreen();
   }
 }
-
-document.addEventListener('fullscreenchange', () => {
-  let canvas = document.getElementById('canvas');
-  if (!document.fullscreenElement) {
-    canvas.classList.remove('fullscreen-canvas');
-  }
-});
-
-

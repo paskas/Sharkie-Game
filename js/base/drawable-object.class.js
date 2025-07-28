@@ -7,6 +7,7 @@ class DrawableObject {
   imageCache = {};
   currentImage = 0;
   showHitbox = false;
+  static globalImageCache = {};
 
   static offsets = {
     Character: { top: 130, bottom: 65, left: 50, right: 50 },
@@ -61,15 +62,22 @@ class DrawableObject {
   }
 
   loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
+    if (!DrawableObject.globalImageCache[path]) {
+      let img = new Image();
+      img.src = path;
+      DrawableObject.globalImageCache[path] = img;
+    }
+    this.img = DrawableObject.globalImageCache[path];
   }
 
   loadImages(arr) {
     arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
+      if (!DrawableObject.globalImageCache[path]) {
+        let img = new Image();
+        img.src = path;
+        DrawableObject.globalImageCache[path] = img;
+      }
+      this.imageCache[path] = DrawableObject.globalImageCache[path];
     });
   }
 

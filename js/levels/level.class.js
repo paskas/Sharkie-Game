@@ -43,6 +43,7 @@ class Level extends DrawableObject {
     super();
     EnemyPositionManager.reset();
     this.config = setup;
+
     const {
       world = null,
       countsPuff = { green: 0, red: 0, orange: 0 },
@@ -52,22 +53,30 @@ class Level extends DrawableObject {
       coinsCount = 0,
       coinsArcCount = 0,
       flasksCount = { FlaskLeft: 0, FlaskRight: 0 },
-      endboss = null
+      endboss = false
     } = setup;
     this.world = world;
-
-    this.initEnemies(countsPuff, countsJelly, endboss);
-    this.initLevelElements(sunlights, barrier);
-    this.initCollectibles(coinsCount, coinsArcCount, flasksCount);
+    this.countsPuff = countsPuff;
+    this.countsJelly = countsJelly;
+    this.sunlightsCount = sunlights;
+    this.barrierCount = barrier;
+    this.coinsCount = coinsCount;
+    this.coinsArcCount = coinsArcCount;
+    this.flasksCount = flasksCount;
+    this.endbossFlag = endboss;
   }
 
-  initEnemies(countsPuff, countsJelly, endboss) {
+  initLevel() {
+    this.initEnemies(this.countsPuff, this.countsJelly, this.endbossFlag);
+    this.initLevelElements(this.sunlightsCount, this.barrierCount);
+    this.initCollectibles(this.coinsCount, this.coinsArcCount, this.flasksCount);
+  }
+
+  initEnemies(countsPuff, countsJelly, endbossFlag) {
     this.addPuffer(countsPuff);
     this.addPurpleXjelly(countsJelly);
     this.addYellowXjelly(countsJelly);
-    if (endboss) {
-      this.enemies.push(endboss);
-    }
+    this.createKillerWhale(endbossFlag);
   }
 
   initLevelElements(sunlights, barrier) {
@@ -81,32 +90,15 @@ class Level extends DrawableObject {
     this.addPoisenFlasks(flasksCount);
   }
 
-  clearAllIntervals() {
-    ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
-      if (this[key]) {
-        this[key].forEach(obj => {
-          if (typeof obj.clearAllIntervals === 'function') obj.clearAllIntervals();
-        });
-      }
-    });
-  }
-
-  continueAllIntervals() {
-    ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
-      if (this[key]) {
-        this[key].forEach(obj => {
-          if (typeof obj.continueAllIntervals === 'function') obj.continueAllIntervals();
-        });
-      }
-    });
-  }
-
   addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {
         let puffer = this.createPufferFish(type)
         if (puffer?.initPosition) {
           puffer.initPosition();
+        }
+        if (typeof puffer?.start === 'function') {
+          puffer.start();
         }
         this.enemies.push(puffer);
       }
@@ -118,7 +110,11 @@ class Level extends DrawableObject {
     let purpleIndex = 0;
     for (let i = 0; i < counts['purple']; i++) {
       let x = purpleX[purpleIndex];
-      this.enemies.push(this.createJellyFish('purple', x, 0.4 + Math.random() * 0.3))
+      let jelly = this.createJellyFish('purple', x, 0.4 + Math.random() * 0.3);
+      if (typeof jelly?.start === 'function') {
+        jelly.start();
+      }
+      this.enemies.push(jelly);
       purpleIndex++;
     }
   }
@@ -128,8 +124,18 @@ class Level extends DrawableObject {
     let yellowIndex = 0;
     for (let i = 0; i < counts['yellow']; i++) {
       let x = yellowX[yellowIndex];
-      this.enemies.push(this.createJellyFish('yellow', x, 0.4 + Math.random() * 0.3))
+      let jelly = this.createJellyFish('yellow', x, 0.4 + Math.random() * 0.3);
+      if (typeof jelly?.start === 'function') {
+        jelly.start();
+      }
+      this.enemies.push(jelly);
       yellowIndex++;
+    }
+  }
+
+  createKillerWhale(endbossFlag) {
+    if (endbossFlag) {
+      this.enemies.push(new Endboss(this.world, this.world.canvas));
     }
   }
 
@@ -210,4 +216,26 @@ class Level extends DrawableObject {
     }
   }
 
+  clearAllIntervals() {
+    ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
+      if (this[key]) {
+        this[key].forEach(obj => {
+          if (typeof obj?.clearAllIntervals === 'function') {
+            obj.clearAllIntervals();
+          }
+        });
+        this[key] = [];
+      }
+    });
+  }
+
+  continueAllIntervals() {
+    ['enemies', 'coins', 'poisonFlasks'].forEach(key => {
+      if (this[key]) {
+        this[key].forEach(obj => {
+          if (typeof obj.continueAllIntervals === 'function') obj.continueAllIntervals();
+        }); d
+      }
+    });
+  }
 }

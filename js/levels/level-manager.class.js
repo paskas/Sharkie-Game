@@ -11,7 +11,19 @@ class LevelManager {
       barrier: 1,
       coinsCount: 13,
       coinsArcCount: 3,
-      flasksCount: { FlaskLeft: 3, FlaskRight: 2 }
+      flasksCount: { FlaskLeft: 3, FlaskRight: 2 },
+      endboss: true
+    },
+    {
+      level: 2,
+      countsPuff: { green: 2, red: 4, orange: 2 },
+      countsJelly: { purple: 2, yellow: 2 },
+      sunlights: 1,
+      barrier: 1,
+      coinsCount: 14,
+      coinsArcCount: 2,
+      flasksCount: { FlaskLeft: 2, FlaskRight: 3 },
+      endboss: true
     }
     // More levels here
   ];
@@ -19,16 +31,15 @@ class LevelManager {
   constructor(world, canvas) {
     this.world = world;
     this.canvas = canvas;
-
-    this.generateLevels();
   }
 
   generateLevels() {
+    this.levels.length = 0;
     this.levels = this.levelConfigs.map(config => new Level({
       ...config,
       world: this.world,
-      endboss: new Endboss(this.world, this.canvas)
     }));
+    world.level.initLevel();
   }
 
   getCurrentLevel() {
@@ -42,12 +53,14 @@ class LevelManager {
   }
 
   reloadCurrentLevel() {
+    world.level.clearAllIntervals();
     const config = this.levelConfigs[this.currentLevelIndex];
-    this.levels[this.currentLevelIndex] = new Level({
+    const newLevel = new Level({
       ...config,
       world: this.world,
-      endboss: new Endboss(this.world, this.world.canvas)
     });
+    newLevel.initLevel();
+    this.levels[this.currentLevelIndex] = newLevel;
   }
 
   isLastLevel() {

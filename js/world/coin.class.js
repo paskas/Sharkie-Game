@@ -1,5 +1,6 @@
 class Coin extends MovableObject {
 
+  animationInterval = null;
   static setCoin = 0;
   static coinCount = 0;
 
@@ -33,6 +34,7 @@ class Coin extends MovableObject {
   }
 
   animate() {
+    if (this.animationInterval) return;
     this.animationInterval = setInterval(() => {
       this.playAnimation(this.IMAGES_COIN);
     }, 1000 / 5);
@@ -61,7 +63,7 @@ class Coin extends MovableObject {
     }
   }
 
-  continueAllIntervals(){
+  continueAllIntervals() {
     this.clearAllIntervals();
     this.animate();
   }

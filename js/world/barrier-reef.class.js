@@ -1,6 +1,5 @@
 class BarrierReef extends DrawableObject {
 
-
   IMAGE_BARRIER = [
     './img/backgrounds/barrier_reef/1.png',
   ];
