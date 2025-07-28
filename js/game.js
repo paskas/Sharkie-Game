@@ -19,9 +19,11 @@ function restartLevel() {
   clearOverlayContent();
 }
 
-function resetGameState() {
-  resetGlobalStats();
-  clearWorldCanvas();
+function nextLevel() {
+  resetGameState();
+  startWorldFresh();
+  loadNextLevel();
+  clearOverlayContent();
 }
 
 function backToMenu() {
@@ -31,6 +33,11 @@ function backToMenu() {
   }
   resetGameState();
   showGameMenu();
+}
+
+function resetGameState() {
+  resetGlobalStats();
+  clearWorldCanvas();
 }
 
 function startWorldFresh() {
@@ -60,6 +67,14 @@ function initWorldLoops() {
 function reloadLevel() {
   if (!world?.levelManager) return;
   world.levelManager.reloadCurrentLevel();
+  world.camera_x = 0;
+}
+
+function loadNextLevel() {
+  if (!world?.levelManager) return;
+  world.levelManager.loadNextLevel();
+  const newLevel = world.levelManager.getCurrentLevel();
+  newLevel.initLevel();
   world.camera_x = 0;
 }
 

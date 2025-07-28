@@ -4,7 +4,7 @@ class Character extends MovableObject {
   height = 260;
   width = 240;
   rotationAngle = 0;
-  speed = 6;
+  speed = 2;
   world;
 
   animationInterval = null;

@@ -78,7 +78,8 @@ class Endboss extends MovableObject {
     this.x = 4300;
     this.y = 30;
 
-    this.speed = 1;
+    this.speed = 0.5;
+    this.followSpeed = 0.5;
     this.poisoned = true;
     this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
@@ -178,12 +179,12 @@ class Endboss extends MovableObject {
     if (Math.abs(x) > 310) {
       x > 0 ? this.moveRight() : this.moveLeft();
     } else if (Math.abs(x) > 5 && !collidingChar) {
-      this.x += x > 0 ? 2 : -2;
+      this.x += x > 0 ? this.followSpeed : -this.followSpeed;
     }
     if (Math.abs(y) > 140) {
       y > 0 ? this.bossMoveDown() : this.bossMoveUp();
     } else if (Math.abs(y) > 5 && !collidingChar) {
-      this.y += y > 0 ? 2 : -2;
+      this.y += y > 0 ? this.followSpeed : -this.followSpeed;
     }
   }
 

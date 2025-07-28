@@ -46,12 +46,6 @@ class LevelManager {
     return this.levels[this.currentLevelIndex];
   }
 
-  loadNextLevel() {
-    if (!this.isLastLevel()) {
-      this.currentLevelIndex++;
-    }
-  }
-
   reloadCurrentLevel() {
     world.level.clearAllIntervals();
     const config = this.levelConfigs[this.currentLevelIndex];
@@ -63,11 +57,13 @@ class LevelManager {
     this.levels[this.currentLevelIndex] = newLevel;
   }
 
-  isLastLevel() {
-    return this.currentLevelIndex === this.levels.length - 1;
+  loadNextLevel() {
+    if (!this.isLastLevel()) {
+      this.currentLevelIndex++;
+    }
   }
 
-  resetCurrentLevelIndex() {
-    this.currentLevelIndex = 0;
+  isLastLevel() {
+    return this.currentLevelIndex === this.levels.length - 1;
   }
 }
