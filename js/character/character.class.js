@@ -11,12 +11,14 @@ class Character extends MovableObject {
   currentAnimation = null;
   runAnimateInterval = null;
   runMovementInterval = null;
+  runShootInterval = null;
+
   untilSleep = 8000;
   sleepStartTime = Date.now();
   isSleeping = false;
   sleepTimeout = null;
 
-  runShootInterval = null;
+
   isShooting = false;
   shootPoisend = false;
   shootKeyReleased = true;
@@ -142,7 +144,10 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_SHOOTPOISEN);
 
     this.img = this.imageCache[this.IMAGES_FLOATING[0]];
+  }
 
+  startCharacterLoop() {
+    if (!this.world) return;
     this.runAnimate();
     this.runMovement();
     this.runShoot();
@@ -150,9 +155,15 @@ class Character extends MovableObject {
 
   runAnimate() {
     if (this.runAnimateInterval) return;
-    this.runAnimateInterval = setInterval(() => {
+    const animateLoop = () => {
+      if (this.dead) {
+        this.runAnimateInterval = null;
+        return;
+      }
       this.resolveAnimationStatus();
-    }, 1000 / 60);
+      this.runAnimateInterval = requestAnimationFrame(animateLoop);
+    };
+    animateLoop();
   }
 
   resolveAnimationStatus() {
@@ -261,59 +272,22 @@ class Character extends MovableObject {
     this.animationInterval = setInterval(animationStep, animationSpeed);
   }
 
-  clearAnimationInterval() {
-    if (this.animationInterval) {
-      clearInterval(this.animationInterval);
-      this.animationInterval = null;
-    }
-  }
-
-  clearAllIntervals() {
-    this.clearAnimationInterval();
-    if (this.runAnimateInterval) {
-      clearInterval(this.runAnimateInterval);
-      this.runAnimateInterval = null;
-    }
-    if (this.runMovementInterval) {
-      clearInterval(this.runMovementInterval);
-      this.runMovementInterval = null;
-    }
-    if (this.runShootInterval) {
-      clearInterval(this.runShootInterval);
-      this.runShootInterval = null;
-    }
-    if (this.sleepTimeout) {
-      clearTimeout(this.sleepTimeout);
-      this.sleepTimeout = null;
-    }
-    if (this.dmgTimeout) {
-      clearTimeout(this.dmgTimeout);
-      this.dmgTimeout = null;
-    }
-    if (this.shootTimeout) {
-      clearTimeout(this.shootTimeout);
-      this.shootTimeout = null;
-    }
-  }
-
-  continueAllIntervals() {
-    this.clearAllIntervals();
-    this.runAnimate();
-    this.runMovement();
-    this.runShoot();
-  }
-
   runMovement() {
     if (this.runMovementInterval) return;
-    this.runMovementInterval = setInterval(() => {
-      if (!this.world || this.dead) return;
+    const moveLoop = () => {
+      if (!this.world || this.dead) {
+        this.runMovementInterval = null;
+        return;
+      }
       const kb = this.world.keyboard;
       if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
       const { targetX, targetY } = this.updateNextPosition(kb);
       this.handleCollisionAndMove(targetX, targetY);
       this.updateRotationAngle(kb);
       this.moveCamera();
-    }, 1000 / 60);
+      this.runMovementInterval = requestAnimationFrame(moveLoop);
+    };
+    moveLoop();
   }
 
   isMoving() {
@@ -388,12 +362,19 @@ class Character extends MovableObject {
 
   runShoot() {
     if (this.runShootInterval) return;
-    this.runShootInterval = setInterval(() => {
-      if (!this.world || this.dead || this.isInDamagePhase()) return;
+    const shootLoop = () => {
+      if (!this.world || this.dead) {
+        this.runShootInterval = null;
+        return;
+      }
       const kb = this.world.keyboard;
-      this.triggerBubbleShoot(kb);
-      this.triggerPoisenBubbleShoot(kb);
-    }, 1000 / 60);
+      if (!this.isInDamagePhase()) {
+        this.triggerBubbleShoot(kb);
+        this.triggerPoisenBubbleShoot(kb);
+      }
+      this.runShootInterval = requestAnimationFrame(shootLoop);
+    };
+    shootLoop();
   }
 
   triggerBubbleShoot(kb) {
@@ -432,5 +413,45 @@ class Character extends MovableObject {
     const y = this.y + this.height / 2;
     const bubble = new ShootingObject(this, x, y, this.otherDirection, isPoisendShoot);
     this.world.shootingObject.push(bubble);
+  }
+
+  clearAnimationInterval() {
+    if (this.animationInterval) {
+      clearInterval(this.animationInterval);
+      this.animationInterval = null;
+    }
+  }
+
+  clearAllIntervals() {
+    this.clearAnimationInterval();
+    if (this.runAnimateInterval) {
+      cancelAnimationFrame(this.runAnimateInterval);
+      this.runAnimateInterval = null;
+    }
+    if (this.runMovementInterval) {
+      cancelAnimationFrame(this.runMovementInterval);
+      this.runMovementInterval = null;
+    }
+    if (this.runShootInterval) {
+      cancelAnimationFrame(this.runShootInterval);
+      this.runShootInterval = null;
+    }
+    if (this.sleepTimeout) {
+      clearTimeout(this.sleepTimeout);
+      this.sleepTimeout = null;
+    }
+    if (this.dmgTimeout) {
+      clearTimeout(this.dmgTimeout);
+      this.dmgTimeout = null;
+    }
+    if (this.shootTimeout) {
+      clearTimeout(this.shootTimeout);
+      this.shootTimeout = null;
+    }
+  }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    this.startCharacterLoop();
   }
 }

@@ -25,6 +25,10 @@ function resetGameState() {
 }
 
 function backToMenu() {
+  if (world) {
+    world.clearWorld();
+    world = null;
+  }
   resetGameState();
   showGameMenu();
 }

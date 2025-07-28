@@ -46,7 +46,7 @@ class DrawHandler {
 
     this.ctx.translate(-this.world.camera_x, 0);
     this.addToMap(this.world.healthBarCharacter);
-    this.world.drawEndbossHealthbar(this.ctx, (obj) => this.addToMap(obj));
+    this.world.drawEndbossHealthbar((obj) => this.addToMap(obj));
     this.world.coinCounter.draw(this.ctx, Coin.coinCount);
     this.world.poisonFlaskCounter.draw(this.ctx, PoisenFlask.flaskCount);
 

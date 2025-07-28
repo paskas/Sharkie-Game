@@ -1,0 +1,8 @@
+refactor: conversion of all character loops to requestAnimationFrame
+
+- runAnimate, runMovement, runShoot converted to requestAnimationFrame
+- all run functions now start recursively instead of via repeated external calls
+- clearAllIntervals adjusted
+- new method startCharacterLoop introduced in Character to start all loops centrally
+- startCharacterLoop is now called at the end of Level.initLevel as soon as the character is initialized
+- fixed issue where shooting no longer worked after the damage phase

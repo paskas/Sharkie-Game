@@ -70,6 +70,7 @@ class Level extends DrawableObject {
     this.initEnemies(this.countsPuff, this.countsJelly, this.endbossFlag);
     this.initLevelElements(this.sunlightsCount, this.barrierCount);
     this.initCollectibles(this.coinsCount, this.coinsArcCount, this.flasksCount);
+    this.world.character.startCharacterLoop();
   }
 
   initEnemies(countsPuff, countsJelly, endbossFlag) {
