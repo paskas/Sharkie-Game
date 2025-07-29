@@ -4,30 +4,30 @@ class Character extends MovableObject {
   height = 260;
   width = 240;
   rotationAngle = 0;
-  speed = 3;
+  speed = 300;
+  cameraStepPerSecond = 300;
   world;
 
+  characterLoopId = null;
   animationInterval = null;
   currentAnimation = null;
-  runAnimateInterval = null;
-  runMovementInterval = null;
-  runShootInterval = null;
+  lastFrameTime = 0;
 
   untilSleep = 8000;
   sleepStartTime = Date.now();
   isSleeping = false;
   sleepTimeout = null;
 
-
   isShooting = false;
   shootPoisend = false;
   shootKeyReleased = true;
   poisonShootKeyReleased = true;
   currentShotPoisoned = false;
+  shootTimeout = null;
+
   isPoisendByHit = false;
   isShockByHit = false;
   lastShootTime = Date.now();
-  shootTimeout = null;
   dmgTimeout = null;
 
   static life = 5;
@@ -148,47 +148,74 @@ class Character extends MovableObject {
 
   startCharacterLoop() {
     if (!this.world) return;
-    this.runAnimate();
-    this.runMovement();
-    this.runShoot();
+    this.lastFrameTime = 0;
+    const loop = (time) => {
+      if (!this.world || this.dead) return;
+      const frameTime = this.calculateDeltaTime(time);
+      this.updateFrameState(frameTime);
+      this.characterLoopId = requestAnimationFrame(loop);
+    };
+    this.characterLoopId = requestAnimationFrame(loop);
   }
 
-  runAnimate() {
-    if (this.runAnimateInterval) return;
-    const animateLoop = () => {
-      if (this.dead) {
-        this.runAnimateInterval = null;
-        return;
-      }
-      this.resolveAnimationStatus();
-      this.runAnimateInterval = requestAnimationFrame(animateLoop);
-    };
-    animateLoop();
+  updateFrameState(frameTime) {
+    this.updateMovement(frameTime);
+    this.updateShoot();
+    this.resolveAnimationStatus();
+    this.moveCamera(frameTime);
+  }
+
+  calculateDeltaTime(time) {
+    if (!this.lastFrameTime) this.lastFrameTime = time;
+    const frameTime = (time - this.lastFrameTime) / 1000;
+    this.lastFrameTime = time;
+    return frameTime;
   }
 
   resolveAnimationStatus() {
     if (this.dead) return;
     if (this.isInDamagePhase()) {
-      if (this.currentAnimation !== 'damage') this.startDamageAnimation();
+      this.startDamageAnimation();
       return;
     }
     if (this.isShooting) {
-      if (this.currentAnimation !== 'shoot') this.startShootAnimation();
+      this.setAnimationIfNew('shoot', () => this.shootAnimation());
       return;
     }
     if (this.isMoving()) {
-      if (this.currentAnimation !== 'swim') this.startSwimAnimation();
+      this.setAnimationIfNew('swim', () => this.swimAnimation());
       return;
     }
     if (this.startSleepTimer()) {
-      if (this.currentAnimation !== 'sleep') this.startSleepAnimation();
+      this.startSleepAnimation();
     } else {
-      if (this.currentAnimation !== 'idle') this.startIdleAnimation();
+      this.setAnimationIfNew('idle', () => this.idleAnimation());
     }
   }
 
-  startSleepTimer() {
-    return Date.now() - this.sleepStartTime > this.untilSleep;
+  setAnimationIfNew(mode, callback) {
+    const speed = {
+      swim: 100,
+      shoot: 100,
+      idle: 140,
+      sleep: 200,
+      initSleep: 140,
+      damage: 140
+    }
+    if (this.currentAnimation !== mode) {
+      const interval = speed[mode];
+      this.setAnimation(mode, callback, interval);
+    }
+  }
+
+  startSleepAnimation() {
+    if (this.sleepTimeout || this.isSleeping) return;
+    this.setAnimation('initSleep', () => this.initSleepAnimation(), 140);
+    this.sleepTimeout = setTimeout(() => {
+      this.isSleeping = true;
+      this.setAnimation('sleep', () => this.sleepAnimation(), 200);
+      this.sleepTimeout = null;
+    }, this.IMAGES_INITSLEEP.length * 140);
   }
 
   resetSleepStatus() {
@@ -202,26 +229,8 @@ class Character extends MovableObject {
     }
   }
 
-  startIdleAnimation() {
-    this.setAnimation('idle', () => this.idleAnimation(), 140);
-  }
-
-  startSwimAnimation() {
-    this.setAnimation('swim', () => this.swimAnimation(), 100);
-  }
-
-  startSleepAnimation() {
-    if (this.sleepTimeout || this.isSleeping) return;
-    this.setAnimation('initSleep', () => this.initSleepAnimation(), 140);
-    this.sleepTimeout = setTimeout(() => {
-      this.isSleeping = true;
-      this.setAnimation('sleep', () => this.sleepAnimation(), 200);
-      this.sleepTimeout = null;
-    }, this.IMAGES_INITSLEEP.length * 140);
-  }
-
-  startShootAnimation() {
-    this.setAnimation('shoot', () => this.shootAnimation(), 100);
+  startSleepTimer() {
+    return Date.now() - this.sleepStartTime > this.untilSleep;
   }
 
   startDamageAnimation() {
@@ -272,22 +281,12 @@ class Character extends MovableObject {
     this.animationInterval = setInterval(animationStep, animationSpeed);
   }
 
-  runMovement() {
-    if (this.runMovementInterval) return;
-    const moveLoop = () => {
-      if (!this.world || this.dead) {
-        this.runMovementInterval = null;
-        return;
-      }
-      const kb = this.world.keyboard;
-      if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
-      const { targetX, targetY } = this.updateNextPosition(kb);
-      this.handleCollisionAndMove(targetX, targetY);
-      this.updateRotationAngle(kb);
-      this.moveCamera();
-      this.runMovementInterval = requestAnimationFrame(moveLoop);
-    };
-    moveLoop();
+  updateMovement(frameTime) {
+    const kb = this.world.keyboard;
+    if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
+    const { targetX, targetY } = this.updateNextPosition(kb, frameTime);
+    this.handleCollisionAndMove(targetX, targetY);
+    this.updateRotationAngle(kb);
   }
 
   isMoving() {
@@ -297,14 +296,15 @@ class Character extends MovableObject {
     return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
   }
 
-  updateNextPosition(kb) {
+  updateNextPosition(kb, frameTime) {
     const w = this.world;
     let targetX = this.x;
     let targetY = this.y;
-    if (kb.RIGHT && this.x + this.width < w.level.level_end_x) targetX += this.speed;
-    if (kb.LEFT && this.x > 0) targetX -= this.speed;
-    if (kb.UP && this.y > w.level.level_top_y) targetY -= this.speed;
-    if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += this.speed;
+    let distance = this.speed * frameTime;
+    if (kb.RIGHT && this.x + this.width < w.level.level_end_x) targetX += distance;
+    if (kb.LEFT && this.x > 0) targetX -= distance;
+    if (kb.UP && this.y > w.level.level_top_y) targetY -= distance;
+    if (kb.DOWN && this.y < w.level.level_bottom_y) targetY += distance;
     return { targetX, targetY };
   }
 
@@ -331,10 +331,10 @@ class Character extends MovableObject {
     }
   }
 
-  moveCamera() {
+  moveCamera(frameTime) {
     let cameraTargetX = this.calcCameraX();
     let distance = cameraTargetX - this.world.camera_x;
-    let step = this.calcCameraSteps(distance);
+    let step = this.calcCameraSteps(distance, frameTime);
     this.updateCameraPosition(distance, step);
   }
 
@@ -345,12 +345,12 @@ class Character extends MovableObject {
     return cameraTargetX;
   }
 
-  calcCameraSteps(distance) {
-    let maxStep = 15;
+  calcCameraSteps(distance, frameTime) {
     let absDistance = Math.abs(distance);
     let t = Math.min(absDistance / 100, 1);
     t = t * t * (3 - 2 * t);
-    return maxStep * t;
+    let step = this.cameraStepPerSecond * frameTime * t;
+    return step;
   }
 
   updateCameraPosition(distance, step) {
@@ -360,21 +360,12 @@ class Character extends MovableObject {
     this.world.camera_x = Math.max(minCameraX, Math.min(this.world.camera_x, 0));
   }
 
-  runShoot() {
-    if (this.runShootInterval) return;
-    const shootLoop = () => {
-      if (!this.world || this.dead) {
-        this.runShootInterval = null;
-        return;
-      }
-      const kb = this.world.keyboard;
-      if (!this.isInDamagePhase()) {
-        this.triggerBubbleShoot(kb);
-        this.triggerPoisenBubbleShoot(kb);
-      }
-      this.runShootInterval = requestAnimationFrame(shootLoop);
-    };
-    shootLoop();
+  updateShoot() {
+    const kb = this.world.keyboard;
+    if (!this.isInDamagePhase()) {
+      this.triggerBubbleShoot(kb);
+      this.triggerPoisenBubbleShoot(kb);
+    }
   }
 
   triggerBubbleShoot(kb) {
@@ -399,7 +390,8 @@ class Character extends MovableObject {
     this.isShooting = true;
     this.currentShotPoisoned = isPoisendShoot;
     const shootFrames = isPoisendShoot ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
-    const duration = shootFrames * 120;
+    const frameDuration = 120;
+    const duration = shootFrames * frameDuration;
     this.shootTimeout = setTimeout(() => {
       this.shootBubble(isPoisendShoot);
       this.lastShootTime = Date.now();
@@ -424,17 +416,9 @@ class Character extends MovableObject {
 
   clearAllIntervals() {
     this.clearAnimationInterval();
-    if (this.runAnimateInterval) {
-      cancelAnimationFrame(this.runAnimateInterval);
-      this.runAnimateInterval = null;
-    }
-    if (this.runMovementInterval) {
-      cancelAnimationFrame(this.runMovementInterval);
-      this.runMovementInterval = null;
-    }
-    if (this.runShootInterval) {
-      cancelAnimationFrame(this.runShootInterval);
-      this.runShootInterval = null;
+    if (this.characterLoopId) {
+      cancelAnimationFrame(this.characterLoopId);
+      this.characterLoopId = null;
     }
     if (this.sleepTimeout) {
       clearTimeout(this.sleepTimeout);
