@@ -145,9 +145,9 @@ function controlHelpOverlayHTML() {
 function inGameNavOverlayHTML() {
   return `
 <div class="game-menu">
-  <button class="game-overlay-btn game-play-btn" onclick="triggerGameplay();"></button>
-  <button class="game-overlay-btn f-screen-game-btn" onclick="fullscreen('game');"></button>
-  <button class="game-overlay-btn sound-btn" onclick="triggerSound('game');"></button>
+  <button tabindex="-1" id="gameplayBtn" class="game-overlay-btn game-play-btn play" onclick="toggleGameplay();"></button>
+  <button tabindex="-1" class="game-overlay-btn f-screen-game-btn" onclick="fullscreen('game');"></button>
+  <button tabindex="-1" class="game-overlay-btn sound-btn" onclick="triggerSound('game');"></button>
 </div>
 `
 }

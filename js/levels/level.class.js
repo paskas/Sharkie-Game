@@ -135,7 +135,8 @@ class Level extends DrawableObject {
   }
 
   createKillerWhale(endbossFlag) {
-    if (endbossFlag) {
+    const alreadyHasEndboss = this.enemies.some(e => e instanceof Endboss);
+    if (endbossFlag && !alreadyHasEndboss) {
       this.enemies.push(new Endboss(this.world, this.world.canvas));
     }
   }
@@ -225,7 +226,6 @@ class Level extends DrawableObject {
             obj.clearAllIntervals();
           }
         });
-        this[key] = [];
       }
     });
   }
@@ -235,7 +235,7 @@ class Level extends DrawableObject {
       if (this[key]) {
         this[key].forEach(obj => {
           if (typeof obj.continueAllIntervals === 'function') obj.continueAllIntervals();
-        }); d
+        });
       }
     });
   }

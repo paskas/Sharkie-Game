@@ -98,7 +98,6 @@ class World {
     this.healthBarEndboss?.clearAllIntervals?.();
     if (Array.isArray(this.shootingObject)) {
       this.shootingObject.forEach(b => b?.clearAllIntervals?.());
-      this.shootingObject = [];
     }
   }
 
@@ -111,18 +110,20 @@ class World {
     this.gameHelper = null;
     this.collisionHandler = null;
     this.bubbleHandler = null;
+    this.shootingObject = [];
   }
 
   continueWorld() {
     this.startWorldLoop();
     this.drawHandler.startDrawLoop();
-    this.character?.continueIntervals?.();
-    this.levelManager?.getCurrentLevel?.()?.continueIntervals?.();
-    this.healthBarCharacter?.continueIntervals?.();
-    this.healthBarEndboss?.continueIntervals?.();
+    this.character?.continueAllIntervals?.();
+    this.levelManager?.getCurrentLevel?.()?.continueAllIntervals?.();
+    this.healthBarCharacter?.continueAllIntervals?.();
+    this.healthBarEndboss?.continueAllIntervals?.();
     if (Array.isArray(this.shootingObject)) {
-      this.shootingObject.forEach(b => b?.continueIntervals?.());
+      this.shootingObject.forEach(b => b?.continueAllIntervals?.());
     }
+    this.keyboard.disabled = false;
   }
 
   checkTriggerEndbossHealthBar() {

@@ -63,13 +63,20 @@
 }
 
 .game-play-btn {
-  background-image: url('../img/interface/inGameIcons/gamePlay.png');
   width: clamp(18px, 4vw, 36px);
   height: clamp(18px, 4vw, 36px);
   z-index: 1;
 }
 
-.sound-btn{
+.play {
+  background-image: url('../img/interface/inGameIcons/gamePlay.png');
+}
+
+.pause {
+  background-image: url('../img/interface/inGameIcons/gameStop.png');
+}
+
+.sound-btn {
   background-image: url('../img/interface/inGameIcons/soundOn.png');
   width: clamp(18px, 4vw, 36px);
   height: clamp(18px, 4vw, 36px);

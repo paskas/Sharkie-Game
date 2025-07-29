@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let isPaused = false;
 
 function initGame() {
   showGameMenu();
@@ -93,34 +94,40 @@ function clearWorldCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function pause() {
-  world.clearWorld();
+function toggleGameplay() {
+  const btn = document.getElementById('gameplayBtn');
+  const isPlaying = btn.classList.contains('play');
+  if (isPlaying) {
+    world.stopAllIntervals();
+    btn.classList.remove('play');
+    btn.classList.add('pause');
+    isPaused = true;
+  } else {
+    world.continueWorld();
+    btn.classList.remove('pause');
+    btn.classList.add('play');
+    isPaused = false;
+  }
 }
 
-function resume() {
-  world.continueWorld();
-}
 
 function fullscreen(mode = 'game') {
-  let container;
-  let canvas = document.getElementById('canvas');
-  if (mode === 'menu') {
-    container = document.getElementById('overlayContainer');
-  } else {
-    container = document.getElementById('gameContainer');
-  }
-  enterFullscreen(container, canvas);
-}
+  const canvas = document.getElementById('canvas');
+  const container = (mode === 'menu')
+    ? document.getElementById('overlayContainer')
+    : document.getElementById('gameContainer');
 
-function enterFullscreen(container, canvas) {
-  if (container.requestFullscreen) {
-    container.requestFullscreen();
+  if (!document.fullscreenElement) {
+    container.requestFullscreen?.();
     canvas.classList.add('fullscreen-canvas');
+  } else {
+    document.exitFullscreen?.();
   }
 }
 
-function exitFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
+document.addEventListener('fullscreenchange', () => {
+  const canvas = document.getElementById('canvas');
+  if (!document.fullscreenElement) {
+    canvas.classList.remove('fullscreen-canvas');
   }
-}
+});

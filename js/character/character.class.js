@@ -245,6 +245,7 @@ class Character extends MovableObject {
   }
 
   updateMovement(frameTime) {
+    if (this.world.keyboard.disabled) return;
     const kb = this.world.keyboard;
     if (CharacterHelper.isMoving(this, kb)) CharacterHelper.resetSleepStatus(this);
     const { targetX, targetY } = this.updateNextPosition(kb, frameTime);
@@ -336,22 +337,14 @@ class Character extends MovableObject {
 
   clearAllIntervals() {
     this.clearAnimationInterval();
-    if (this.characterLoopId) {
-      cancelAnimationFrame(this.characterLoopId);
-      this.characterLoopId = null;
-    }
-    if (this.sleepTimeout) {
-      clearTimeout(this.sleepTimeout);
-      this.sleepTimeout = null;
-    }
-    if (this.dmgTimeout) {
-      clearTimeout(this.dmgTimeout);
-      this.dmgTimeout = null;
-    }
-    if (this.shootTimeout) {
-      clearTimeout(this.shootTimeout);
-      this.shootTimeout = null;
-    }
+    if (this.characterLoopI) cancelAnimationFrame(this.characterLoopId);
+    if (this.sleepTimeout) clearTimeout(this.sleepTimeout);
+    if (this.dmgTimeout) clearTimeout(this.dmgTimeout);
+    if (this.shootTimeout) clearTimeout(this.shootTimeout);
+    this.characterLoopId = null;
+    this.sleepTimeout = null;
+    this.dmgTimeout = null;
+    this.shootTimeout = null;
   }
 
   continueAllIntervals() {

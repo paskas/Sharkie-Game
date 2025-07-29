@@ -320,9 +320,8 @@ class Endboss extends MovableObject {
   }
 
   continueAllIntervals() {
-    this.clearAllIntervals();
-    if (!this.hadFirstContact) {
-      this.triggerEndboss();
+    if (!this.hadFirstContact && !this.dead) {
+      this.checkForFirstContact();
     } else if (!this.dead) {
       this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
       this.startCombatLoop();
