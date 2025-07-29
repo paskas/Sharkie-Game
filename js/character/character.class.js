@@ -151,7 +151,7 @@ class Character extends MovableObject {
     this.lastFrameTime = 0;
     const loop = (time) => {
       if (!this.world || this.dead) return;
-      const frameTime = this.calculateDeltaTime(time);
+      const frameTime = CharacterHelper.calculateDeltaTime(this, time);
       this.updateFrameState(frameTime);
       this.characterLoopId = requestAnimationFrame(loop);
     };
@@ -162,14 +162,7 @@ class Character extends MovableObject {
     this.updateMovement(frameTime);
     this.updateShoot();
     this.resolveAnimationStatus();
-    this.moveCamera(frameTime);
-  }
-
-  calculateDeltaTime(time) {
-    if (!this.lastFrameTime) this.lastFrameTime = time;
-    const frameTime = (time - this.lastFrameTime) / 1000;
-    this.lastFrameTime = time;
-    return frameTime;
+    CharacterCamMove.moveCamera(this, this.world, frameTime);
   }
 
   resolveAnimationStatus() {
@@ -179,32 +172,17 @@ class Character extends MovableObject {
       return;
     }
     if (this.isShooting) {
-      this.setAnimationIfNew('shoot', () => this.shootAnimation());
+      CharacterHelper.setAnimationIfNew(this, 'shoot', () => this.shootAnimation());
       return;
     }
-    if (this.isMoving()) {
-      this.setAnimationIfNew('swim', () => this.swimAnimation());
+    if (CharacterHelper.isMoving(this, this.world.keyboard)) {
+      CharacterHelper.setAnimationIfNew(this, 'swim', () => this.swimAnimation());
       return;
     }
-    if (this.startSleepTimer()) {
+    if (CharacterHelper.startSleepTimer(this.sleepStartTime, this.untilSleep)) {
       this.startSleepAnimation();
     } else {
-      this.setAnimationIfNew('idle', () => this.idleAnimation());
-    }
-  }
-
-  setAnimationIfNew(mode, callback) {
-    const speed = {
-      swim: 100,
-      shoot: 100,
-      idle: 140,
-      sleep: 200,
-      initSleep: 140,
-      damage: 140
-    }
-    if (this.currentAnimation !== mode) {
-      const interval = speed[mode];
-      this.setAnimation(mode, callback, interval);
+      CharacterHelper.setAnimationIfNew(this, 'idle', () => this.idleAnimation());
     }
   }
 
@@ -216,21 +194,6 @@ class Character extends MovableObject {
       this.setAnimation('sleep', () => this.sleepAnimation(), 200);
       this.sleepTimeout = null;
     }, this.IMAGES_INITSLEEP.length * 140);
-  }
-
-  resetSleepStatus() {
-    this.sleepStartTime = Date.now();
-    if (this.sleepTimeout) {
-      clearTimeout(this.sleepTimeout)
-      this.sleepTimeout = null;
-    }
-    if (this.isSleeping) {
-      this.isSleeping = false;
-    }
-  }
-
-  startSleepTimer() {
-    return Date.now() - this.sleepStartTime > this.untilSleep;
   }
 
   startDamageAnimation() {
@@ -283,17 +246,10 @@ class Character extends MovableObject {
 
   updateMovement(frameTime) {
     const kb = this.world.keyboard;
-    if (kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN) this.resetSleepStatus();
+    if (CharacterHelper.isMoving(this, kb)) CharacterHelper.resetSleepStatus(this);
     const { targetX, targetY } = this.updateNextPosition(kb, frameTime);
     this.handleCollisionAndMove(targetX, targetY);
     this.updateRotationAngle(kb);
-  }
-
-  isMoving() {
-    const kb = this.world.keyboard;
-    if (kb.LEFT) this.otherDirection = true;
-    if (kb.RIGHT) this.otherDirection = false;
-    return kb.RIGHT || kb.LEFT || kb.UP || kb.DOWN;
   }
 
   updateNextPosition(kb, frameTime) {
@@ -309,18 +265,11 @@ class Character extends MovableObject {
   }
 
   handleCollisionAndMove(targetX, targetY) {
-    const blockingObjects = this.getBlockingObjects();
+    const blockingObjects = CharacterHelper.getBlockingObjects(this.world);
     if (!this.world.gameHelper.isCollidingWithObject(targetX, targetY, blockingObjects)) {
       this.x = targetX;
       this.y = targetY;
     }
-  }
-
-  getBlockingObjects() {
-    if (!this.world || !this.world.level) return [];
-    return [
-      ...this.world.level.barrier,
-    ];
   }
 
   updateRotationAngle(kb) {
@@ -329,35 +278,6 @@ class Character extends MovableObject {
     } else {
       this.rotationAngle = 0;
     }
-  }
-
-  moveCamera(frameTime) {
-    let cameraTargetX = this.calcCameraX();
-    let distance = cameraTargetX - this.world.camera_x;
-    let step = this.calcCameraSteps(distance, frameTime);
-    this.updateCameraPosition(distance, step);
-  }
-
-  calcCameraX() {
-    let cameraTargetX = -this.x + 100;
-    let minCameraX = -this.world.level.level_end_x + this.world.canvas.width;
-    cameraTargetX = Math.max(minCameraX, Math.min(cameraTargetX, 0));
-    return cameraTargetX;
-  }
-
-  calcCameraSteps(distance, frameTime) {
-    let absDistance = Math.abs(distance);
-    let t = Math.min(absDistance / 100, 1);
-    t = t * t * (3 - 2 * t);
-    let step = this.cameraStepPerSecond * frameTime * t;
-    return step;
-  }
-
-  updateCameraPosition(distance, step) {
-    let minCameraX = -this.world.level.level_end_x + this.world.canvas.width;
-    this.world.camera_x += Math.sign(distance) * step;
-    this.world.camera_x = Math.round(this.world.camera_x);
-    this.world.camera_x = Math.max(minCameraX, Math.min(this.world.camera_x, 0));
   }
 
   updateShoot() {
@@ -372,7 +292,7 @@ class Character extends MovableObject {
     if (!kb.SHOOT) this.shootKeyReleased = true;
     if (kb.SHOOT && this.shootKeyReleased && !this.isShooting) {
       this.shootKeyReleased = false;
-      this.resetSleepStatus();
+      CharacterHelper.resetSleepStatus(this);
       this.startShootingSequence(false);
     }
   }
@@ -381,7 +301,7 @@ class Character extends MovableObject {
     if (!kb.POISENSHOOT) this.poisonShootKeyReleased = true;
     if (kb.POISENSHOOT && this.poisonShootKeyReleased && !this.isShooting && this.shootPoisend) {
       this.poisonShootKeyReleased = false;
-      this.resetSleepStatus();
+      CharacterHelper.resetSleepStatus(this);
       this.startShootingSequence(true);
     }
   }
