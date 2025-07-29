@@ -1,5 +1,7 @@
-feat: InGameNav menu rendered as overlay over canvas
+feat: soundManager integrated and volume control added
 
-- showInGameNav function adjusted now renders the InGame menu overlay on the overlay container of the canvas
-- this displays the menu over the canvas without overwriting the canvas.
-- CSS InGameNav adjusted
+- soundManager class created and made globally available via window.soundManager in game.js
+- input type="range" for volume control designed with matching CSS and integrated
+- soundManager.playSound added at appropriate points in the game
+- all running sounds are stopped including cached ones
+- toogleSound for mute and play sound integrated

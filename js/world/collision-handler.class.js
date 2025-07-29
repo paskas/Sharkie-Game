@@ -34,6 +34,7 @@ class CollisionHandler {
           PoisenFlask.flaskCount++;
         }
         this.world.coinCounter.updateImage(Coin.coinCount);
+        soundManager.playSound('../assets/audio/character/collectCoin.wav')
       }
     });
   }
@@ -44,6 +45,7 @@ class CollisionHandler {
       if (this.world.character.isColliding(flask)) {
         PoisenFlask.flaskCount++;
         this.world.level.poisonFlasks.splice(index, 1);
+        soundManager.playSound('../assets/audio/character/flaskBottle.wav')
       }
     });
   }

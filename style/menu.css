@@ -77,10 +77,17 @@
 }
 
 .sound-btn {
-  background-image: url('../img/interface/inGameIcons/soundOn.png');
   width: clamp(18px, 4vw, 36px);
   height: clamp(18px, 4vw, 36px);
   z-index: 1;
+}
+
+.play-sound {
+  background-image: url('../img/interface/inGameIcons/soundOn.png');
+}
+
+.mute-sound {
+  background-image: url('../img/interface/inGameIcons/soundMute.png');
 }
 
 .game-menu {
@@ -290,4 +297,38 @@
   background-size: cover;
   width: clamp(96px, 30vw, 540px);
   height: clamp(54px, 28vw, 480px);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 12px;
+  background: linear-gradient(to right, #65e8ef, #eec15c);
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 0 6px #65e8ef;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 16px;
+  background: transparent;
+  border-radius: 6px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 32px;
+  width: 32px;
+  background: url('../img/interface/inGameIcons/soundOn.png') no-repeat center center;
+  background-size: contain;
+  border: none;
+  border-radius: 50%;
+  margin-top: -8px;
+  box-shadow: 0 0 4px #65e8ef;
+  transition: transform 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
 }

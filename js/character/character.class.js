@@ -217,6 +217,7 @@ class Character extends MovableObject {
 
   initSleepAnimation() {
     this.playAnimation(this.IMAGES_INITSLEEP);
+    soundManager.playSound('../assets/audio/character/sleep.wav')
   }
 
   sleepAnimation() {
@@ -326,6 +327,7 @@ class Character extends MovableObject {
     const y = this.y + this.height / 2;
     const bubble = new ShootingObject(this, x, y, this.otherDirection, isPoisendShoot);
     this.world.shootingObject.push(bubble);
+    soundManager.playSound('../assets/audio/character/bubble2.mp3')
   }
 
   clearAnimationInterval() {

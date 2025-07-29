@@ -18,6 +18,7 @@ function showEndscreen(status = 'complete') {
     setGameOverlay('gameOverlay', gameOverOverlayHTML());
   } else {
     setGameOverlay('gameOverlay', levelCompleteOverlayHTML());
+    soundManager.playSound('../assets/audio/interface/gameLevelComplete.wav')
   }
 }
 
@@ -53,6 +54,7 @@ function mainMenuOverlayHTML() {
   <div class="controls">
     <button class="game-overlay-btn control-btn" onclick="showControlHelp()"></button>
     <button class="game-overlay-btn info-btn"></button>
+    <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="soundManager.setVolume(this.value)">
   </div>
   `
 }
@@ -147,7 +149,7 @@ function inGameNavOverlayHTML() {
 <div class="game-menu">
   <button tabindex="-1" id="gameplayBtn" class="game-overlay-btn game-play-btn play" onclick="toggleGameplay();"></button>
   <button tabindex="-1" class="game-overlay-btn f-screen-game-btn" onclick="fullscreen('game');"></button>
-  <button tabindex="-1" class="game-overlay-btn sound-btn" onclick="triggerSound('game');"></button>
+  <button tabindex="-1" id="soundToggleBtn" class="game-overlay-btn sound-btn play-sound" onclick="toogleSound();"></button>
 </div>
 `
 }
@@ -155,10 +157,9 @@ function inGameNavOverlayHTML() {
 function infoOverlayHTML() {
   return `
 <div class="game-overlay info-game">
-          <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
-          <div class="info-title">     
-          </div>
- 
-      </div>
+  <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
+  <div class="info-title">
+  </div>
+</div>
 `
 }

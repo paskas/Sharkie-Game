@@ -3,8 +3,14 @@ let world;
 let keyboard = new Keyboard();
 let isPaused = false;
 
+window.soundManager = new SoundManager();
+
 function initGame() {
   showGameMenu();
+  if (!soundManager.isMusicPlaying()) {
+    soundManager.playMusic('./assets/audio/interface/gameUiLoopMusic.mp3');
+    soundManager.toggleMute('./assets/audio/interface/gameUiLoopMusic.mp3');
+  }
 }
 
 function playGame() {
@@ -110,6 +116,16 @@ function toggleGameplay() {
   }
 }
 
+function toogleSound() {
+  soundManager.toggleMute();
+  const btn = document.getElementById('soundToggleBtn');
+  btn.classList.remove('play-sound', 'mute-sound');
+  if (soundManager.isMuted) {
+    btn.classList.add('mute-sound');
+  } else {
+    btn.classList.add('play-sound');
+  }
+}
 
 function fullscreen(mode = 'game') {
   const canvas = document.getElementById('canvas');
