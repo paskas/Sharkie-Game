@@ -272,6 +272,7 @@ class Endboss extends MovableObject {
   }
 
   handlePoisenBubbleHit() {
+    if (!this.hadFirstContact) return;
     this.isHurtByPoisenbubble++;
     if (this.isHurtByPoisenbubble >= 1) {
       if (Endboss.life > 0 && !this.isInDamagePhase()) {
@@ -283,6 +284,7 @@ class Endboss extends MovableObject {
   }
 
   handleBubbleHit() {
+    if (!this.hadFirstContact) return;
     this.isHurtByBubble++;
     if (this.isHurtByBubble >= 3) {
       if (Endboss.life > 0 && !this.isInDamagePhase()) {

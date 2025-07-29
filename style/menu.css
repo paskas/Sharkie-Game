@@ -276,3 +276,18 @@
 .keyCap-space .keyCap-label {
   font-size: clamp(8px, 2vw, 24px);
 }
+
+.info-game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-title {
+  background-image: url('../img/interface/title/chatPopIn.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: clamp(96px, 30vw, 540px);
+  height: clamp(54px, 28vw, 480px);
+}

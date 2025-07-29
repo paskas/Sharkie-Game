@@ -151,3 +151,14 @@ function inGameNavOverlayHTML() {
 </div>
 `
 }
+
+function infoOverlayHTML() {
+  return `
+<div class="game-overlay info-game">
+          <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
+          <div class="info-title">     
+          </div>
+ 
+      </div>
+`
+}
