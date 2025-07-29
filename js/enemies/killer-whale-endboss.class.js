@@ -4,8 +4,10 @@ class Endboss extends MovableObject {
 
   checkInterval = null;
   currentAnimation = null;
-  animationInterval = null;
-  combatLoopInterval = null;
+  animationFrameId = null;
+
+  lastFrameTime = 0;
+  combatFrameId = null;
 
   lastAttackTime = 0;
   attackCooldown = 1500;
@@ -16,6 +18,8 @@ class Endboss extends MovableObject {
   hadFirstContact = false;
   isCombatLoopRunning = false;
   dead = false;
+
+  followSpeed = 80;
   static life = 5;
 
   IMAGES_SPAWNING = [
@@ -78,8 +82,6 @@ class Endboss extends MovableObject {
     this.x = 4300;
     this.y = 30;
 
-    this.speed = 0.5;
-    this.followSpeed = 0.5;
     this.poisoned = true;
     this.canDealDmg = true;
     this.setMovementRange(-275, canvas.height + 110);
@@ -94,6 +96,16 @@ class Endboss extends MovableObject {
     this.checkForFirstContact();
   }
 
+  getAnimationSpeed(status) {
+    const speeds = {
+      idle: 200,
+      attack: 120,
+      hurt: 120,
+      spawn: 120
+    };
+    return speeds[status];
+  }
+
   checkForFirstContact() {
     this.checkInterval = setInterval(() => {
       if (this.world.character.x > 3950 && !this.hadFirstContact) {
@@ -105,12 +117,12 @@ class Endboss extends MovableObject {
   }
 
   triggerEndboss() {
-    this.clearAnimationInterval();
+    this.clearAnimationFrameId();
     this.startSpawnAnimation();
   }
 
   startSpawnAnimation() {
-    if (this.animationInterval || this.currentAnimation === 'spawn') return;
+    if (this.animationFrameId || this.currentAnimation === 'spawn') return;
     this.currentAnimation = 'spawn';
     this.playAnimationOnce(this.IMAGES_SPAWNING, () => {
       this.initCombatPhase();
@@ -118,23 +130,40 @@ class Endboss extends MovableObject {
   }
 
   initCombatPhase() {
-    this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
+    this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     this.startCombatLoop();
   }
 
   startCombatLoop() {
     if (this.isCombatLoopRunning) return;
     this.isCombatLoopRunning = true;
-    this.combatLoopInterval = requestAnimationFrame((time) => this.combatLoop(time));
+    this.lastFrameTime = 0;
+    const loop = (time) => {
+      if (this.dead) return;
+      if (!this.isCombatLoopRunning) return;
+      const frameTime = this.calculateDeltaTime(time);
+      this.updateCombatState(frameTime);
+      this.combatFrameId = requestAnimationFrame(loop);
+    };
+    this.combatFrameId = requestAnimationFrame(loop);
   }
 
-  combatLoop(currentTime) {
+  calculateDeltaTime(time) {
+    if (!this.lastFrameTime) {
+      this.lastFrameTime = time;
+      return 0;
+    }
+    const delta = (time - this.lastFrameTime) / 1000;
+    this.lastFrameTime = time;
+    return delta;
+  }
+
+  updateCombatState(frameTime) {
     if (this.dead) return;
-    let { distanceX, distanceY } = this.getDistanceToCharacter();
+    const { distanceX, distanceY } = this.getDistanceToCharacter();
     this.otherDirection = distanceX > 0;
-    this.moveTowardCharacter(distanceX, distanceY);
-    this.tryAttack(distanceX, distanceY, currentTime);
-    this.combatLoopInterval = requestAnimationFrame((time) => this.combatLoop(time));
+    this.moveTowardCharacter(distanceX, distanceY, frameTime);
+    this.tryAttack(distanceX, distanceY, performance.now());
   }
 
   tryAttack(distanceX, distanceY, currentTime) {
@@ -146,7 +175,7 @@ class Endboss extends MovableObject {
 
   initAttackPhase() {
     if (this.dead || this.isInDamagePhase()) return;
-    this.clearAnimationInterval();
+    this.clearAnimationFrameId();
     let { distanceX, distanceY } = this.getDistanceToCharacter();
     let { directionX, directionY } = this.getMoveDirection(distanceX, distanceY);
     this.moveIntoAttackPosition(distanceX, distanceY, directionX, directionY);
@@ -154,16 +183,16 @@ class Endboss extends MovableObject {
   }
 
   startAttackAnimation() {
-    this.clearAnimationInterval();
+    this.clearAnimationFrameId();
     this.playAnimationOnce(this.IMAGES_ATTACK, () => {
-      this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
+      this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     }, 120);
   }
 
   startHurtAnimation() {
     this.lastHit = Date.now();
     this.playAnimationOnce(this.IMAGES_HURT, () => {
-      this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
+      this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     }, 120);
   }
 
@@ -174,17 +203,19 @@ class Endboss extends MovableObject {
       Date.now() - this.lastAttackTime > this.attackCooldown;
   }
 
-  moveTowardCharacter(x, y) {
+  moveTowardCharacter(x, y, frameTime) {
     let collidingChar = this.isColliding(this.world.character);
+    let moveStepX = this.followSpeed * frameTime;
+    let moveStepY = this.followSpeed * frameTime;
     if (Math.abs(x) > 310) {
-      x > 0 ? this.moveRight() : this.moveLeft();
+      x > 0 ? this.bossMoveRight(moveStepX) : this.bossMoveLeft(moveStepX);
     } else if (Math.abs(x) > 5 && !collidingChar) {
-      this.x += x > 0 ? this.followSpeed : -this.followSpeed;
+      this.x += x > 0 ? moveStepX : -moveStepX;
     }
     if (Math.abs(y) > 140) {
-      y > 0 ? this.bossMoveDown() : this.bossMoveUp();
+      y > 0 ? this.bossMoveDown(moveStepY) : this.bossMoveUp(moveStepY);
     } else if (Math.abs(y) > 5 && !collidingChar) {
-      this.y += y > 0 ? this.followSpeed : -this.followSpeed;
+      this.y += y > 0 ? moveStepY : -moveStepY;
     }
   }
 
@@ -198,60 +229,43 @@ class Endboss extends MovableObject {
     this.currentAnimation = 'attack';
   }
 
-  clearAnimationInterval() {
-    if (this.animationInterval) {
-      clearInterval(this.animationInterval);
-      this.animationInterval = null;
-    }
+  startAnimationLoop(images, status) {
+    this.clearAnimationFrameId();
+    this.currentAnimation = status;
+    this.animationSpeed = this.getAnimationSpeed(status);
+    this.lastAnimationFrameTime = 0;
+    const loop = (time) => {
+      if (this.dead || this.currentAnimation !== status) return;
+      if (!this.lastAnimationFrameTime) this.lastAnimationFrameTime = time;
+      const frameTime = time - this.lastAnimationFrameTime;
+      if (frameTime >= this.animationSpeed) {
+        this.playAnimation(images);
+        this.lastAnimationFrameTime = time;
+      }
+      this.animationFrameId = requestAnimationFrame(loop);
+    };
+    this.animationFrameId = requestAnimationFrame(loop);
   }
 
-  clearAllIntervals() {
-    this.isCombatLoopRunning = false;
-    if (this.checkInterval) {
-      clearInterval(this.checkInterval);
-      this.checkInterval = null;
-    }
-    if (this.animationInterval) {
-      clearInterval(this.animationInterval);
-      this.animationInterval = null;
-    }
-    if (this.combatLoopInterval) {
-      cancelAnimationFrame(this.combatLoopInterval);
-      this.combatLoopInterval = null;
-    }
+  bossMoveRight(moveStepX) {
+    this.x += moveStepX;
   }
 
-  continueAllIntervals() {
-    this.clearAllIntervals();
-    if (!this.hadFirstContact) {
-      this.triggerEndboss();
-    } else if (!this.dead) {
-      this.setAnimationLoop(this.IMAGES_FLOATING, 'idle');
-      this.startCombatLoop();
-    }
+  bossMoveLeft(moveStepX) {
+    this.x -= moveStepX;
   }
 
-  setAnimationLoop(images, status) {
-    if (this.animationInterval) return;
-    this.clearAnimationInterval();
-    this.animationInterval = setInterval(() => {
-      if (this.dead) return;
-      this.playAnimation(images);
-      this.currentAnimation = status;
-    }, 200);
-  }
-
-  bossMoveUp() {
+  bossMoveUp(moveStepY) {
     if (this.y > this.minY) {
-      this.y -= this.speed;
+      this.y -= moveStepY;
     } else {
       this.y = this.minY;
     }
   }
 
-  bossMoveDown() {
+  bossMoveDown(moveStepY) {
     if (this.y < this.maxY) {
-      this.y += this.speed;
+      this.y += moveStepY;
     } else {
       this.y = this.maxY;
     }
@@ -286,6 +300,32 @@ class Endboss extends MovableObject {
       if (Endboss.life <= 0) {
         this.die();
       }
+    }
+  }
+
+  clearAnimationFrameId() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+  }
+
+  clearAllIntervals() {
+    this.isCombatLoopRunning = false;
+    this.clearAnimationFrameId();
+    if (this.checkInterval) {
+      clearInterval(this.checkInterval);
+      this.checkInterval = null;
+    }
+  }
+
+  continueAllIntervals() {
+    this.clearAllIntervals();
+    if (!this.hadFirstContact) {
+      this.triggerEndboss();
+    } else if (!this.dead) {
+      this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
+      this.startCombatLoop();
     }
   }
 }
