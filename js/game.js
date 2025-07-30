@@ -9,7 +9,6 @@ function initGame() {
   showGameMenu();
   if (!soundManager.isMusicPlaying()) {
     soundManager.playMusic('./assets/audio/interface/gameUiLoopMusic.mp3');
-    soundManager.toggleMute('./assets/audio/interface/gameUiLoopMusic.mp3');
   }
 }
 

@@ -195,13 +195,27 @@
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 60%, 16px);
+  overflow: visible;
 }
 
 .controls-row {
+  height: clamp(16px, 7vw, 70px);
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: clamp(8px, 6%, 64px);
+}
+
+.mobile-hint {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(50%, 120vw, 188%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 6%, 12px);
 }
 
 .controls-keyCaps {
@@ -282,6 +296,16 @@
 
 .keyCap-space .keyCap-label {
   font-size: clamp(8px, 2vw, 24px);
+}
+
+.tipp-label {
+  color: #65e8ef;
+  font-weight: bold;
+  font-size: clamp(8px, 2vw, 20px);
+  letter-spacing: clamp(1px, 1vw, 2px);
+  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.65), 0 0 2px #fff6;
+  z-index: 2;
+  white-space: nowrap;
 }
 
 .info-game {

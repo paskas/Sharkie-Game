@@ -140,6 +140,10 @@ function controlHelpOverlayHTML() {
         <span class="keyCap keyCap-space"><span class="keyCap-label">SPACEBAR</span></span>
       </div>
     </div>
+    <div class="mobile-hint">
+      <span class="tipp-label">Tipp:</span>
+      <span class="tipp-label">Control buttons are displayed on touch devices.</span>
+    </div>
   </div>
 </div>
 `
