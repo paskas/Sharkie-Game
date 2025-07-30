@@ -77,6 +77,7 @@ function gameOverOverlayHTML() {
 }
 
 function levelCompleteOverlayHTML() {
+  const showNext = world && world.levelManager && !world.levelManager.isLastLevel();
   return `
 <div id="endscreenOverlay">
   <div class="game-overlay ">
@@ -87,7 +88,7 @@ function levelCompleteOverlayHTML() {
       <div class="end-control-btn">
         <button class="game-overlay-btn repeat-btn" onclick="restartLevel()"></button>
         <button class="game-overlay-btn back-menu-btn" onclick="backToMenu()"></button>
-        <button class="game-overlay-btn next-btn" onclick="nextLevel()"></button>
+        ${showNext ? '<button id="nextLevelBtn" class="game-overlay-btn next-btn" onclick="nextLevel()"></button>' : ''}
       </div>
     </div>
   </div>

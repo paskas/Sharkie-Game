@@ -339,7 +339,7 @@ class Character extends MovableObject {
 
   clearAllIntervals() {
     this.clearAnimationInterval();
-    if (this.characterLoopI) cancelAnimationFrame(this.characterLoopId);
+    if (this.characterLoopId) cancelAnimationFrame(this.characterLoopId);
     if (this.sleepTimeout) clearTimeout(this.sleepTimeout);
     if (this.dmgTimeout) clearTimeout(this.dmgTimeout);
     if (this.shootTimeout) clearTimeout(this.shootTimeout);

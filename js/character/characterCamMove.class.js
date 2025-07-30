@@ -1,5 +1,6 @@
 class CharacterCamMove {
   static moveCamera(character, world, frameTime) {
+    if (!character || !world || !world.level || !world.canvas) return;
     let cameraTargetX = this.calcCameraX(character, world);
     let distance = cameraTargetX - world.camera_x;
     let step = this.calcCameraSteps(distance, frameTime, character.cameraStepPerSecond);
