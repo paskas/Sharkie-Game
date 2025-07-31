@@ -1,7 +1,0 @@
-feat: story text and showInfo added
-
-– paragraphs formatted, structured for easier reading with dark background
-– scrollability activated and WebKit scrollbar styling incorporated
-– webkit-overflow-scrolling added for smooth mobile scrolling
-– Imprint link created and positioned with hover zoom
-– infoOverlayHTML set to showInfo button
