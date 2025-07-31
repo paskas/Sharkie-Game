@@ -27,6 +27,11 @@ function showControlHelp() {
   setGameOverlay('gameOverlay', controlHelpOverlayHTML());
 }
 
+function showInfo() {
+  clearOverlayContent();
+  setGameOverlay('gameOverlay', infoOverlayHTML());
+}
+
 function fadeOutMenuOverlay() {
   const menuOverlay = document.getElementById('overlayContainer');
   if (menuOverlay) {
@@ -53,9 +58,11 @@ function mainMenuOverlayHTML() {
   <button class="game-overlay-btn play-btn" onclick="playGame()"></button>
   <div class="controls">
     <button class="game-overlay-btn control-btn" onclick="showControlHelp()"></button>
-    <button class="game-overlay-btn info-btn"></button>
-    <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="soundManager.setVolume(this.value)">
+    <button class="game-overlay-btn info-btn" onclick="showInfo()"></button>
   </div>
+  <div class="volume-container">
+        <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="soundManager.setVolume(this.value)">
+      </div>
   `
 }
 
@@ -161,9 +168,40 @@ function inGameNavOverlayHTML() {
 
 function infoOverlayHTML() {
   return `
-<div class="game-overlay info-game">
+<div class="game-overlay content-column">
   <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
-  <div class="info-title">
+  <div class="story-content">
+    <p class="story-text">
+      <strong>Die Tiefen erwachen</strong><br><br>
+      Tief unten, wo das Sonnenlicht längst vergessen wurde, beginnt dein Abenteuer, Sharkie!<br>
+      Du bist nicht irgendein Fisch. Du bist Sharkie – flink, entschlossen und bereit, dem Ozean zu zeigen, wer
+      hier wirklich die Flossen in der Hand hat.<br>
+
+      Aber Obacht, Held der Tiefe:<br>
+      🐡 <strong>Pufferfische</strong> sehen vielleicht aus wie platzende Ballons, aber wehe du kommst zu nah!
+      Dann fahren sie ihre Stacheln aus und BAM! – <strong>Poison-Schaden</strong> direkt auf die Kiemen!<br>
+      ⚡ <strong>Jellyfische</strong>? Funkende Glibberbomben! Ein Stromschlag von ihnen kostet dich deine
+      wertvollen <strong>Poison-Flasks</strong>. Und ohne die bist du im Endkampf nur noch ein planschender
+      Tunfisch.<br>
+
+      💡 Und als wär’s nicht schon schwer genug: Wenn sich diese Biester verwandeln, wird’s ernst. Dann musst du
+      sie <strong>mehrfach treffen</strong>, bevor sie endlich kapitulieren.<br>
+
+      💰 Gut, dass es Münzen gibt – sie sehen nicht nur hübsch aus, sondern helfen dir, deine
+      <strong>Poison-Flasks</strong> schrittweise wieder aufzufüllen. Aber Vorsicht: Du kannst nicht unendlich
+      viele tragen – Sharkie ist schließlich kein Einkaufswagen.<br>
+
+      🐋 <strong>Und dann ... der Moment der Wahrheit:</strong><br>
+      Am dunklen Abgrund wartet <strong>der Killerwal</strong> – riesig, wütend, fast schon unfair.<br>
+      – Normale Bubbles machen ihm Kratzer.<br>
+      – <strong>Poison-Schüsse</strong> hingegen? Die bringen den Riesen zum Zittern.<br>
+
+      Also schnapp dir deine Flaschen, spitz deine Zähne und mach dich bereit.<br>
+      Die Tiefsee hat auf dich gewartet – jetzt zeig ihr, was in dir steckt, Sharkie!
+    </p>
+  </div>
+  <div class="legal-container">
+    <a href="impressum.html" class="legal-link">👉 Legal notice </a>
   </div>
 </div>
 `

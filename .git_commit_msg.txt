@@ -1,7 +1,7 @@
-feat: soundManager integrated and volume control added
+feat: story text and showInfo added
 
-- soundManager class created and made globally available via window.soundManager in game.js
-- input type="range" for volume control designed with matching CSS and integrated
-- soundManager.playSound added at appropriate points in the game
-- all running sounds are stopped including cached ones
-- toogleSound for mute and play sound integrated
+– paragraphs formatted, structured for easier reading with dark background
+– scrollability activated and WebKit scrollbar styling incorporated
+– webkit-overflow-scrolling added for smooth mobile scrolling
+– Imprint link created and positioned with hover zoom
+– infoOverlayHTML set to showInfo button

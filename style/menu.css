@@ -323,10 +323,73 @@
   height: clamp(54px, 28vw, 480px);
 }
 
+.content-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.story-content {
+  max-height: 60dvh;
+  overflow-y: auto;
+  background: rgba(0, 10, 20, 0.5);
+  padding: 1%;
+  border-radius: 1%;
+  width: clamp(240px, 75%, 640px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.story-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.story-content::-webkit-scrollbar-thumb {
+  background-color: #65e8efaa;
+  border-radius: 4px;
+}
+
+.story-text {
+  color: #65e8ef;
+  font-size: clamp(8px, 2vw, 16px);
+  letter-spacing: clamp(1px, 1vw, 2px);
+  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.65), 0 0 2px rgba(255, 255, 255, 0.45);
+  z-index: 2;
+  line-height: 1.1;
+  white-space: pre-line;
+}
+
+.legal-container {
+  margin: clamp(8px, 1vw, 24px);
+  z-index: 2;
+}
+
+.legal-link {
+  display: inline-block;
+  color: #65e8ef;
+  font-weight: bold;
+  font-size: clamp(8px, 2vw, 20px);
+  letter-spacing: clamp(1px, 1vw, 2px);
+  text-decoration: none;
+  text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.65), 0 0 2px #fff6;
+}
+
+.legal-link:hover {
+  transform: scale(1.1);
+}
+
+.volume-container {
+  position: absolute;
+  right: 3%;
+  bottom: 3%;
+  z-index: 2;
+}
+
 input[type="range"] {
   -webkit-appearance: none;
-  width: 120px;
-  height: 12px;
+  appearance: none;
+  width: clamp(70px, 22vw, 140px);
+  height: clamp(8px, 2vw, 12px);
   background: linear-gradient(to right, #65e8ef, #eec15c);
   border-radius: 6px;
   outline: none;
@@ -342,13 +405,14 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 32px;
-  width: 32px;
+  appearance: none;
+  height: clamp(8px, 10vw, 24px);
+  width: clamp(8px, 10vw, 24px);
   background: url('../img/interface/inGameIcons/soundOn.png') no-repeat center center;
   background-size: contain;
   border: none;
   border-radius: 50%;
-  margin-top: -8px;
+  margin-top: -4px;
   box-shadow: 0 0 4px #65e8ef;
   transition: transform 0.2s ease;
 }
