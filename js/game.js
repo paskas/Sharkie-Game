@@ -131,7 +131,6 @@ function fullscreen(mode = 'game') {
   const container = (mode === 'menu')
     ? document.getElementById('overlayContainer')
     : document.getElementById('gameContainer');
-
   if (!document.fullscreenElement) {
     container.requestFullscreen?.();
     canvas.classList.add('fullscreen-canvas');

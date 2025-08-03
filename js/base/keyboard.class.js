@@ -11,8 +11,8 @@ class Keyboard {
   }
 
   initKeyboardControl() {
-    window.addEventListener("keydown", (e)=>this.initKeyBindings(e, true));
-    window.addEventListener("keyup", (e)=>this.initKeyBindings(e, false));
+    window.addEventListener("keydown", (e) => this.initKeyBindings(e, true));
+    window.addEventListener("keyup", (e) => this.initKeyBindings(e, false));
   }
 
   initKeyBindings(e, isPressed) {
@@ -41,6 +41,12 @@ class Keyboard {
           this.POISENSHOOT = isPressed;
           break;
       }
+    }
+  }
+
+  setMobileKey(key, state) {
+    if (key in this) {
+      this[key] = state;
     }
   }
 }

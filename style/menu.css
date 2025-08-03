@@ -447,26 +447,51 @@ input[type="range"]::-webkit-slider-thumb:hover {
   transform: scale(1.1);
 }
 
-@media only screen and (max-width: 960px) {
+@media (orientation: portrait) and (pointer: coarse) {
   .rotate-container {
     display: flex;
   }
 
+  .game-menu,
   .canvas {
     display: none;
   }
+
 }
 
-@media only screen and (max-height: 540px) {
+@media (orientation: landscape) and (pointer: coarse) {
   .rotate-container {
     display: none;
+  }
+
+  .game-menu,
+  .canvas {
+    display: flex;
   }
 
   .game-container {
     height: 100dvh;
     width: 100lvw;
   }
+}
 
+@media (orientation: portrait) and (max-width: 960px) {
+  .rotate-container {
+    display: flex;
+  }
+
+  .game-menu,
+  .canvas {
+    display: none;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 960px) {
+  .rotate-container {
+    display: none;
+  }
+
+  .game-menu,
   .canvas {
     display: flex;
   }

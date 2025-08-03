@@ -1,0 +1,93 @@
+.mobile-controls {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.dpad {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  width: 22vw;
+  height: 22vw;
+  pointer-events: auto;
+}
+
+.dpad-btn {
+  width: 8vw;
+  height: 8vw;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border: 2px solid #65e8ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dpad-btn img {
+  width: 8vw;
+  height: 8vw;
+}
+
+.up-btn {
+  top: 0;
+  left: 32%;
+}
+
+.down-btn {
+  bottom: 0;
+  left: 32%;
+}
+
+.left-btn {
+  top: 32%;
+  left: 0;
+}
+
+.right-btn {
+  top: 32%;
+  right: 0;
+}
+
+.action-pad {
+  position: absolute;
+  bottom: 2%;
+  right: 6%;
+  display: flex;
+  flex-direction: column;
+  gap: 3vw;
+  pointer-events: auto;
+}
+
+.action-pad img {
+  width: 7vw;
+  height: 7vw;
+}
+
+.shoot-btn,
+.poison-btn {
+  width: 8vw;
+  height: 8vw;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border: 2px solid #65e8ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (hover: hover), (pointer: fine) {
+  .mobile-controls {
+    display: none !important;
+  }
+}
+
+@media (orientation: landscape) and (pointer: coarse) and (hover: none) {
+  .mobile-controls {
+    display: block;
+  }
+}
