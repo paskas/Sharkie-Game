@@ -1,3 +1,7 @@
+/**
+ * Represents any drawable object in the game.
+ * Provides functionality for rendering images, managing hitboxes, and image caching.
+ */
 class DrawableObject {
   x = 120;
   y = 250;
@@ -28,6 +32,11 @@ class DrawableObject {
     ShootingObject: { top: 4, bottom: 4, left: 4, right: 4 }
   };
 
+  /**
+   * Returns a single hitbox object for the current instance based on predefined offsets.
+   * 
+   * @returns {{x: number, y: number, width: number, height: number} | undefined} The calculated hitbox or undefined if no valid offset exists.
+   */
   getObjectHitbox() {
     let offsetKey = GameHelper.resolveOffsetClassName(this);
     let offset = DrawableObject.offsets[offsetKey];
@@ -40,6 +49,11 @@ class DrawableObject {
     };
   }
 
+  /**
+   * Returns multiple hitboxes for the current instance based on an array of predefined offsets.
+   * 
+   * @returns {Array<{x: number, y: number, width: number, height: number}> | undefined} An array of hitboxes or undefined if no valid array offset exists.
+   */
   getObjectHitboxes() {
     let offsetKey = GameHelper.resolveOffsetClassName(this);
     let offset = DrawableObject.offsets[offsetKey];
@@ -52,6 +66,11 @@ class DrawableObject {
     }));
   }
 
+  /**
+   * Returns the center point of the object's main hitbox.
+   * 
+   * @returns {{x: number, y: number}} The center coordinates of the main hitbox or fallback to x/y.
+   */
   getMainHitbox() {
     let hitbox = this.getObjectHitbox();
     if (!hitbox) return { x: this.x, y: this.y };
@@ -61,6 +80,11 @@ class DrawableObject {
     };
   }
 
+  /**
+   * Loads a single image from the given path and caches it globally.
+   * 
+   * @param {string} path - The image source path.
+   */
   loadImage(path) {
     if (!DrawableObject.globalImageCache[path]) {
       let img = new Image();
@@ -70,6 +94,11 @@ class DrawableObject {
     this.img = DrawableObject.globalImageCache[path];
   }
 
+  /**
+   * Loads multiple images from the given array of paths and caches them globally and locally.
+   * 
+   * @param {string[]} arr - Array of image source paths.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       if (!DrawableObject.globalImageCache[path]) {
@@ -81,10 +110,21 @@ class DrawableObject {
     });
   }
 
+  /**
+   * Draws the object's current image to the given canvas context.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+   */
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
+  /**
+   * Draws a red frame around the object if it's an instance of specific classes.
+   * Used for debugging visual boundaries.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+   */
   drawFrame(ctx) {
     if (
       this instanceof Character ||
@@ -106,6 +146,11 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Draws the appropriate hitbox (single or multiple) for the object.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+   */
   drawHitbox(ctx) {
     let hitboxes = this.getObjectHitboxes();
     if (hitboxes) {
@@ -115,6 +160,11 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Draws a single red hitbox rectangle based on the current object's offset.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+   */
   drawSingleHitbox(ctx) {
     let hitbox = this.getObjectHitbox();
     if (!hitbox) return;
@@ -125,6 +175,11 @@ class DrawableObject {
     ctx.stroke();
   }
 
+  /**
+   * Draws all hitboxes defined for the current object using red rectangles.
+   * 
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D rendering context.
+   */
   drawMultipleHitboxes(ctx) {
     let hitboxes = this.getObjectHitboxes();
     if (!hitboxes) return;
@@ -136,5 +191,4 @@ class DrawableObject {
       ctx.stroke();
     });
   }
-
 }

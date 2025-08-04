@@ -1,4 +1,12 @@
+/**
+ * Manages background music and sound effects.
+ * Handles volume control, mute state, and localStorage persistence.
+ */
 class SoundManager {
+
+  /**
+   * Initializes the sound manager with saved volume and mute settings from localStorage.
+   */
   constructor() {
     this.music = null;
     this.sounds = {};
@@ -6,6 +14,13 @@ class SoundManager {
     this.isMuted = localStorage.getItem('muted') === 'true';
   }
 
+  /**
+   * Plays background music from the given source.
+   * Automatically pauses and replaces any existing music.
+   * 
+   * @param {string} src - Path to the music file.
+   * @param {boolean} [loop=true] - Whether the music should loop.
+   */
   playMusic(src, loop = true) {
     if (this.music) {
       this.music.pause();
@@ -26,6 +41,12 @@ class SoundManager {
     }
   }
 
+  /**
+   * Plays a sound effect from the given source.
+   * Caches sound objects for reuse and resets currentTime for replay.
+   * 
+   * @param {string} src - Path to the sound effect file.
+   */
   playSound(src) {
     if (!this.sounds[src]) {
       this.sounds[src] = new Audio(src);
@@ -36,12 +57,22 @@ class SoundManager {
     this.sounds[src].play();
   }
 
+  /**
+   * Sets the global volume for music and sound effects.
+   * Saves the value in localStorage.
+   * 
+   * @param {number} value - Volume value between 0.0 and 1.0.
+   */
   setVolume(value) {
     this.volume = Math.max(0, Math.min(1, value));
     localStorage.setItem('volume', this.volume);
     if (this.music && !this.isMuted) this.music.volume = this.volume;
   }
 
+  /**
+   * Toggles the mute state for all sounds and music.
+   * Updates the localStorage and applies the new volume setting.
+   */
   toggleMute() {
     this.isMuted = !this.isMuted;
     localStorage.setItem('muted', this.isMuted);
@@ -51,6 +82,11 @@ class SoundManager {
     }
   }
 
+  /**
+   * Checks if background music is currently playing.
+   * 
+   * @returns {boolean} True if music is playing, otherwise false.
+   */
   isMusicPlaying() {
     return !!this.music && !this.music.paused;
   }

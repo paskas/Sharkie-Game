@@ -1,3 +1,7 @@
+/**
+ * Represents any movable game object with position, movement logic, and collision handling.
+ * Inherits from DrawableObject.
+ */
 class MovableObject extends DrawableObject {
   speed = 0;
   speedY = 0;
@@ -15,6 +19,11 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   dead = false;
 
+  /**
+   * Loops through a given image array to create an animation.
+   * 
+   * @param {string[]} images - Array of image paths for the animation.
+   */
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -22,6 +31,13 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * Plays an animation once, then runs a callback.
+   * 
+   * @param {string[]} images - Array of image paths.
+   * @param {Function} [callback] - Function to execute after animation ends.
+   * @param {number} framerate - Interval delay in milliseconds between frames.
+   */
   playAnimationOnce(images, callback, framerate) {
     if (this.playOnceInterval) clearInterval(this.playOnceInterval);
     let i = 0;
@@ -36,27 +52,50 @@ class MovableObject extends DrawableObject {
     }, framerate);
   }
 
+  /**
+   * Moves the object to the right based on its speed.
+   */
   moveRight() {
     this.x += this.speed;
   }
 
+  /**
+   * Moves the object to the left based on its speed.
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * Moves the object upwards based on its speed.
+   */
   moveUp() {
     this.y -= this.speed;
   }
 
+  /**
+   * Moves the object downwards based on its speed.
+   */
   moveDown() {
     this.y += this.speed;
   }
 
+  /**
+   * Defines the vertical movement boundaries for the object.
+   * 
+   * @param {number} minY - Minimum Y coordinate.
+   * @param {number} maxY - Maximum Y coordinate.
+   */
   setMovementRange(minY, maxY) {
     this.minY = minY;
     this.maxY = maxY;
   }
 
+  /**
+   * Calculates the X and Y distance from the object to the character.
+   * 
+   * @returns {{distanceX: number, distanceY: number}} Distance to character.
+   */
   getDistanceToCharacter() {
     let char = this.world.character.getMainHitbox();
     let object = this.getMainHitbox();
@@ -66,6 +105,13 @@ class MovableObject extends DrawableObject {
     };
   }
 
+  /**
+   * Returns normalized direction based on input values.
+   * 
+   * @param {number} x - X distance or delta.
+   * @param {number} y - Y distance or delta.
+   * @returns {{directionX: number, directionY: number}} Normalized direction vector.
+   */
   getMoveDirection(x, y) {
     return {
       directionX: x !== 0 ? x / Math.abs(x) : 0,
@@ -73,6 +119,10 @@ class MovableObject extends DrawableObject {
     };
   }
 
+  /**
+   * Starts an arc-like movement using gravity and direction.
+   * Clears any previous gravity intervals.
+   */
   startArcMovement() {
     if (this.gravityInterval) clearInterval(this.gravityInterval);
     this.speedX = this.otherDirection ? -5.5 : 5.5;
@@ -88,10 +138,18 @@ class MovableObject extends DrawableObject {
     }, 1000 / 25);
   }
 
+  /**
+   * Checks if the object is currently above the ground.
+   * 
+   * @returns {boolean} True if above ground, otherwise false.
+   */
   isAboveGround() {
     return this.y + this.height < 540;
   }
 
+  /**
+   * Starts a loop that moves the object upward continuously if it's dead.
+   */
   ifDeadMoveUp() {
     if (this.deadMoveInterval) clearInterval(this.deadMoveInterval);
     this.deadMoveInterval = setInterval(() => {
@@ -101,6 +159,9 @@ class MovableObject extends DrawableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Clears all movement and animation-related intervals and timeouts.
+   */
   clearAllIntervals() {
     if (this.playOnceInterval) {
       clearInterval(this.playOnceInterval);
@@ -120,6 +181,12 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the current object collides with another movable object.
+   * 
+   * @param {MovableObject} mo - The other object to check against.
+   * @returns {boolean} True if objects collide, false otherwise.
+   */
   isColliding(mo) {
     let char = this.getObjectHitbox();
     let enemy = mo.getObjectHitbox();
@@ -132,6 +199,12 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Handles logic when the character gets hit by an enemy.
+   * Applies damage and effects depending on the enemy state.
+   * 
+   * @param {object} enemy - The enemy object causing the hit.
+   */
   charHitt(enemy) {
     if (!this.isInDamagePhase()) {
       if (enemy.poisoned) {
@@ -145,6 +218,11 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Applies damage to the character based on the enemy type and state.
+   * 
+   * @param {object} enemy - The enemy object.
+   */
   charakterDamage(enemy) {
     if (enemy instanceof JellyFishManager && enemy.isElectricActive) {
       Character.life -= 2;
@@ -153,17 +231,30 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks if the character's life has reached zero and triggers death sequence.
+   */
   checkCharDeath() {
     if (Character.life <= 0 && !this.dead) {
       this.die();
     }
   }
 
+  /**
+   * Determines whether the character is currently invulnerable due to recent hit.
+   * 
+   * @returns {boolean} True if in damage cooldown, false otherwise.
+   */
   isInDamagePhase() {
     let timeSinceLastHit = new Date().getTime() - this.lastHit;
     return timeSinceLastHit < 1000;
   }
 
+  /**
+   * Applies poison hit effects to the character.
+   * 
+   * @param {object} enemy - The enemy that inflicted poison.
+   */
   poisonHit(enemy) {
     if (enemy.poisoned) {
       this.isPoisendByHit = true;
@@ -172,6 +263,11 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Applies electric shock effects to the character.
+   * 
+   * @param {object} enemy - The enemy that inflicted shock.
+   */
   shockHit(enemy) {
     if (enemy.shock) {
       this.isPoisendByHit = false;
@@ -181,6 +277,9 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Handles losing a poison flask when shocked, spawning a falling flask in the world.
+   */
   losePoisonFlask() {
     if (PoisenFlask.flaskCount <= 0) return;
     PoisenFlask.flaskCount--;
@@ -192,6 +291,9 @@ class MovableObject extends DrawableObject {
     soundManager.playSound('../assets/audio/character/lose_poisonFlask.mp3')
   }
 
+  /**
+   * Triggers the death sequence for the object, including animations and end screen display.
+   */
   die() {
     if (this.dead) return;
     this.dead = true;

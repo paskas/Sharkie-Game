@@ -1,3 +1,7 @@
+/**
+ * Represents a projectile bubble shot by the character.
+ * Can be a regular or poison bubble with animation and movement logic.
+ */
 class ShootingObject extends MovableObject {
   shootInterval = null;
   animationInterval = null;
@@ -24,6 +28,15 @@ class ShootingObject extends MovableObject {
     './img/UI/bubbles/splash/default_splash_b3.png'
   ];
 
+  /**
+   * Creates a new shooting bubble object.
+   * 
+   * @param {Character} character - The character who shoots the bubble.
+   * @param {number} x - Starting X position.
+   * @param {number} y - Starting Y position.
+   * @param {boolean} otherDirection - Whether the bubble moves left.
+   * @param {boolean} [isPoisend=false] - Whether the bubble is a poison type.
+   */
   constructor(character, x, y, otherDirection, isPoisend = false) {
     super();
     this.character = character;
@@ -43,6 +56,9 @@ class ShootingObject extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the movement of the bubble in horizontal direction using intervals.
+   */
   shoot() {
     if (this.shootInterval) return;
     this.shootInterval = setInterval(() => {
@@ -50,6 +66,9 @@ class ShootingObject extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Starts the bubble's animation loop using image frames.
+   */
   animate() {
     if (this.animationInterval) return;
     this.animationInterval = setInterval(() => {
@@ -57,6 +76,9 @@ class ShootingObject extends MovableObject {
     }, 120);
   }
 
+  /**
+   * Stops all intervals related to the bubble's behavior (movement and animation).
+   */
   clearAllIntervals() {
     if (this.shootInterval) {
       clearInterval(this.shootInterval);
@@ -68,16 +90,29 @@ class ShootingObject extends MovableObject {
     }
   }
 
+  /**
+   * Resumes all previously cleared intervals for movement and animation.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.shoot();
     this.animate();
   }
 
+  /**
+   * Returns the correct set of images based on poison state.
+   * 
+   * @returns {string[]} Array of image paths.
+   */
   getBubbleImages() {
     return this.isPoisend ? this.IMAGES_POISENBUBBLE : this.IMAGES_BUBBLE;
   }
 
+  /**
+   * Initializes bubble image set and sets the starting image.
+   * 
+   * @param {boolean} isPoisend - Whether the bubble should be poisoned.
+   */
   initBubbleImages(isPoisend) {
     this.checkAndSetPoison(isPoisend);
     const images = this.getBubbleImages();
@@ -85,6 +120,11 @@ class ShootingObject extends MovableObject {
     this.img = this.imageCache[images[0]];
   }
 
+  /**
+   * Determines if the bubble can be poisoned based on flask count and sets the state.
+   * 
+   * @param {boolean} isPoisend - Whether the poison mode was requested.
+   */
   checkAndSetPoison(isPoisend) {
     if (isPoisend && PoisenFlask.flaskCount > 0) {
       this.isPoisend = true;
@@ -94,6 +134,11 @@ class ShootingObject extends MovableObject {
     }
   }
 
+  /**
+   * Triggers splash animation and sound for the bubble, then executes callback.
+   * 
+   * @param {Function} callback - Function to execute after animation ends.
+   */
   splashBubble(callback) {
     this.width = 100;
     this.height = 100;
