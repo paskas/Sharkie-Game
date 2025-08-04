@@ -80,7 +80,8 @@
   justify-content: center;
 }
 
-@media (hover: hover), (pointer: fine) {
+@media (hover: hover),
+(pointer: fine) {
   .mobile-controls {
     display: none !important;
   }
@@ -89,5 +90,10 @@
 @media (orientation: landscape) and (pointer: coarse) and (hover: none) {
   .mobile-controls {
     display: block;
+  }
+
+  .game-container {
+    height: 100dvh;
+    width: 100vw;
   }
 }

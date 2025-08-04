@@ -1,2 +1,5 @@
-fix: file paths corrected
+feat/fix: mobile touch control revised
 
+- mobile control fixed
+- window.setMobileKey integrated to have keys globally 
+- old shouldShowMobileControls removed

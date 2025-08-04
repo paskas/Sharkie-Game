@@ -6,6 +6,19 @@ let isPaused = false;
 window.soundManager = new SoundManager();
 
 /**
+ * Proxy method to set a mobile key state on the keyboard instance.
+ * Used by touch controls to simulate key press behavior.
+ *
+ * @param {string} key - The name of the virtual key (e.g., 'UP', 'LEFT', 'SHOOT').
+ * @param {boolean} state - The desired key state (true = pressed, false = released).
+ */
+window.setMobileKey = (key, state) => {
+  if (keyboard && typeof keyboard.setMobileKey === 'function') {
+    keyboard.setMobileKey(key, state);
+  }
+};
+
+/**
  * Initializes the main menu and background music.
  */
 function initGame() {

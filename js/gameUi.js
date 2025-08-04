@@ -76,30 +76,3 @@ function fadeOutMenuOverlay() {
 function clearOverlayContent() {
   setGameOverlay('gameOverlay', '');
 }
-
-/**
- * Determines whether mobile controls should be shown based on device capabilities.
- * @returns {boolean} True if mobile controls should be displayed.
- */
-function shouldShowMobileControls() {
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const isLandscape = window.innerWidth > window.innerHeight;
-  const hasHover = window.matchMedia('(hover: hover)').matches;
-  const isCoarse = window.matchMedia('(pointer: coarse)').matches;
-  return isTouch && isLandscape && !hasHover && isCoarse;
-}
-
-/**
- * Updates the visibility of the mobile controls based on current screen state.
- */
-function updateMobileControls() {
-  const mobile = document.getElementById('mobileControls');
-  if (mobile) {
-    mobile.style.display = shouldShowMobileControls() ? 'block' : 'none';
-  }
-}
-
-// Event listeners to update mobile controls when the screen changes
-window.addEventListener('resize', updateMobileControls);
-window.addEventListener('orientationchange', updateMobileControls);
-window.addEventListener('load', updateMobileControls);
