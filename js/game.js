@@ -8,13 +8,14 @@ window.soundManager = new SoundManager();
 function initGame() {
   showGameMenu();
   if (!soundManager.isMusicPlaying()) {
-    soundManager.playMusic('./assets/audio/interface/gameUiLoopMusic.mp3');
+    soundManager.playMusic('./assets/audio/interface/adventurecalls.mp3');
   }
 }
 
 function playGame() {
   startWorldFresh();
   world.gameStarted = true;
+  soundManager.playMusic('./assets/audio/interface/adventuresLoopMusic.mp3');
   fadeOutMenuOverlay();
 }
 
@@ -40,6 +41,7 @@ function backToMenu() {
     world = null;
   }
   resetGameState();
+  soundManager.playMusic('./assets/audio/interface/adventurecalls.mp3');
   showGameMenu();
 }
 

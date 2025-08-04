@@ -185,6 +185,7 @@ class Endboss extends MovableObject {
 
   startAttackAnimation() {
     this.clearAnimationFrameId();
+    soundManager.playSound('../assets/audio/endboss/killer_whale_bite.wav');
     this.playAnimationOnce(this.IMAGES_ATTACK, () => {
       this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     }, 120);

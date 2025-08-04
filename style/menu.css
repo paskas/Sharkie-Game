@@ -188,14 +188,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .controls-space {
-  width: clamp(180px, 50%, 420px);
+  height: 100dvh;
+  width: clamp(180px, 50%, 460px);
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 60%, 16px);
-  overflow: visible;
+  padding: 1%;
 }
 
 .controls-row {
@@ -207,9 +210,6 @@
 }
 
 .mobile-hint {
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
   width: clamp(50%, 120vw, 188%);
   text-align: center;
   display: flex;
@@ -326,32 +326,42 @@
 .content-column {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
 }
 
 .story-content {
-  max-height: 60dvh;
+  max-height: 50dvh;
+  overflow-y: auto;
+  background: rgba(0, 10, 20, 0.5);
+  padding: 1%;
+  margin-top: 2%;
+  border-radius: 1%;
+  width: clamp(240px, 75%, 710px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.legal-content {
+  max-height: 91dvh;
   overflow-y: auto;
   background: rgba(0, 10, 20, 0.5);
   padding: 1%;
   border-radius: 1%;
-  width: clamp(240px, 75%, 640px);
+  width: clamp(240px, 75%, 970px);
   -webkit-overflow-scrolling: touch;
 }
 
-.story-content::-webkit-scrollbar {
+.scrollbox::-webkit-scrollbar {
   width: 8px;
 }
 
-.story-content::-webkit-scrollbar-thumb {
+.scrollbox::-webkit-scrollbar-thumb {
   background-color: #65e8efaa;
   border-radius: 4px;
 }
 
-.legal-content {
-  word-wrap: break-word;
-  width: clamp(240px, 80%, 900px);
+.legal-text {
+  overflow-wrap: break-word;
 }
 
 .story-text {
@@ -367,6 +377,7 @@
 .legal-container {
   margin: clamp(8px, 1vw, 24px);
   z-index: 2;
+  padding-bottom: 1%;
 }
 
 .legal-link {
@@ -381,6 +392,15 @@
 
 .legal-link:hover {
   transform: scale(1.1);
+}
+
+.game-credit {
+  position: absolute;
+  bottom: 4%;
+  left: 2%;
+  font-weight: bold;
+  font-size: clamp(8px, 2vw, 16px);
+  letter-spacing: clamp(1px, 1vw, 1px);
 }
 
 .volume-container {
@@ -472,6 +492,35 @@ input[type="range"]::-webkit-slider-thumb:hover {
   .game-container {
     height: 100dvh;
     width: 100lvw;
+  }
+
+  .legal-content {
+    max-height: 91dvh;
+  }
+
+  .story-content {
+    max-height: 80dvh;
+  }
+
+  .controls-row {
+    height: clamp(16px, 5vw, 70px);
+  }
+
+  .controls-label {
+    font-size: clamp(10px, 4vw, 30px);
+  }
+
+  .keyCap {
+    width: clamp(20px, 6vw, 70px);
+    height: clamp(20px, 6vw, 70px);
+  }
+
+  .keyCap-space {
+    width: clamp(68px, 20vw, 130px);
+  }
+
+  .controls-space {
+    justify-content: space-between;
   }
 }
 

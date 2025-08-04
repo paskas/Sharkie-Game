@@ -11,8 +11,8 @@ function mainMenuOverlayHTML() {
     <button class="game-overlay-btn info-btn" onclick="showInfo()"></button>
   </div>
   <div class="volume-container">
-        <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="soundManager.setVolume(this.value)">
-      </div>
+    <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="soundManager.setVolume(this.value)">
+  </div>
   `
 }
 
@@ -97,11 +97,11 @@ function controlHelpOverlayHTML() {
         <span class="keyCap keyCap-space"><span class="keyCap-label">SPACEBAR</span></span>
       </div>
     </div>
-    <div class="mobile-hint">
+  </div>
+  <div class="mobile-hint">
       <span class="tipp-label">Tipp:</span>
       <span class="tipp-label">Control buttons are displayed on touch devices.</span>
     </div>
-  </div>
 </div>
 `
 }
@@ -120,7 +120,7 @@ function infoOverlayHTML() {
   return `
 <div class="game-overlay content-column">
   <button class="game-overlay-btn repeat-btn control-back-btn" onclick="showGameMenu()"></button>
-  <div class="story-content">
+  <div class="story-content scrollbox">
     <p class="story-text">
       <strong>Die Tiefen erwachen</strong><br><br>
       Tief unten, wo das Sonnenlicht längst vergessen wurde, beginnt dein Abenteuer, Sharkie!<br>
@@ -153,6 +153,9 @@ function infoOverlayHTML() {
   <div class="legal-container">
     <a href="impressum.html" class="legal-link">👉 Legal notice </a>
   </div>
+  <div class="game-credit">
+  <span>by Pascal K. - 2025</span>
+</div>
 </div>
 `
 }
