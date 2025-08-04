@@ -94,6 +94,8 @@
   position: absolute;
   top: 2%;
   right: 45%;
+  display: flex;
+  gap: clamp(6px, 4vw, 16px);
 }
 
 .f-screen-menu-btn {
@@ -222,7 +224,6 @@
   display: flex;
   align-items: center;
   gap: clamp(6px, 4vw, 24px);
-
 }
 
 .controls-label {
@@ -342,13 +343,13 @@
 }
 
 .legal-content {
-  max-height: 91dvh;
+  max-height: 50dvh;
   overflow-y: auto;
   background: rgba(0, 10, 20, 0.5);
   padding: 1%;
+  margin-top: 2%;
   border-radius: 1%;
-  width: clamp(240px, 75%, 970px);
-  -webkit-overflow-scrolling: touch;
+  width: clamp(240px, 75%, 710px);
 }
 
 .scrollbox::-webkit-scrollbar {
@@ -375,9 +376,10 @@
 }
 
 .legal-container {
-  margin: clamp(8px, 1vw, 24px);
+  position: absolute;
+  left: 45%;
+  bottom: 3%;
   z-index: 2;
-  padding-bottom: 1%;
 }
 
 .legal-link {
@@ -388,6 +390,7 @@
   letter-spacing: clamp(1px, 1vw, 2px);
   text-decoration: none;
   text-shadow: 1px 2px 2px rgba(0, 0, 0, 0.65), 0 0 2px #fff6;
+  cursor: pointer;
 }
 
 .legal-link:hover {
@@ -395,12 +398,12 @@
 }
 
 .game-credit {
-  position: absolute;
-  bottom: 4%;
-  left: 2%;
   font-weight: bold;
   font-size: clamp(8px, 2vw, 16px);
   letter-spacing: clamp(1px, 1vw, 1px);
+  margin: clamp(8px, 1vw, 24px);
+  z-index: 2;
+  padding-bottom: 1%;
 }
 
 .volume-container {
@@ -476,17 +479,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
   .canvas {
     display: none;
   }
-
 }
 
-@media (orientation: landscape) and (pointer: coarse) {
+@media (orientation: landscape) and (pointer: coarse) and (hover: none) {
   .rotate-container {
     display: none;
   }
 
   .game-menu,
   .canvas {
-    display: flex;
+    display: block;
   }
 
   .game-container {
@@ -535,13 +537,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
   }
 }
 
-@media (orientation: landscape) and (max-width: 960px) {
+@media (orientation: landscape) and (pointer: coarse) and (hover: none) and (min-width: 961px) {
   .rotate-container {
     display: none;
   }
 
-  .game-menu,
-  .canvas {
-    display: flex;
+  .game-container {
+    display: block;
+    height: unset;
+    width: unset;
   }
 }

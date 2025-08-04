@@ -1,5 +1,11 @@
-feat/fix: mobile touch control revised
+feat: various optimizations and adjustments based on feedback
 
-- mobile control fixed
-- window.setMobileKey integrated to have keys globally 
-- old shouldShowMobileControls removed
+- imprint overlay rendered on start page, impressum.html removed
+- canvas centered on mobile devices, MediaQuery for  mobile-controls added on tablets
+- mobile buttons, context menu disabled when long pressed 
+- End boss difficulty increased: followSpeed increases with loss of life
+- Rotation activated when shooting (flip deactivated for shoot/img cancel)
+- canTakeDmg and canDealDmg added, boss only takes/deals damage after complete spawn
+- Sound: mute always false at start, correct icon is set
+- Fullscreen button deactivated for mobile
+- JsDoc adjusted

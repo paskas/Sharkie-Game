@@ -84,8 +84,10 @@ class CharacterHelper {
    * @returns {boolean} True if any movement key is pressed.
    */
   static isMoving(character, keyboard) {
-    if (keyboard.LEFT) character.otherDirection = true;
-    if (keyboard.RIGHT) character.otherDirection = false;
+    if (!character.isShooting) {
+      if (keyboard.LEFT) character.otherDirection = true;
+      if (keyboard.RIGHT) character.otherDirection = false;
+    }
     return keyboard.RIGHT || keyboard.LEFT || keyboard.UP || keyboard.DOWN;
   }
 }

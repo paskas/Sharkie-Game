@@ -18,12 +18,13 @@ function showGameMenu() {
 }
 
 /**
- * Displays the in-game navigation overlay including mobile controls.
+ * Displays the in-game navigation overlay including mobile controls and initializes the sound button.
  */
 function showInGameNav() {
   let html = inGameNavOverlayHTML();
   html += mobileKeyOverlayHTML();
   setGameOverlay('gameOverlay', html);
+  initSoundButton();
 }
 
 /**
@@ -53,6 +54,14 @@ function showControlHelp() {
 function showInfo() {
   clearOverlayContent();
   setGameOverlay('gameOverlay', infoOverlayHTML());
+}
+
+/**
+ * Displays the legal notice (Datenschutzerklärung) overlay after clearing the current content.
+ */
+function showLegalNotice() {
+  clearOverlayContent();
+  setGameOverlay('gameOverlay', legalNoticeOverlayHTML());
 }
 
 /**

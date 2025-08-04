@@ -118,7 +118,6 @@ function initWorldLoops() {
 /**
  * Reloads the current level and resets camera position.
  */
-
 function reloadLevel() {
   if (!world?.levelManager) return;
   world.levelManager.reloadCurrentLevel();
@@ -175,6 +174,21 @@ function toggleGameplay() {
 }
 
 /**
+ * Initializes the sound button based on the current mute state.
+ * Adds the appropriate CSS class to reflect whether sound is on or muted.
+ */
+function initSoundButton() {
+  const btn = document.getElementById('soundToggleBtn');
+  if (!btn) return;
+  btn.classList.remove('play-sound', 'mute-sound');
+  if (soundManager.isMuted) {
+    btn.classList.add('mute-sound');
+  } else {
+    btn.classList.add('play-sound');
+  }
+}
+
+/**
  * Toggles mute state in SoundManager and updates sound button visuals.
  */
 function toogleSound() {
@@ -212,5 +226,21 @@ document.addEventListener('fullscreenchange', () => {
   const canvas = document.getElementById('canvas');
   if (!document.fullscreenElement) {
     canvas.classList.remove('fullscreen-canvas');
+  }
+});
+
+/**
+ * Prevents the default context menu from opening on right-click anywhere in the window.
+ */
+window.addEventListener('contextmenu', e => e.preventDefault());
+
+/**
+ * Prevents the context menu specifically on the mobile controls container.
+ * This ensures long presses on touch devices don't trigger the context menu.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileControls = document.getElementById('mobileControls');
+  if (mobileControls) {
+    mobileControls.addEventListener('contextmenu', e => e.preventDefault());
   }
 });

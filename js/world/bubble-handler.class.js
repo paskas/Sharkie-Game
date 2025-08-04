@@ -33,7 +33,7 @@ class BubbleHandler {
    * @param {Endboss} enemy - The Endboss instance.
    */
   handleBubbleCollisionWithEndboss(bubble, enemy) {
-    if (bubble.isUsed) return;
+    if (bubble.isUsed || !enemy.canTakeDmg) return;
     bubble.isUsed = true;
     this.handleBubbleHit(bubble);
     if (Endboss.life <= 0 || enemy.dead) return;

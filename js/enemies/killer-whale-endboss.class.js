@@ -21,6 +21,7 @@ class Endboss extends MovableObject {
   isHurtByPoisenbubble = 0.5;
 
   hadFirstContact = false;
+  canTakeDmg = false;
   isCombatLoopRunning = false;
   dead = false;
 
@@ -128,6 +129,7 @@ class Endboss extends MovableObject {
    */
   checkForFirstContact() {
     this.checkInterval = setInterval(() => {
+      this.canDealDmg = false;
       if (this.world.character.x > 3950 && !this.hadFirstContact) {
         clearInterval(this.checkInterval);
         this.hadFirstContact = true;
@@ -162,6 +164,8 @@ class Endboss extends MovableObject {
   initCombatPhase() {
     this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     this.startCombatLoop();
+    this.canDealDmg = true;
+    this.canTakeDmg = true;
   }
 
   /**
@@ -331,17 +335,29 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Reduces boss life, plays hurt animation and checks for death.
-   */
+ * Reduces the boss's life by one, plays a hurt animation and sound,
+ * and checks if the boss should die. Also updates follow speed at specific life thresholds.
+ */
   loseLife() {
     if (Endboss.life > 0) {
       Endboss.life--;
       this.startHurtAnimation();
       soundManager.playSound('./assets/audio/endboss/hurt_boss.wav')
+      this.checkLifeUpdate();
       if (Endboss.life <= 0) {
         this.die();
       }
     }
+  }
+  
+  /**
+   * Adjusts the boss's follow speed based on current life.
+   * At 3 life: speed increases moderately.
+   * At 1 life: speed increases significantly.
+   */
+  checkLifeUpdate() {
+    if (Endboss.life === 3) this.followSpeed = 120;
+    if (Endboss.life === 1) this.followSpeed = 160;
   }
 
   /**
