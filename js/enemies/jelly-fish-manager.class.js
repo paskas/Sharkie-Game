@@ -1,3 +1,8 @@
+/**
+ * Controls the behavior and animation of electric jellyfish enemies.
+ * Handles idle animation, electric attack phases, and vertical movement.
+ * Inherits from MovableObject.
+ */
 class JellyFishManager extends MovableObject {
   defaultAnimationInterval = null;
   electricTimerInterval = null;
@@ -7,6 +12,14 @@ class JellyFishManager extends MovableObject {
   isElectricActive = false;
   hasStarted = false;
 
+  /**
+   * Initializes a jellyfish with given position, speed, and animation frames.
+   * 
+   * @param {World} world - The game world reference.
+   * @param {{default: string[], electric: string[], defaultDead: string[]}} images - Object containing animation image sets.
+   * @param {number} x - Initial horizontal position.
+   * @param {number} speed - Movement speed of the jellyfish.
+   */
   constructor(world, images, x, speed) {
     super();
     this.world = world;
@@ -29,6 +42,10 @@ class JellyFishManager extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
   }
 
+  /**
+   * Starts the jellyfish logic if not already running.
+   * Clears any previous intervals and begins animation behavior.
+   */
   start() {
     if (this.hasStarted) return;
     this.clearAllIntervals();
@@ -36,6 +53,9 @@ class JellyFishManager extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Finds and sets a free vertical position for the jellyfish using EnemyPositionManager.
+   */
   initPosition() {
     this.y = this.world.gameHelper.findFreeCoordinate(
       this.height + 10, 40, 380, 30,
@@ -44,12 +64,18 @@ class JellyFishManager extends MovableObject {
     );
   }
 
+  /**
+   * Starts the default animation, electric interval timer, and vertical movement.
+   */
   animate() {
     this.runDefaultAnimation();
     this.runElectricInterval();
     this.moveUpAndDown();
   }
 
+  /**
+   * Begins the idle animation loop for the jellyfish if not in electric mode.
+   */
   runDefaultAnimation() {
     this.clearDefaultAnimation();
     this.currentAnimation = 'default';
@@ -61,6 +87,9 @@ class JellyFishManager extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Clears the idle animation interval.
+   */
   clearDefaultAnimation() {
     if (this.defaultAnimationInterval) {
       clearInterval(this.defaultAnimationInterval);
@@ -68,6 +97,9 @@ class JellyFishManager extends MovableObject {
     }
   }
 
+  /**
+   * Starts a repeating timer that occasionally triggers the electric attack animation.
+   */
   runElectricInterval() {
     if (this.electricTimerInterval) return;
     this.electricTimerInterval = setInterval(() => {
@@ -76,6 +108,9 @@ class JellyFishManager extends MovableObject {
     }, 4000);
   }
 
+  /**
+   * Clears the electric trigger interval.
+   */
   clearElectricTimerInterval() {
     if (this.electricTimerInterval) {
       clearInterval(this.electricTimerInterval);
@@ -83,6 +118,9 @@ class JellyFishManager extends MovableObject {
     }
   }
 
+  /**
+   * Triggers the electric shock animation sequence and returns to idle when done.
+   */
   triggerElectricAnimation() {
     if (this.electricAnimationInterval) return;
     this.isElectricActive = true;
@@ -102,6 +140,9 @@ class JellyFishManager extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Stops the electric animation interval if active.
+   */
   clearElectricAnimation() {
     if (this.electricAnimationInterval) {
       clearInterval(this.electricAnimationInterval);
@@ -109,6 +150,9 @@ class JellyFishManager extends MovableObject {
     }
   }
 
+  /**
+   * Starts a loop to move the jellyfish up and down within a set vertical range.
+   */
   moveUpAndDown() {
     if (this.upAndDownInterval) return;
     this.upAndDownInterval = setInterval(() => {
@@ -126,6 +170,9 @@ class JellyFishManager extends MovableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Stops the vertical movement interval.
+   */
   clearUpAndDownInterval() {
     if (this.upAndDownInterval) {
       clearInterval(this.upAndDownInterval);
@@ -133,8 +180,14 @@ class JellyFishManager extends MovableObject {
     }
   }
 
+  /**
+   * Alias method to clear all jellyfish-related intervals.
+   */
   clearJellyIntervals() { this.clearAllIntervals(); }
 
+  /**
+   * Clears all animation, movement, and attack intervals for the jellyfish.
+   */
   clearAllIntervals() {
     this.clearDefaultAnimation();
     this.clearElectricAnimation();
@@ -143,6 +196,9 @@ class JellyFishManager extends MovableObject {
     this.hasStarted = false;
   }
 
+  /**
+   * Restarts all jellyfish behaviors (idle, electric, movement) after clearing.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.runDefaultAnimation();

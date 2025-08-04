@@ -1,3 +1,8 @@
+/**
+ * Represents the final boss enemy (killer whale) with advanced behavior including spawning,
+ * attacking, movement, damage handling, and animations.
+ * Inherits from MovableObject.
+ */
 class Endboss extends MovableObject {
   height = 530;
   width = 500;
@@ -76,6 +81,12 @@ class Endboss extends MovableObject {
     './img/enemies/killer_whale_endboss/dead/6.png'
   ];
 
+  /**
+   * Initializes the endboss, sets position, loads image assets, and starts first contact check.
+   * 
+   * @param {World} world - The game world reference.
+   * @param {HTMLCanvasElement} canvas - The canvas element for calculating boundaries.
+   */
   constructor(world, canvas) {
     super();
     this.world = world;
@@ -96,6 +107,12 @@ class Endboss extends MovableObject {
     this.checkForFirstContact();
   }
 
+  /**
+   * Returns the animation speed in ms for the given animation status.
+   * 
+   * @param {string} status - Animation type (e.g., 'idle', 'attack').
+   * @returns {number} Speed in milliseconds.
+   */
   getAnimationSpeed(status) {
     const speeds = {
       idle: 200,
@@ -106,6 +123,9 @@ class Endboss extends MovableObject {
     return speeds[status];
   }
 
+  /**
+   * Sets an interval to monitor when the character reaches the endboss trigger zone.
+   */
   checkForFirstContact() {
     this.checkInterval = setInterval(() => {
       if (this.world.character.x > 3950 && !this.hadFirstContact) {
@@ -116,11 +136,17 @@ class Endboss extends MovableObject {
     }, 250);
   }
 
+  /**
+   * Starts the endboss spawn animation once contact is made.
+   */
   triggerEndboss() {
     this.clearAnimationFrameId();
     this.startSpawnAnimation();
   }
 
+  /**
+   * Plays the initial spawn animation and sound, then starts combat phase.
+   */
   startSpawnAnimation() {
     if (this.animationFrameId || this.currentAnimation === 'spawn') return;
     this.currentAnimation = 'spawn';
@@ -130,11 +156,17 @@ class Endboss extends MovableObject {
     }, 120);
   }
 
+  /**
+   * Initializes idle animation and starts combat loop.
+   */
   initCombatPhase() {
     this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     this.startCombatLoop();
   }
 
+  /**
+   * Starts the requestAnimationFrame loop for the boss's combat behavior.
+   */
   startCombatLoop() {
     if (this.isCombatLoopRunning) return;
     this.isCombatLoopRunning = true;
@@ -143,12 +175,18 @@ class Endboss extends MovableObject {
       if (this.dead) return;
       if (!this.isCombatLoopRunning) return;
       const frameTime = this.calculateDeltaTime(time);
-      this.updateCombatState(frameTime);
+      EndbossCombat.updateCombatState(this, frameTime);
       this.combatFrameId = requestAnimationFrame(loop);
     };
     this.combatFrameId = requestAnimationFrame(loop);
   }
 
+  /**
+   * Calculates frame time difference for combat loop logic.
+   * 
+   * @param {number} time - High-resolution timestamp.
+   * @returns {number} Frame time in seconds.
+   */
   calculateDeltaTime(time) {
     if (!this.lastFrameTime) {
       this.lastFrameTime = time;
@@ -159,30 +197,9 @@ class Endboss extends MovableObject {
     return delta;
   }
 
-  updateCombatState(frameTime) {
-    if (this.dead) return;
-    const { distanceX, distanceY } = this.getDistanceToCharacter();
-    this.otherDirection = distanceX > 0;
-    this.moveTowardCharacter(distanceX, distanceY, frameTime);
-    this.tryAttack(distanceX, distanceY, performance.now());
-  }
-
-  tryAttack(distanceX, distanceY, currentTime) {
-    if (!this.isInAttackRange(distanceX, distanceY)) return;
-    if (currentTime - this.lastAttackTime <= this.attackCooldown) return;
-    this.lastAttackTime = currentTime;
-    this.initAttackPhase();
-  }
-
-  initAttackPhase() {
-    if (this.dead || this.isInDamagePhase()) return;
-    this.clearAnimationFrameId();
-    let { distanceX, distanceY } = this.getDistanceToCharacter();
-    let { directionX, directionY } = this.getMoveDirection(distanceX, distanceY);
-    this.moveIntoAttackPosition(distanceX, distanceY, directionX, directionY);
-    this.startAttackAnimation();
-  }
-
+  /**
+   * Plays attack animation and returns to idle afterwards.
+   */
   startAttackAnimation() {
     this.clearAnimationFrameId();
     soundManager.playSound('../assets/audio/endboss/killer_whale_bite.wav');
@@ -191,6 +208,9 @@ class Endboss extends MovableObject {
     }, 120);
   }
 
+  /**
+   * Plays hurt animation and resumes idle afterwards.
+   */
   startHurtAnimation() {
     this.lastHit = Date.now();
     this.playAnimationOnce(this.IMAGES_HURT, () => {
@@ -198,6 +218,13 @@ class Endboss extends MovableObject {
     }, 120);
   }
 
+  /**
+   * Checks if the character is within melee range.
+   * 
+   * @param {number} x - Horizontal distance.
+   * @param {number} y - Vertical distance.
+   * @returns {boolean} True if within range.
+   */
   isInAttackRange(x, y) {
     let offsetX = 260 + 55;
     let offsetY = 90 + 35;
@@ -205,32 +232,12 @@ class Endboss extends MovableObject {
       Date.now() - this.lastAttackTime > this.attackCooldown;
   }
 
-  moveTowardCharacter(x, y, frameTime) {
-    let collidingChar = this.isColliding(this.world.character);
-    let moveStepX = this.followSpeed * frameTime;
-    let moveStepY = this.followSpeed * frameTime;
-    if (Math.abs(x) > 310) {
-      x > 0 ? this.bossMoveRight(moveStepX) : this.bossMoveLeft(moveStepX);
-    } else if (Math.abs(x) > 5 && !collidingChar) {
-      this.x += x > 0 ? moveStepX : -moveStepX;
-    }
-    if (Math.abs(y) > 140) {
-      y > 0 ? this.bossMoveDown(moveStepY) : this.bossMoveUp(moveStepY);
-    } else if (Math.abs(y) > 5 && !collidingChar) {
-      this.y += y > 0 ? moveStepY : -moveStepY;
-    }
-  }
-
-  moveIntoAttackPosition(x, y, directionX, directionY) {
-    let offsetX = 260;
-    let offsetY = 90;
-    let moveX = Math.max(Math.abs(x) - offsetX, 0);
-    let moveY = Math.abs(y) > offsetY ? Math.max(Math.abs(y) - offsetY, 0) : 0;
-    this.x += directionX * moveX;
-    this.y += directionY * moveY;
-    this.currentAnimation = 'attack';
-  }
-
+  /**
+   * Starts a looped animation using requestAnimationFrame.
+   * 
+   * @param {string[]} images - Image frames for animation.
+   * @param {string} status - Animation mode name (e.g., 'idle').
+   */
   startAnimationLoop(images, status) {
     this.clearAnimationFrameId();
     this.currentAnimation = status;
@@ -249,14 +256,29 @@ class Endboss extends MovableObject {
     this.animationFrameId = requestAnimationFrame(loop);
   }
 
+  /**
+   * Moves boss right by the given step.
+   * 
+   * @param {number} moveStepX - Distance to move.
+   */
   bossMoveRight(moveStepX) {
     this.x += moveStepX;
   }
 
+  /**
+   * Moves boss left by the given step.
+   * 
+   * @param {number} moveStepX - Distance to move.
+   */
   bossMoveLeft(moveStepX) {
     this.x -= moveStepX;
   }
 
+  /**
+   * Moves boss upward within minY bounds.
+   * 
+   * @param {number} moveStepY - Distance to move.
+   */
   bossMoveUp(moveStepY) {
     if (this.y > this.minY) {
       this.y -= moveStepY;
@@ -265,6 +287,11 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Moves boss downward within maxY bounds.
+   * 
+   * @param {number} moveStepY - Distance to move.
+   */
   bossMoveDown(moveStepY) {
     if (this.y < this.maxY) {
       this.y += moveStepY;
@@ -273,6 +300,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Handles logic for poison bubble hits including damage buildup and applying life loss.
+   */
   handlePoisenBubbleHit() {
     if (!this.hadFirstContact) return;
     this.isHurtByPoisenbubble++;
@@ -285,6 +315,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Handles logic for regular bubble hits including damage buildup and applying life loss.
+   */
   handleBubbleHit() {
     if (!this.hadFirstContact) return;
     this.isHurtByBubble++;
@@ -297,6 +330,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Reduces boss life, plays hurt animation and checks for death.
+   */
   loseLife() {
     if (Endboss.life > 0) {
       Endboss.life--;
@@ -308,6 +344,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Cancels any active animation frame request.
+   */
   clearAnimationFrameId() {
     if (this.animationFrameId) {
       cancelAnimationFrame(this.animationFrameId);
@@ -315,6 +354,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Stops all intervals and animation loops (e.g., check interval, animation loop).
+   */
   clearAllIntervals() {
     this.isCombatLoopRunning = false;
     this.clearAnimationFrameId();
@@ -324,6 +366,9 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Restarts either first contact logic or combat animations depending on state.
+   */
   continueAllIntervals() {
     if (!this.hadFirstContact && !this.dead) {
       this.checkForFirstContact();

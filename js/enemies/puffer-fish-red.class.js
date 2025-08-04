@@ -1,3 +1,10 @@
+/**
+ * Represents a red puffer fish enemy with its specific animation assets.
+ * Inherits behavior from PufferFishManager and provides red image sets.
+ * 
+ * @param {World} world - The game world reference.
+ * @param {number} speed - Movement speed of the red puffer fish.
+ */
 class PufferFishRed extends PufferFishManager {
 
   constructor(world, speed) {

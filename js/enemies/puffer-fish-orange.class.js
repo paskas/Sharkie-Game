@@ -1,3 +1,10 @@
+/**
+ * Represents an orange puffer fish enemy with its specific animation assets.
+ * Inherits behavior from PufferFishManager and provides orange image sets.
+ * 
+ * @param {World} world - The game world reference.
+ * @param {number} speed - Movement speed of the orange puffer fish.
+ */
 class PufferFishOrange extends PufferFishManager {
 
   constructor(world, speed) {

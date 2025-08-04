@@ -1,3 +1,10 @@
+/**
+ * Represents a green puffer fish enemy with specific animations.
+ * Inherits behavior from PufferFishManager and sets green image assets.
+ * 
+ * @param {World} world - The game world reference.
+ * @param {number} speed - Movement speed of the green puffer fish.
+ */
 class PufferFishGreen extends PufferFishManager {
 
   constructor(world, speed) {

@@ -1,3 +1,11 @@
+/**
+ * Represents a specific type of electric jellyfish enemy with yellow visuals.
+ * Inherits all behavior from JellyFishManager and provides specific image assets.
+ * 
+ * @param {World} world - The game world reference.
+ * @param {number} x - Initial horizontal position of the jellyfish.
+ * @param {number} speed - Movement speed of the jellyfish.
+ */
 class JellyFishYellow extends JellyFishManager {
 
   constructor(world, x, speed) {
