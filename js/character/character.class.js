@@ -1,3 +1,7 @@
+/**
+ * Represents the player character with all its movement, shooting, sleep, and animation behavior.
+ * Inherits from MovableObject.
+ */
 class Character extends MovableObject {
   x = 0;
   y = 200;
@@ -130,6 +134,11 @@ class Character extends MovableObject {
     './img/character/dead/default_options/animated_horizontal/6.png'
   ];
 
+  /**
+   * Creates a new Character instance, loads all required animations, and sets the default image.
+   * 
+   * @param {World} world - The game world instance the character belongs to.
+   */
   constructor(world) {
     super();
     this.world = world;
@@ -146,6 +155,9 @@ class Character extends MovableObject {
     this.img = this.imageCache[this.IMAGES_FLOATING[0]];
   }
 
+  /**
+   * Starts the main character animation and movement loop using requestAnimationFrame.
+   */
   startCharacterLoop() {
     if (!this.world) return;
     this.lastFrameTime = 0;
@@ -158,13 +170,21 @@ class Character extends MovableObject {
     this.characterLoopId = requestAnimationFrame(loop);
   }
 
+  /**
+   * Updates movement, shooting, animation state, and camera for the current frame.
+   * 
+   * @param {number} frameTime - Time elapsed since last frame.
+   */
   updateFrameState(frameTime) {
     this.updateMovement(frameTime);
-    this.updateShoot();
+    CharacterShoot.updateShoot(this);
     this.resolveAnimationStatus();
     CharacterCamMove.moveCamera(this, this.world, frameTime);
   }
 
+  /**
+   * Decides which animation to play based on the character's state (damage, shooting, idle, sleep).
+   */
   resolveAnimationStatus() {
     if (this.dead) return;
     if (this.isInDamagePhase()) {
@@ -186,6 +206,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Initiates the sleep sequence after inactivity using two phases: initSleep and sleep.
+   */
   startSleepAnimation() {
     if (this.sleepTimeout || this.isSleeping) return;
     this.setAnimation('initSleep', () => this.initSleepAnimation(), 140);
@@ -196,6 +219,9 @@ class Character extends MovableObject {
     }, this.IMAGES_INITSLEEP.length * 140);
   }
 
+  /**
+  * Plays the shock or poison animation when the character is hurt and resets status after a delay.
+  */
   startDamageAnimation() {
     this.setAnimation('damage', () => {
       if (this.isShockByHit) this.shockAnimation();
@@ -207,36 +233,64 @@ class Character extends MovableObject {
     }, 800);
   }
 
+  /**
+   * Plays the idle floating animation.
+   */
   idleAnimation() {
     this.playAnimation(this.IMAGES_FLOATING);
   }
 
+  /**
+   * Plays the swim animation when movement keys are pressed.
+   */
   swimAnimation() {
     this.playAnimation(this.IMAGES_SWIM);
   }
 
+  /**
+   * Plays the animation before entering full sleep mode and plays sleep sound.
+   */
   initSleepAnimation() {
     this.playAnimation(this.IMAGES_INITSLEEP);
     soundManager.playSound('../assets/audio/character/sleep.wav')
   }
 
+  /**
+   * Plays the looping sleep animation.
+   */
   sleepAnimation() {
     this.playAnimation(this.IMAGES_SLEEP);
   }
 
+  /**
+   * Plays the shoot animation based on whether it's a poison shot or regular bubble.
+   */
   shootAnimation() {
     const images = this.currentShotPoisoned ? this.IMAGES_SHOOTPOISEN : this.IMAGES_SHOOT;
     this.playAnimation(images);
   }
 
+  /**
+   * Plays the poison damage animation.
+   */
   poisonedAnimation() {
     this.playAnimation(this.IMAGES_POISEND);
   }
 
+  /**
+   * Plays the electric shock damage animation.
+   */
   shockAnimation() {
     this.playAnimation(this.IMAGES_SHOCK);
   }
 
+  /**
+   * Sets and starts a new animation mode with given callback and speed.
+   * 
+   * @param {string} mode - Name of the animation mode.
+   * @param {Function} animationStep - Animation function to call per frame.
+   * @param {number} animationSpeed - Interval in ms between frames.
+   */
   setAnimation(mode, animationStep, animationSpeed) {
     if (this.currentAnimation === mode) return;
     this.clearAnimationInterval();
@@ -245,6 +299,11 @@ class Character extends MovableObject {
     this.animationInterval = setInterval(animationStep, animationSpeed);
   }
 
+  /**
+   * Handles character movement based on keyboard input, including collision and camera updates.
+   * 
+   * @param {number} frameTime - Elapsed time for current frame.
+   */
   updateMovement(frameTime) {
     if (this.world.keyboard.disabled) return;
     const kb = this.world.keyboard;
@@ -254,6 +313,13 @@ class Character extends MovableObject {
     this.updateRotationAngle(kb);
   }
 
+  /**
+   * Calculates next potential position based on input and frame time.
+   * 
+   * @param {Keyboard} kb - The keyboard input handler.
+   * @param {number} frameTime - Elapsed time since last frame.
+   * @returns {{targetX: number, targetY: number}} Calculated next coordinates.
+   */
   updateNextPosition(kb, frameTime) {
     const w = this.world;
     let targetX = this.x;
@@ -266,6 +332,12 @@ class Character extends MovableObject {
     return { targetX, targetY };
   }
 
+  /**
+   * Moves the character to the target position if no collision is detected.
+   * 
+   * @param {number} targetX - Proposed X coordinate.
+   * @param {number} targetY - Proposed Y coordinate.
+   */
   handleCollisionAndMove(targetX, targetY) {
     const blockingObjects = CharacterHelper.getBlockingObjects(this.world);
     if (!this.world.gameHelper.isCollidingWithObject(targetX, targetY, blockingObjects)) {
@@ -274,6 +346,11 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Sets the rotation angle of the character based on vertical input (up/down).
+   * 
+   * @param {Keyboard} kb - The keyboard input handler.
+   */
   updateRotationAngle(kb) {
     if (kb.UP || kb.DOWN) {
       this.rotationAngle = kb.UP ? -15 : 15;
@@ -282,54 +359,9 @@ class Character extends MovableObject {
     }
   }
 
-  updateShoot() {
-    const kb = this.world.keyboard;
-    if (!this.isInDamagePhase()) {
-      this.triggerBubbleShoot(kb);
-      this.triggerPoisenBubbleShoot(kb);
-    }
-  }
-
-  triggerBubbleShoot(kb) {
-    if (!kb.SHOOT) this.shootKeyReleased = true;
-    if (kb.SHOOT && this.shootKeyReleased && !this.isShooting) {
-      this.shootKeyReleased = false;
-      CharacterHelper.resetSleepStatus(this);
-      this.startShootingSequence(false);
-    }
-  }
-
-  triggerPoisenBubbleShoot(kb) {
-    if (!kb.POISENSHOOT) this.poisonShootKeyReleased = true;
-    if (kb.POISENSHOOT && this.poisonShootKeyReleased && !this.isShooting && this.shootPoisend) {
-      this.poisonShootKeyReleased = false;
-      CharacterHelper.resetSleepStatus(this);
-      this.startShootingSequence(true);
-    }
-  }
-
-  startShootingSequence(isPoisendShoot) {
-    this.isShooting = true;
-    this.currentShotPoisoned = isPoisendShoot;
-    const shootFrames = isPoisendShoot ? this.IMAGES_SHOOTPOISEN.length : this.IMAGES_SHOOT.length;
-    const frameDuration = 120;
-    const duration = shootFrames * frameDuration;
-    this.shootTimeout = setTimeout(() => {
-      this.shootBubble(isPoisendShoot);
-      this.lastShootTime = Date.now();
-      this.isShooting = false;
-    }, duration);
-  }
-
-  shootBubble(isPoisendShoot) {
-    if (!this.world || !this.world.shootingObject) return;
-    const x = this.otherDirection ? this.x : this.x + this.width - 50;
-    const y = this.y + this.height / 2;
-    const bubble = new ShootingObject(this, x, y, this.otherDirection, isPoisendShoot);
-    this.world.shootingObject.push(bubble);
-    soundManager.playSound('../assets/audio/character/bubble2.mp3')
-  }
-
+  /**
+   * Stops any currently running character animation interval.
+   */
   clearAnimationInterval() {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
@@ -337,6 +369,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Stops all timeouts and animation loops related to the character.
+   */
   clearAllIntervals() {
     this.clearAnimationInterval();
     if (this.characterLoopId) cancelAnimationFrame(this.characterLoopId);
@@ -349,6 +384,9 @@ class Character extends MovableObject {
     this.shootTimeout = null;
   }
 
+  /**
+   * Clears and then restarts the character loop.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.startCharacterLoop();
