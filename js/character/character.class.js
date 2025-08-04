@@ -252,7 +252,7 @@ class Character extends MovableObject {
    */
   initSleepAnimation() {
     this.playAnimation(this.IMAGES_INITSLEEP);
-    soundManager.playSound('../assets/audio/character/sleep.wav')
+    soundManager.playSound('./assets/audio/character/sleep.wav')
   }
 
   /**

@@ -74,6 +74,6 @@ class CharacterShoot {
     const y = character.y + character.height / 2;
     const bubble = new ShootingObject(character, x, y, character.otherDirection, isPoisendShoot);
     character.world.shootingObject.push(bubble);
-    soundManager.playSound('../assets/audio/character/bubble2.mp3');
+    soundManager.playSound('./assets/audio/character/bubble2.mp3');
   }
 }

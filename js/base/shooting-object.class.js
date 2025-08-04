@@ -143,6 +143,6 @@ class ShootingObject extends MovableObject {
     this.width = 100;
     this.height = 100;
     this.playAnimationOnce(this.IMAGES_SPLASHBUBBLE, callback, 30)
-    soundManager.playSound('../assets/audio/character/bubble_splash.wav');
+    soundManager.playSound('./assets/audio/character/bubble_splash.wav');
   }
 }

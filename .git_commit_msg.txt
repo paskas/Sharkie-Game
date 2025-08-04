@@ -1,9 +1,2 @@
-feat: mobile device control added
+fix: file paths corrected
 
-- touch control dPad + actionPad integrated as overlay
-- Display restricted to real touch devices in landscape format
-- CSS media queries adjusted
-- mobile controls disabled on desktop with mouse
-- control via ontouchstart / ontouchend linked to setMobileKey
-- setMobileKey extended in keyboard class
-- rotateMessage is now reliably controlled

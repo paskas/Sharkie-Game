@@ -35,7 +35,7 @@ function showEndscreen(status = 'complete') {
     setGameOverlay('gameOverlay', gameOverOverlayHTML());
   } else {
     setGameOverlay('gameOverlay', levelCompleteOverlayHTML());
-    soundManager.playSound('../assets/audio/interface/gameLevelComplete.wav')
+    soundManager.playSound('./assets/audio/interface/gameLevelComplete.wav')
   }
 }
 

@@ -150,7 +150,7 @@ class Endboss extends MovableObject {
   startSpawnAnimation() {
     if (this.animationFrameId || this.currentAnimation === 'spawn') return;
     this.currentAnimation = 'spawn';
-    soundManager.playSound('../assets/audio/endboss/endboss_spawn.mp3');
+    soundManager.playSound('./assets/audio/endboss/endboss_spawn.mp3');
     this.playAnimationOnce(this.IMAGES_SPAWNING, () => {
       this.initCombatPhase();
     }, 120);
@@ -202,7 +202,7 @@ class Endboss extends MovableObject {
    */
   startAttackAnimation() {
     this.clearAnimationFrameId();
-    soundManager.playSound('../assets/audio/endboss/killer_whale_bite.wav');
+    soundManager.playSound('./assets/audio/endboss/killer_whale_bite.wav');
     this.playAnimationOnce(this.IMAGES_ATTACK, () => {
       this.startAnimationLoop(this.IMAGES_FLOATING, 'idle');
     }, 120);
@@ -337,7 +337,7 @@ class Endboss extends MovableObject {
     if (Endboss.life > 0) {
       Endboss.life--;
       this.startHurtAnimation();
-      soundManager.playSound('../assets/audio/endboss/hurt_boss.wav')
+      soundManager.playSound('./assets/audio/endboss/hurt_boss.wav')
       if (Endboss.life <= 0) {
         this.die();
       }

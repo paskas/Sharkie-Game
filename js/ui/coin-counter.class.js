@@ -70,7 +70,7 @@ class CoinCounter extends DrawableObject {
     this.lastCount = count;
     if (count >= 30) {
       this.setGlowingCoinImage();
-      soundManager.playSound('../assets/audio/character/collectCoinMax.wav')
+      soundManager.playSound('./assets/audio/character/collectCoinMax.wav')
     } else {
       this.setNormalCoinImage();
     }

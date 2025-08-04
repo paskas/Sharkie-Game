@@ -259,7 +259,7 @@ class MovableObject extends DrawableObject {
     if (enemy.poisoned) {
       this.isPoisendByHit = true;
       this.isShockByHit = false;
-      soundManager.playSound('../assets/audio/enemies/hurt_char_poisen.wav')
+      soundManager.playSound('./assets/audio/enemies/hurt_char_poisen.wav')
     }
   }
 
@@ -273,7 +273,7 @@ class MovableObject extends DrawableObject {
       this.isPoisendByHit = false;
       this.isShockByHit = true;
       this.losePoisonFlask();
-      soundManager.playSound('../assets/audio/enemies/electricShock.mp3')
+      soundManager.playSound('./assets/audio/enemies/electricShock.mp3')
     }
   }
 
@@ -288,7 +288,7 @@ class MovableObject extends DrawableObject {
     flask.world = this.world;
     flask.startFallingFlask();
     this.world.level.poisonFlasks.push(flask);
-    soundManager.playSound('../assets/audio/character/lose_poisonFlask.mp3')
+    soundManager.playSound('./assets/audio/character/lose_poisonFlask.mp3')
   }
 
   /**
