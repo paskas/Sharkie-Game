@@ -1,3 +1,8 @@
+/**
+ * Displays the character's health bar in the UI.
+ * Automatically updates the displayed health image based on character life.
+ * Inherits from DrawableObject.
+ */
 class HealthBarCharacter extends DrawableObject {
   updateInterval = null;
 
@@ -9,7 +14,12 @@ class HealthBarCharacter extends DrawableObject {
     './img/UI/healthbar/healthbar_char_80.png',
     './img/UI/healthbar/healthbar_char_100.png'
   ];
-
+  
+  /**
+   * Initializes the health bar UI for the given character.
+   * 
+   * @param {Character} character - The character whose health is tracked.
+   */
   constructor(character) {
     super();
     this.character = character;
@@ -23,11 +33,18 @@ class HealthBarCharacter extends DrawableObject {
     this.updatingHealthBar();
   }
 
+  /**
+   * Starts the interval that updates the health bar image based on character life.
+   * Prevents duplicate intervals from being created.
+   */
   updatingHealthBar() {
     if (this.updateInterval) return;
     this.updateInterval = setInterval(() => this.updateImagesHealth(), 1000 / 60);
   }
 
+  /**
+   * Updates the current health bar image based on the character’s remaining life.
+   */
   updateImagesHealth() {
     let image = this.imageCache[this.IMAGES_HEALTH[Character.life]];
     if (image) {
@@ -35,12 +52,19 @@ class HealthBarCharacter extends DrawableObject {
     }
   }
 
+  /**
+   * Stops the health bar update interval.
+   */
   clearAllIntervals() {
     if (this.updateInterval) {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
     }
   }
+
+  /**
+   * Restarts the health bar update interval.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.updatingHealthBar();

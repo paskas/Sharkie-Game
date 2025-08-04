@@ -1,3 +1,8 @@
+/**
+ * Displays the endboss's health bar in the UI.
+ * Automatically updates the image based on the Endboss.life value.
+ * Inherits from DrawableObject.
+ */
 class HealthBarEndboss extends DrawableObject {
   updateInterval = null;
   visible = false;
@@ -11,6 +16,9 @@ class HealthBarEndboss extends DrawableObject {
     './img/UI/healthbar/healthbar_boss_100.png'
   ];
 
+  /**
+   * Initializes the endboss health bar and starts the update interval.
+   */
   constructor() {
     super();
     this.x = 650;
@@ -23,11 +31,18 @@ class HealthBarEndboss extends DrawableObject {
     this.updatingHealthBar();
   }
 
+  /**
+   * Starts an interval to update the health bar image.
+   * Prevents multiple intervals from running.
+   */
   updatingHealthBar() {
     if (this.updateInterval) return;
     this.updateInterval = setInterval(() => this.updateImagesHealth(), 1000 / 60);
   }
 
+  /**
+   * Updates the health bar image based on the current life of the endboss.
+   */
   updateImagesHealth() {
     let image = this.imageCache[this.IMAGES_HEALTH[Endboss.life]];
     if (image) {
@@ -35,12 +50,19 @@ class HealthBarEndboss extends DrawableObject {
     }
   }
 
+  /**
+   * Stops the interval that updates the endboss health bar.
+   */
   clearAllIntervals() {
     if (this.updateInterval) {
       clearInterval(this.updateInterval);
       this.updateInterval = null;
     }
   }
+
+  /**
+   * Restarts the interval that updates the endboss health bar.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.updatingHealthBar();

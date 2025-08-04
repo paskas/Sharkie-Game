@@ -1,3 +1,8 @@
+/**
+ * Represents a game level with all its enemies, collectibles, and environment objects.
+ * Responsible for initializing and managing level-specific content.
+ * Inherits from DrawableObject.
+ */
 class Level extends DrawableObject {
   level_end_x = 4800;
   level_top_y = -80;
@@ -38,7 +43,12 @@ class Level extends DrawableObject {
     new BackgroundObject('./img/backgrounds/background_layer_1/1.png', 960 * 4),
     new BackgroundObject('./img/backgrounds/ground/1.png', 960 * 4),
   ];
-
+  
+  /**
+   * Constructs a level using the provided configuration object.
+   * 
+   * @param {Object} setup - Configuration object for the level.
+   */
   constructor(setup) {
     super();
     EnemyPositionManager.reset();
@@ -66,6 +76,10 @@ class Level extends DrawableObject {
     this.endbossFlag = endboss;
   }
 
+  /**
+   * Initializes enemies, environment elements, and collectibles for the level.
+   * Also starts the character loop.
+   */
   initLevel() {
     this.initEnemies(this.countsPuff, this.countsJelly, this.endbossFlag);
     this.initLevelElements(this.sunlightsCount, this.barrierCount);
@@ -73,6 +87,13 @@ class Level extends DrawableObject {
     this.world.character.startCharacterLoop();
   }
 
+  /**
+   * Creates and adds puffer fish, jellyfish, and optionally the endboss to the level.
+   * 
+   * @param {Object} countsPuff - Count of each puffer fish type.
+   * @param {Object} countsJelly - Count of each jellyfish type.
+   * @param {boolean} endbossFlag - Whether to spawn the endboss.
+   */
   initEnemies(countsPuff, countsJelly, endbossFlag) {
     this.addPuffer(countsPuff);
     this.addPurpleXjelly(countsJelly);
@@ -80,17 +101,35 @@ class Level extends DrawableObject {
     this.createKillerWhale(endbossFlag);
   }
 
+  /**
+   * Adds environmental elements like sunlights and barrier reefs to the level.
+   * 
+   * @param {number} sunlights - Number of sunlight objects.
+   * @param {number} barrier - Number of barrier reef objects.
+   */
   initLevelElements(sunlights, barrier) {
     this.addSunlights(sunlights);
     this.addBarrierReef(barrier);
   }
 
+  /**
+   * Adds coins and poison flasks to the level.
+   * 
+   * @param {number} coinsCount - Number of single coins.
+   * @param {number} coinsArcCount - Number of arc-shaped coin groups.
+   * @param {Object} flasksCount - Count of left and right poison flasks.
+   */
   initCollectibles(coinsCount, coinsArcCount, flasksCount) {
     this.addCoins(coinsCount);
     this.addCoinArcs(coinsArcCount);
     this.addPoisenFlasks(flasksCount);
   }
 
+  /**
+   * Creates and adds all types of puffer fish to the level.
+   * 
+   * @param {Object} counts - Count of green, red, and orange puffer fish.
+   */
   addPuffer(counts) {
     ['green', 'red', 'orange'].forEach(type => {
       for (let i = 0; i < counts[type]; i++) {
@@ -106,6 +145,11 @@ class Level extends DrawableObject {
     });
   }
 
+  /**
+   * Creates and places purple jellyfish at predefined positions.
+   * 
+   * @param {Object} counts - Count of purple jellyfish.
+   */
   addPurpleXjelly(counts) {
     const purpleX = [400, 2250, 3450];
     let purpleIndex = 0;
@@ -120,6 +164,11 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Creates and places yellow jellyfish at predefined positions.
+   * 
+   * @param {Object} counts - Count of yellow jellyfish.
+   */
   addYellowXjelly(counts) {
     const yellowX = [1500, 2800];
     let yellowIndex = 0;
@@ -134,6 +183,11 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Adds the killer whale endboss to the level if enabled and not already present.
+   * 
+   * @param {boolean} endbossFlag - Whether to spawn the endboss.
+   */
   createKillerWhale(endbossFlag) {
     const alreadyHasEndboss = this.enemies.some(e => e instanceof Endboss);
     if (endbossFlag && !alreadyHasEndboss) {
@@ -141,6 +195,12 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Creates a puffer fish instance of the given type.
+   * 
+   * @param {string} type - One of 'green', 'red', or 'orange'.
+   * @returns {MovableObject} The created puffer fish.
+   */
   createPufferFish(type) {
     switch (type) {
       case 'green': return new PufferFishGreen(this.world, 0.25);
@@ -149,6 +209,14 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Creates a jellyfish instance of the given type and position.
+   * 
+   * @param {string} type - 'purple' or 'yellow'.
+   * @param {number} x - X position for the jellyfish.
+   * @param {number} speed - Movement speed.
+   * @returns {MovableObject} The created jellyfish.
+   */
   createJellyFish(type, x, speed) {
     switch (type) {
       case 'purple': return new JellyFishPurple(this.world, x, speed);
@@ -156,18 +224,33 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Adds sunlight objects to the level.
+   * 
+   * @param {number} sunlights - Number of sunlights to add.
+   */
   addSunlights(sunlights) {
     if (sunlights) {
       this.sunlights.push(new Sunlight());
     }
   }
 
+  /**
+   * Adds barrier reef objects to the level.
+   * 
+   * @param {number} barrier - Number of reefs to add.
+   */
   addBarrierReef(barrier) {
     if (barrier) {
       this.barrier.push(new BarrierReef());
     }
   }
 
+  /**
+   * Adds regular coins to predefined X positions.
+   * 
+   * @param {number} counts - Number of coins to place.
+   */
   addCoins(counts) {
     for (let i = 0; i < counts; i++) {
       let x = Coin.positionXcoin[i];
@@ -177,6 +260,11 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Adds coin arcs from predefined arc definitions.
+   * 
+   * @param {number} counts - Number of arcs to place.
+   */
   addCoinArcs(counts) {
     for (let i = 0; i < counts; i++) {
       let arc = Coin.coinArcs[i];
@@ -186,11 +274,21 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Adds left and right poison flasks based on count object.
+   * 
+   * @param {Object} counts - Object with counts for 'FlaskLeft' and 'FlaskRight'.
+   */
   addPoisenFlasks(counts) {
     this.addLeftFlasks(counts['FlaskLeft']);
     this.addRightFlasks(counts['FlaskRight']);
   }
 
+  /**
+   * Adds poison flasks on the left side of the level.
+   * 
+   * @param {number} count - Number of flasks to add.
+   */
   addLeftFlasks(count) {
     const leftCoords = [
       { x: 880, y: 382 },
@@ -205,6 +303,11 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Adds poison flasks on the right side of the level.
+   * 
+   * @param {number} count - Number of flasks to add.
+   */
   addRightFlasks(count) {
     const rightCoords = [
       { x: 1900, y: 310 },
@@ -218,6 +321,9 @@ class Level extends DrawableObject {
     }
   }
 
+  /**
+   * Clears intervals from all interval-aware objects in the level.
+   */
   clearAllIntervals() {
     ['enemies', 'coins', 'poisonFlasks', 'sunlights', 'barrier'].forEach(key => {
       if (this[key]) {
@@ -230,6 +336,9 @@ class Level extends DrawableObject {
     });
   }
 
+  /**
+   * Resumes intervals for enemies, coins, and poison flasks in the level.
+   */
   continueAllIntervals() {
     ['enemies', 'coins', 'poisonFlasks'].forEach(key => {
       if (this[key]) {

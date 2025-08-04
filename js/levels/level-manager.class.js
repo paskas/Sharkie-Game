@@ -1,3 +1,6 @@
+/**
+ * Manages all game levels including configuration, initialization, and level switching.
+ */
 class LevelManager {
   levels = [];
   currentLevelIndex = 0;
@@ -28,11 +31,20 @@ class LevelManager {
     // More levels here
   ];
 
+  /**
+   * Creates a LevelManager instance linked to the game world and canvas.
+   * 
+   * @param {World} world - The current game world instance.
+   * @param {HTMLCanvasElement} canvas - The canvas element for layout references.
+   */
   constructor(world, canvas) {
     this.world = world;
     this.canvas = canvas;
   }
-
+  
+  /**
+   * Generates all levels from predefined configurations and initializes the first level.
+   */
   generateLevels() {
     this.levels.length = 0;
     this.levels = this.levelConfigs.map(config => new Level({
@@ -42,10 +54,18 @@ class LevelManager {
     world.level.initLevel();
   }
 
+  /**
+   * Returns the currently active level.
+   * 
+   * @returns {Level} The current level object.
+   */
   getCurrentLevel() {
     return this.levels[this.currentLevelIndex];
   }
 
+  /**
+   * Reinitializes the current level by clearing intervals and re-creating it from config.
+   */
   reloadCurrentLevel() {
     world.level.clearAllIntervals();
     const config = this.levelConfigs[this.currentLevelIndex];
@@ -57,12 +77,20 @@ class LevelManager {
     this.levels[this.currentLevelIndex] = newLevel;
   }
 
+  /**
+   * Advances the index to the next level if one exists.
+   */
   loadNextLevel() {
     if (!this.isLastLevel()) {
       this.currentLevelIndex++;
     }
   }
 
+  /**
+   * Checks whether the current level is the last in the list.
+   * 
+   * @returns {boolean} True if it's the final level.
+   */
   isLastLevel() {
     return this.currentLevelIndex === this.levels.length - 1;
   }
