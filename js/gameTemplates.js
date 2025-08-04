@@ -1,3 +1,7 @@
+/**
+ * Returns the HTML string for the main menu overlay.
+ * @returns {string} Main menu HTML
+ */
 function mainMenuOverlayHTML() {
   return `
 <div id="overlayContainer" class="game-overlay">
@@ -16,6 +20,10 @@ function mainMenuOverlayHTML() {
   `
 }
 
+/**
+ * Returns the HTML string for the game over overlay.
+ * @returns {string} Game over screen HTML
+ */
 function gameOverOverlayHTML() {
   return `
 <div id="endscreenOverlay">
@@ -33,6 +41,11 @@ function gameOverOverlayHTML() {
   `
 }
 
+/**
+ * Returns the HTML string for the level complete overlay.
+ * Adds a "Next Level" button if not at the last level.
+ * @returns {string} Victory screen HTML
+ */
 function levelCompleteOverlayHTML() {
   const showNext = world && world.levelManager && !world.levelManager.isLastLevel();
   return `
@@ -52,6 +65,11 @@ function levelCompleteOverlayHTML() {
   `
 }
 
+/**
+ * Returns the HTML string for the controls help overlay.
+ * Shows key mappings for movement and actions.
+ * @returns {string} Controls help HTML
+ */
 function controlHelpOverlayHTML() {
   return `
 <div class="game-overlay controls-help">
@@ -106,6 +124,11 @@ function controlHelpOverlayHTML() {
 `
 }
 
+/**
+ * Returns the HTML string for the in-game navigation overlay.
+ * Includes pause, fullscreen, and sound toggle buttons.
+ * @returns {string} In-game menu HTML
+ */
 function inGameNavOverlayHTML() {
   return `
 <div class="game-menu">
@@ -116,6 +139,11 @@ function inGameNavOverlayHTML() {
 `
 }
 
+/**
+ * Returns the HTML string for the info/story overlay.
+ * Displays Sharkie's game story and game credits.
+ * @returns {string} Story and info HTML
+ */
 function infoOverlayHTML() {
   return `
 <div class="game-overlay content-column">
@@ -160,6 +188,11 @@ function infoOverlayHTML() {
 `
 }
 
+/**
+ * Returns the HTML string for the mobile controls overlay.
+ * Includes virtual d-pad and action buttons.
+ * @returns {string} Mobile touch controls HTML
+ */
 function mobileKeyOverlayHTML() {
   return `
 <div id="mobileControls" class="mobile-controls">

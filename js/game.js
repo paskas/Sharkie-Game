@@ -5,6 +5,9 @@ let isPaused = false;
 
 window.soundManager = new SoundManager();
 
+/**
+ * Initializes the main menu and background music.
+ */
 function initGame() {
   showGameMenu();
   if (!soundManager.isMusicPlaying()) {
@@ -12,6 +15,9 @@ function initGame() {
   }
 }
 
+/**
+ * Starts a fresh world, sets gameStarted flag, plays loop music and hides menu overlay.
+ */
 function playGame() {
   startWorldFresh();
   world.gameStarted = true;
@@ -19,6 +25,9 @@ function playGame() {
   fadeOutMenuOverlay();
 }
 
+/**
+ * Restarts the current level from scratch and reinitializes all world components.
+ */
 function restartLevel() {
   resetGameState();
   startWorldFresh();
@@ -27,6 +36,9 @@ function restartLevel() {
   showInGameNav();
 }
 
+/**
+ * Loads the next level, resets state, and shows in-game navigation.
+ */
 function nextLevel() {
   resetGameState();
   startWorldFresh();
@@ -35,6 +47,9 @@ function nextLevel() {
   showInGameNav();
 }
 
+/**
+ * Returns to the main menu, resets state, and restarts menu music.
+ */
 function backToMenu() {
   if (world) {
     world.clearWorld();
@@ -45,11 +60,17 @@ function backToMenu() {
   showGameMenu();
 }
 
+/**
+ * Resets all global stats and clears the canvas.
+ */
 function resetGameState() {
   resetGlobalStats();
   clearWorldCanvas();
 }
 
+/**
+ * Initializes or reinitializes the world object and its loops.
+ */
 function startWorldFresh() {
   if (!world) {
     initWorld(true);
@@ -60,6 +81,10 @@ function startWorldFresh() {
   initWorldLoops();
 }
 
+/**
+ * Creates a new World instance and generates levels if specified.
+ * @param {boolean} initLevels - Whether to generate level data.
+ */
 function initWorld(initLevels = false) {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
@@ -69,10 +94,17 @@ function initWorld(initLevels = false) {
   }
 }
 
+/**
+ * Starts drawing and world logic loops.
+ */
 function initWorldLoops() {
   world.drawHandler.startDrawLoop();
   world.startWorldLoop();
 }
+
+/**
+ * Reloads the current level and resets camera position.
+ */
 
 function reloadLevel() {
   if (!world?.levelManager) return;
@@ -80,6 +112,9 @@ function reloadLevel() {
   world.camera_x = 0;
 }
 
+/**
+ * Loads the next level, initializes it and resets camera position.
+ */
 function loadNextLevel() {
   world.levelManager.loadNextLevel();
   const newLevel = world.levelManager.getCurrentLevel();
@@ -87,6 +122,9 @@ function loadNextLevel() {
   world.camera_x = 0;
 }
 
+/**
+ * Resets core game statistics to initial values.
+ */
 function resetGlobalStats() {
   Character.life = 5;
   Endboss.life = 5;
@@ -95,12 +133,18 @@ function resetGlobalStats() {
   PoisenFlask.flaskCount = 0;
 }
 
+/**
+ * Clears the game canvas completely.
+ */
 function clearWorldCanvas() {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+/**
+ * Toggles game pause state and updates button visuals.
+ */
 function toggleGameplay() {
   const btn = document.getElementById('gameplayBtn');
   const isPlaying = btn.classList.contains('play');
@@ -117,6 +161,9 @@ function toggleGameplay() {
   }
 }
 
+/**
+ * Toggles mute state in SoundManager and updates sound button visuals.
+ */
 function toogleSound() {
   soundManager.toggleMute();
   const btn = document.getElementById('soundToggleBtn');
@@ -128,6 +175,10 @@ function toogleSound() {
   }
 }
 
+/**
+ * Enters or exits fullscreen mode based on current state.
+ * @param {string} mode - 'game' or 'menu' to determine which container to use.
+ */
 function fullscreen(mode = 'game') {
   const canvas = document.getElementById('canvas');
   const container = (mode === 'menu')
@@ -141,6 +192,9 @@ function fullscreen(mode = 'game') {
   }
 }
 
+/**
+ * Handles the fullscreenchange event and removes canvas class if exited.
+ */
 document.addEventListener('fullscreenchange', () => {
   const canvas = document.getElementById('canvas');
   if (!document.fullscreenElement) {
