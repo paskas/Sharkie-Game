@@ -1,3 +1,7 @@
+/**
+ * Represents a collectible coin in the game.
+ * Handles animation, positioning, and optional arc formation.
+ */
 class Coin extends MovableObject {
 
   animationInterval = null;
@@ -21,6 +25,12 @@ class Coin extends MovableObject {
     './img/UI/coins/coin_4.png'
   ];
 
+  /**
+   * Creates a new Coin instance at the given position or chooses the next predefined x position.
+   *
+   * @param {number|null} x - The x-position of the coin. If null, uses next available predefined value.
+   * @param {number} [y=440] - The y-position of the coin.
+   */
   constructor(x = null, y = 440) {
     super()
     this.x = x !== null ? x : this.setSingleCoinX();
@@ -33,6 +43,9 @@ class Coin extends MovableObject {
     this.animate();
   }
 
+  /**
+   * Starts the coin animation loop, cycling through coin images.
+   */
   animate() {
     if (this.animationInterval) return;
     this.animationInterval = setInterval(() => {
@@ -40,11 +53,25 @@ class Coin extends MovableObject {
     }, 1000 / 5);
   }
 
+  /**
+   * Retrieves the next x-position from the predefined positionXcoin array.
+   *
+   * @returns {number} - The next predefined x-position for a coin.
+   */
   setSingleCoinX() {
     this.setCoin++;
     return this.positionXcoin[this.setCoin - 1];
   }
 
+  /**
+   * Generates a set of coin objects in a curved arc shape.
+   *
+   * @param {number} startX - The x-coordinate of the arc’s start.
+   * @param {number} startY - The y-coordinate baseline for the arc.
+   * @param {number} count - Total number of coins in the arc.
+   * @param {number} [spread=100] - Horizontal spacing between the coins.
+   * @returns {Coin[]} - Array of Coin instances forming an arc.
+   */
   static setArcCoinPositions(startX, startY, count, spread = 100) {
     let arcCoins = [];
     for (let i = 0; i < count; i++) {
@@ -56,6 +83,9 @@ class Coin extends MovableObject {
     return arcCoins;
   }
 
+  /**
+   * Clears the animation interval of the coin to stop image cycling.
+   */
   clearAllIntervals() {
     if (this.animationInterval) {
       clearInterval(this.animationInterval);
@@ -63,6 +93,9 @@ class Coin extends MovableObject {
     }
   }
 
+  /**
+   * Restarts the coin animation by reinitializing the interval.
+   */
   continueAllIntervals() {
     this.clearAllIntervals();
     this.animate();

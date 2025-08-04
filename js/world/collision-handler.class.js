@@ -1,9 +1,22 @@
+/**
+ * Handles all collision detection and response logic in the game,
+ * including character interactions with enemies, bubbles, coins, and poison flasks.
+ */
 class CollisionHandler {
 
+  /**
+   * Initializes the CollisionHandler with a reference to the game world.
+   * 
+   * @param {World} world - The main game world instance.
+   */
   constructor(world) {
     this.world = world;
   }
 
+  /**
+   * Checks for collisions between the character and any enemy that can deal damage.
+   * Triggers character hit logic if a collision occurs.
+   */
   checkCharacterEnemyCollisions() {
     this.world.level.enemies.forEach((enemy) => {
       if (enemy.canDealDmg && this.world.character.isColliding(enemy)) {
@@ -12,6 +25,10 @@ class CollisionHandler {
     });
   }
 
+  /**
+   * Checks for collisions between bubbles and enemies.
+   * Delegates the handling to the BubbleHandler depending on whether it's a normal enemy or the Endboss.
+   */
   checkBubbleEnemyCollisions() {
     this.world.shootingObject.forEach(bubble => {
       this.world.level.enemies.forEach(enemy => {
@@ -25,6 +42,11 @@ class CollisionHandler {
     });
   }
 
+  /**
+   * Checks for collisions between the character and coins.
+   * Increases the coin count and potentially the flask count.
+   * Removes collected coins and plays a sound.
+   */
   checkCoinCollisions() {
     this.world.level.coins.forEach((coin, index) => {
       if (this.world.character.isColliding(coin)) {
@@ -38,6 +60,12 @@ class CollisionHandler {
       }
     });
   }
+
+  /**
+   * Checks for collisions between the character and poison flasks.
+   * Increases the flask count if collected and not lost.
+   * Removes collected flasks and plays a sound.
+   */
 
   checkPoisenFlasksCollisions() {
     this.world.level.poisonFlasks.forEach((flask, index) => {

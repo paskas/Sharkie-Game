@@ -1,3 +1,7 @@
+/**
+ * Utility class for game-specific calculations like hitbox collision,
+ * object classification, and free coordinate generation.
+ */
 class GameHelper {
 
   static offsetClassMap = {
@@ -8,6 +12,20 @@ class GameHelper {
     }
   };
 
+  /**
+   * Creates an instance of GameHelper.
+   * @param {World} world - The game world context.
+   */
+  constructor(world) {
+    this.world = world;
+  }
+
+  /**
+   * Returns the resolved class name for a given object,
+   * accounting for special variants (e.g., left/right flasks).
+   * @param {Object} obj - The object to evaluate.
+   * @returns {string} - Resolved class name string.
+   */
   static resolveOffsetClassName(obj) {
     let className = obj.constructor.name;
     if (this.offsetClassMap[className] && obj.variant) {
@@ -16,10 +34,13 @@ class GameHelper {
     return className;
   }
 
-  constructor(world) {
-    this.world = world;
-  }
-
+  /**
+   * Checks if a character at a target position collides with any object in a given list.
+   * @param {number} targetX - Target X position of the character.
+   * @param {number} targetY - Target Y position of the character.
+   * @param {Object[]} objectsToCheck - List of objects to check collision with.
+   * @returns {boolean} - True if a collision is detected, otherwise false.
+   */
   isCollidingWithObject(targetX, targetY, objectsToCheck) {
     const charHitbox = this.calculateCharacterHitbox(targetX, targetY);
     for (let obj of objectsToCheck) {
@@ -31,6 +52,12 @@ class GameHelper {
     return false;
   }
 
+  /**
+   * Calculates the character's hitbox based on offsets and target position.
+   * @param {number} targetX - X position of the character.
+   * @param {number} targetY - Y position of the character.
+   * @returns {{x: number, y: number, width: number, height: number}} - Character's hitbox.
+   */
   calculateCharacterHitbox(targetX, targetY) {
     const offset = DrawableObject.offsets.Character;
     return {
@@ -41,14 +68,31 @@ class GameHelper {
     };
   }
 
+  /**
+   * Retrieves one or more hitboxes from an object.
+   * @param {Object} obj - Game object that has a hitbox.
+   * @returns {Array} - An array of hitbox objects.
+   */
   getHitboxes(obj) {
     return obj.getObjectHitboxes?.() || [obj.getObjectHitbox()];
   }
 
+  /**
+   * Checks if a player hitbox collides with any of the given target hitboxes.
+   * @param {Object} playerBox - The character's hitbox.
+   * @param {Object[]} targetBoxes - Array of target hitboxes.
+   * @returns {boolean} - True if a collision is detected.
+   */
   hitboxCollidesWithAny(playerBox, targetBoxes) {
     return targetBoxes.some(targetBox => this.areHitboxesColliding(playerBox, targetBox));
   }
 
+  /**
+   * Determines if two hitboxes are colliding.
+   * @param {{x: number, y: number, width: number, height: number}} a - First hitbox.
+   * @param {{x: number, y: number, width: number, height: number}} b - Second hitbox.
+   * @returns {boolean} - True if the hitboxes overlap.
+   */
   areHitboxesColliding(a, b) {
     return (
       a.x < b.x + b.width &&

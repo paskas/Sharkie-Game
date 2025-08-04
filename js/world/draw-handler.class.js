@@ -1,14 +1,26 @@
+/**
+ * Handles drawing all game objects using requestAnimationFrame.
+ * Optimized to prevent redundant draw calls and handle camera translation.
+ */
 class DrawHandler {
 
   animationFrameId = null;
   isDrawing = false;
   isActive = false;
 
+  /**
+   * Creates a new DrawHandler instance.
+   * @param {World} world - The game world reference.
+   */
   constructor(world) {
     this.world = world;
     this.ctx = world.ctx;
   }
 
+  /**
+   * Starts the continuous draw loop using requestAnimationFrame.
+   * Prevents duplicate starts if already active.
+   */
   startDrawLoop() {
     if (this.isActive) return;
     this.isActive = true;
@@ -19,7 +31,10 @@ class DrawHandler {
     };
     this.animationFrameId = requestAnimationFrame(loop);
   }
-
+  
+  /**
+   * Stops the draw loop and cancels the animation frame.
+   */
   stopDrawLoop() {
     this.isActive = false;
     if (this.animationFrameId) {
@@ -28,6 +43,9 @@ class DrawHandler {
     }
   }
 
+  /**
+   * Renders the current frame: background, objects, character, UI.
+   */
   draw() {
     if (this.isDrawing) return;
     this.isDrawing = true;
@@ -53,15 +71,27 @@ class DrawHandler {
     this.isDrawing = false;
   }
 
+  /**
+   * Returns the current health of the Endboss if present.
+   * @returns {number|string} - Life value or '-' if no boss is found.
+   */
   getEndbossLife() {
     const boss = this.world.level.enemies.find(e => e instanceof Endboss);
     return boss ? boss.life : '-';
   }
 
+  /**
+   * Draws an array of objects to the canvas.
+   * @param {DrawableObject[]} objects - Objects to render.
+   */
   addObjectsToMap(objects) {
     objects.forEach(obj => this.addToMap(obj));
   }
 
+  /**
+   * Draws a single object, handling flipping and special cases like rotation.
+   * @param {DrawableObject} mo - The object to draw.
+   */
   addToMap(mo) {
     if (mo.otherDirection) this.flipImage(mo);
     if (mo instanceof Sunlight) {
@@ -76,6 +106,10 @@ class DrawHandler {
     if (mo.otherDirection) this.restoreImage(mo);
   }
 
+  /**
+   * Flips the context horizontally and adjusts object position.
+   * @param {DrawableObject} mo - The object to flip.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -83,11 +117,20 @@ class DrawHandler {
     mo.x = mo.x * -1;
   }
 
+  /**
+   * Restores the flipped context and reverts object position.
+   * @param {DrawableObject} mo - The object to restore.
+   */
   restoreImage(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
   }
 
+  /**
+   * Draws the character with rotation applied.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context.
+   * @param {Character} character - The character to draw.
+   */
   rotatedCharacter(ctx, character) {
     ctx.save();
     ctx.translate(character.x + character.width / 2, character.y + character.height / 2);
@@ -96,6 +139,11 @@ class DrawHandler {
     ctx.restore();
   }
 
+  /**
+   * Applies flickering effect and draws the sunlight object.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context.
+   * @param {Sunlight} sunlight - The sunlight object to draw.
+   */
   flickerSunlight(ctx, sunlight) {
     ctx.save();
     ctx.globalAlpha = sunlight.currentOpacity;

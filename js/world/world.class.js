@@ -1,3 +1,7 @@
+/**
+ * Manages the entire game world including character, level, UI elements, and loops.
+ * Handles drawing, collisions, intervals, and object lifecycle management.
+ */
 class World {
   canvas;
   ctx;
@@ -12,7 +16,11 @@ class World {
   isWorldLoopActive = null;
   removeTimeouts = [];
 
-
+  /**
+   * Creates a new World instance.
+   * @param {HTMLCanvasElement} canvas - The canvas element used for rendering.
+   * @param {Keyboard} keyboard - The keyboard input handler.
+   */
   constructor(canvas, keyboard) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
@@ -21,6 +29,9 @@ class World {
     // this.setHitbox(); // Show hitboxes (debug only)
   }
 
+  /**
+   * Initializes core world objects including character, level, UI, and handlers.
+   */
   initWorldObjects() {
     this.setLevelManager();
     this.character = new Character(this);
@@ -33,12 +44,18 @@ class World {
     this.gameHelper = new GameHelper(this);
   }
 
+  /**
+   * Initializes the level manager if not already present.
+   */
   setLevelManager() {
     if (!this.levelManager) {
       this.levelManager = new LevelManager(this, this.canvas);
     }
   }
 
+  /**
+   * Displays hitboxes for debugging purposes.
+   */
   setHitbox() {
     this.character.showHitbox = true;
     this.level.enemies.forEach(enemy => enemy.showHitbox = true);
@@ -48,11 +65,18 @@ class World {
     this.level.poisonFlasks.forEach(obj => obj.showHitbox = true);
   }
 
+  /**
+   * Returns the currently active level.
+   * @returns {Level|undefined}
+   */
   get level() {
     if (!this.levelManager) return undefined;
     return this.levelManager.getCurrentLevel();
   }
 
+  /**
+   * Starts the main world logic loop using requestAnimationFrame.
+   */
   startWorldLoop() {
     if (this.isWorldLoopActive) return;
     this.isWorldLoopActive = true;
@@ -70,6 +94,9 @@ class World {
     this.worldLoopId = requestAnimationFrame(loop);
   }
 
+  /**
+   * Stops the world logic loop.
+   */
   stopWorldLoop() {
     this.isWorldLoopActive = false;
     if (this.worldLoopId) {
@@ -78,11 +105,17 @@ class World {
     }
   }
 
+  /**
+   * Clears the world state and intervals.
+   */
   clearWorld() {
     this.stopAllIntervals();
     this.resetWorldReferences();
   }
 
+  /**
+   * Stops all running intervals and animations in the world.
+   */
   stopAllIntervals() {
     this.stopWorldLoop();
     if (this.drawHandler) {
@@ -101,6 +134,9 @@ class World {
     }
   }
 
+  /**
+   * Resets references to world components for cleanup.
+   */
   resetWorldReferences() {
     this.character = null;
     this.healthBarCharacter = null;
@@ -113,6 +149,9 @@ class World {
     this.shootingObject = [];
   }
 
+  /**
+   * Continues the world logic and drawing after being paused.
+   */
   continueWorld() {
     this.startWorldLoop();
     this.drawHandler.startDrawLoop();
@@ -126,6 +165,10 @@ class World {
     this.keyboard.disabled = false;
   }
 
+  /**
+   * Determines whether the endboss health bar should be visible.
+   * @returns {boolean} - True if the bar should be shown.
+   */
   checkTriggerEndbossHealthBar() {
     const endboss = this.level.enemies.find(e => e instanceof Endboss);
     let isVisible = false;
@@ -134,16 +177,26 @@ class World {
     return isVisible;
   }
 
+  /**
+   * Draws the endboss health bar if visible using the provided draw callback.
+   * @param {function} addToMapFn - Callback to add the health bar to draw map.
+   */
   drawEndbossHealthbar(addToMapFn) {
     if (this.healthBarEndboss?.visible) {
       addToMapFn(this.healthBarEndboss);
     }
   }
 
+  /**
+   * Updates animation states for all sunlight objects in the level.
+   */
   handleSunlightAnimate() {
     this.level.sunlights.forEach(s => s.animate());
   }
 
+  /**
+   * Checks if poison flask count allows poisoned shots and updates the character status.
+   */
   checkPoisenShootStatus() {
     if (PoisenFlask.flaskCount >= 1) {
       this.character.shootPoisend = true;
@@ -152,6 +205,10 @@ class World {
     }
   }
 
+  /**
+   * Schedules removal of a defeated enemy after a delay.
+   * @param {DrawableObject} enemy - The enemy to remove.
+   */
   removeEnemy(enemy) {
     const timeout = setTimeout(() => {
       let enemyIndex = this.level.enemies.indexOf(enemy);
