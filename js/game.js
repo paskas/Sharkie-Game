@@ -262,7 +262,7 @@ function startBubbleMenuLoop() {
  */
 function spawnAnimatedBubble() {
   const overlay = document.getElementById('bubbleOverlay');
-  const duration = Math.random() * 3 + 4;
+  const duration = Math.random() * 4 + 5;
   overlay.insertAdjacentHTML('beforeend', createBubbleMenuHTML(duration));
   const bubble = overlay.lastElementChild;
   animateBubbleFrames(bubble);
@@ -284,7 +284,7 @@ function animateBubbleFrames(bubble) {
     frame = frame % totalFrames + 1;
     bubble.src = `./img/UI/bubbles/default/default_b${frame}.png`;
   }, 150);
-  setTimeout(() => clearInterval(frameInterval), 6000);
+  setTimeout(() => clearInterval(frameInterval), 7000);
 }
 
 /**
