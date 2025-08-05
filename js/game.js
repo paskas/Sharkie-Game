@@ -2,6 +2,7 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let isPaused = false;
+let bubbleMenuInterval = null;
 
 window.soundManager = new SoundManager();
 
@@ -244,3 +245,56 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileControls.addEventListener('contextmenu', e => e.preventDefault());
   }
 });
+
+/**
+ * Starts the infinite bubble loop by spawning bubbles at random intervals.
+ * Uses a recursive `setTimeout` to simulate variable timing between spawns.
+ */
+function startBubbleMenuLoop() {
+  spawnAnimatedBubble();
+  const delay = Math.random() * 1000 + 500;
+  bubbleMenuInterval = setTimeout(startBubbleMenuLoop, delay);
+}
+
+/**
+ * Spawns a single animated bubble into the #bubbleOverlay element.
+ * Sets its animation duration and removes it after the duration ends.
+ */
+function spawnAnimatedBubble() {
+  const overlay = document.getElementById('bubbleOverlay');
+  const duration = Math.random() * 3 + 4;
+  overlay.insertAdjacentHTML('beforeend', createBubbleMenuHTML(duration));
+  const bubble = overlay.lastElementChild;
+  animateBubbleFrames(bubble);
+  setTimeout(() => {
+    bubble.remove();
+  }, duration * 1000);
+}
+
+/**
+ * Animates the bubble sprite by cycling through frames using setInterval.
+ * Clears the interval after 6 seconds.
+ *
+ * @param {HTMLElement} bubble - The bubble element to animate.
+ */
+function animateBubbleFrames(bubble) {
+  let frame = 1;
+  const totalFrames = 5;
+  const frameInterval = setInterval(() => {
+    frame = frame % totalFrames + 1;
+    bubble.src = `./img/UI/bubbles/default/default_b${frame}.png`;
+  }, 150);
+  setTimeout(() => clearInterval(frameInterval), 6000);
+}
+
+/**
+ * Stops the interval for the menu bubble animation if it's running.
+ * Ensures that no further bubbles are spawned in the menu.
+ */
+function clearBubbleMenuLoop() {
+  if (bubbleMenuInterval) {
+    clearInterval(bubbleMenuInterval);
+    bubbleMenuInterval = null;
+  }
+}
+

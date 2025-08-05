@@ -14,13 +14,16 @@ function setGameOverlay(container, content) {
  * Displays the main menu overlay.
  */
 function showGameMenu() {
+  startBubbleMenuLoop();
   setGameOverlay('gameOverlay', mainMenuOverlayHTML());
 }
 
 /**
- * Displays the in-game navigation overlay including mobile controls and initializes the sound button.
+ * Displays the in-game navigation overlay including mobile controls.
+ * Also initializes the sound toggle button and clears the bubble menu animation loop.
  */
 function showInGameNav() {
+  clearBubbleMenuLoop();
   let html = inGameNavOverlayHTML();
   html += mobileKeyOverlayHTML();
   setGameOverlay('gameOverlay', html);

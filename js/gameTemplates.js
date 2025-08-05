@@ -300,3 +300,24 @@ function legalNoticeOverlayHTML() {
 </div>
 `
 }
+
+/**
+ * Creates an HTML string for a single animated bubble element.
+ *
+ * The bubble is positioned randomly along the horizontal axis (`left`)
+ * and given a random size between 48 and 112 pixels. The animation duration
+ * is controlled by the provided `duration` parameter.
+ *
+ * @param {number} duration - The duration in seconds for the bubble animation.
+ * @returns {string} HTML string of the animated bubble image element.
+ */
+function createBubbleMenuHTML(duration) {
+  const left = Math.random() * 100;
+  const size = Math.random() * 64 + 48;
+  const style = `
+    left: ${left}%;
+    width: ${size}px;
+    animation-duration: ${duration}s;
+  `;
+  return `<img src="./img/UI/bubbles/default/default_b1.png" class="bubble-animated" style="${style}">`;
+}
